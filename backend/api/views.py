@@ -138,62 +138,42 @@ class UserSpecificAssignmentUpdateView(APIView):
         assignment.delete()
         return Response({"Successful": "Assignment Deleted"}, status=HTTP_204_NO_CONTENT)
 
+# Get Request is Oauth1 Request Authorization and Post make sure it's authorized and run Auth and get access tokens
+
 
 class Schoology(APIView):
-    def get(self, request, format=None):
-        pass
-
-    def put(self, request, format=None):
-        pass
-
-
-@api_view(('GET',))
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
-def SchoologyOpenUrlView(request):
-    DOMAIN = 'https://app.schoology.com/'
+    global auth
     auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                          three_legged=True, domain=DOMAIN)
-    callback = 'https://www.google.com'
-    url = auth.request_authorization()
-    request_token = auth.request_token
-    request_secret = auth.request_token_secret
-    token = auth.access_token
-    print("Request Token:" + request_token)
-    print("Request Secret:" + request_secret)
-    return Response({'url': url}, status=HTTP_200_OK)
+                          three_legged=True)
 
-    # Before I press authorize
-    # https://app.schoology.com//oauth/authorize?oauth_token=681888c4ea8e8100fe4acac9913bc8dc061189926&oauth_callback=https%3A%2F%2Fapp.schoology.com%2F
-    # After I press authorize
-    # https://app.schoology.com/?oauth_token=681888c4ea8e8100fe4acac9913bc8dc061189926
-
-
-@api_view(('POST',))
-@renderer_classes((TemplateHTMLRenderer, JSONRenderer))
-def SchoologyAuthorizeView(request):
-    if request.data == True:
-        DOMAIN = 'https://app.schoology.com/'
-        auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                              three_legged=True, domain=DOMAIN)
-        auth.authorize()
-        tok = auth.access_token
-        sec = auth.access_token_secret
-        tokens = SchoologyTokens(user_id=request.user.id,
-                                 access_token=tok, access_secret=sec)
-        auth2 = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106', three_legged=True,
-                               domain=DOMAIN, access_token=tokens.access_token, access_token_secret=tokens.access_secret)
-        auth2.oauth.token = {'oauth_token': tokens.access_token,
-                             'oauth_token_secret': tokens.access_secret}
-        sc = schoolopy.Schoology(auth)
+    def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
+        if user.is_schoology_authenticated:
+            return Response({"Already Authorized With Schoology": "Yes"}, status=HTTP_204_NO_CONTENT)
+        request_url = auth.request_authorization(
+            callback_url="localhost:19006")
+        return Response({'authUrl': request_url}, status=HTTP_200_OK)
+
+    # Need to pass reuqest token and secret here
+    def post(self, request, format=None):
+        user = CustomUser.objects.get(id=request.user.id)
+        if user.is_schoology_authenticated:
+            return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
+        auth.authorize()
+        auth.oauth.token = {'oauth_token': auth.access_token,
+                            'oauth_token_secret': auth.access_token_secret}
+        schooology_tokens = SchoologyTokens()
+        schooology_tokens.user_id = user.id
+        schooology_tokens.access_token = auth.access_token
+        schooology_tokens.access_secret = auth.access_token_secret
+        schooology_tokens.save()
         user.is_schoology_authenticated = True
-        user.save(update_fields=['is_schoology_authenticated'])
+        user.save(update_fields=["is_schoology_authenticated"])
+        sc = schoolopy.Schoology(auth)
         print('Your name is %s' % sc.get_me().name_display)
-        id = sc.get_me().id
-        return Response({'id': id}, status=HTTP_200_OK)
-    return Response({"Error": "Invalid Schoology Authorization"}, status=HTTP_401_UNAUTHORIZED)
+        print(sc.get_courses())
+        return Response({'Success': auth.access_token}, status=HTTP_200_OK)
 
 
 # Maybe make a class and use self on the auth instance so it is the same auth and make the class an API View
 # Is their an Oauth Verifier I need in between the request_authorization and the authorize instances
-# Test Commit2

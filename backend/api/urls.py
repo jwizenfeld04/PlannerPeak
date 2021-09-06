@@ -1,12 +1,11 @@
 from django.urls import path
 from django.urls.conf import include
-from .views import UserSpecificCourseView, UserSpecificAssignmentView, UserSpecificCourseUpdateView, UserSpecificAssignmentUpdateView, SchoologyOpenUrlView, SchoologyAuthorizeView
+from .views import UserSpecificCourseView, UserSpecificAssignmentView, UserSpecificCourseUpdateView, UserSpecificAssignmentUpdateView, Schoology
 
 
 urlpatterns = [
     path('schoology-authorize/',
-         SchoologyAuthorizeView, name='schoology_authorize'),
-    path('schoology-url/', SchoologyOpenUrlView, name='schoology_url'),
+         Schoology.as_view(), name='schoology-authorize'),
     path('user-courses/', UserSpecificCourseView.as_view(), name="user_courses"),
     path('user-courses-update/<int:course_id>',
          UserSpecificCourseUpdateView.as_view(), name="user_courses_update"),

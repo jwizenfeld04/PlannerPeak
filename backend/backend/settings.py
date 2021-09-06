@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.1.25']
 
+# Home '192.168.1.25'
+# YULA '192.168.41.59'
 # Application definition
 
 INSTALLED_APPS = [

@@ -41,14 +41,14 @@ export default function Home() {
 
   const authorizeSchoology = (token) => {
     axios
-      .get("http://192.168.1.25:8000/api/schoology-url/", {
+      .get("http://192.168.1.25:8000/api/schoology-authorize/", {
         headers: {
           Authorization: `Token ${token}`,
         },
       })
       .then((response) => {
-        setUrl(response.data["url"]);
-        console.log(url);
+        console.log(response.data["authUrl"]);
+        setUrl(response.data["authUrl"]);
       })
       .catch((e) => {
         console.log(e);
@@ -66,7 +66,7 @@ export default function Home() {
           },
         }
       )
-      .then(async (response) => {
+      .then((response) => {
         console.log(response);
       })
       .catch((e) => {
