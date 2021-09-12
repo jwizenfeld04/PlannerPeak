@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, Group
 from .forms import RegisterForm
-from .models import CustomUser, Course, Assignment
+from .models import CustomUser, Course, Assignment, SchoologyTokens
 
 
 class CustomUserAdmin(UserAdmin):
@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
                        'email',
                        'password',)}),
         ('School Information', {
-         'fields': ('graduation_year', 'school_level', 'schoology_id')}),
+         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
     )
     add_fieldsets = (
@@ -30,7 +30,7 @@ class CustomUserAdmin(UserAdmin):
                        'password1',
                        'password2',)}),
         ('School Information', {
-         'fields': ('graduation_year', 'school_level', 'schoology_id')}),
+         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
     )
     search_fields = ('email', 'last_name', 'first_name')
@@ -41,3 +41,4 @@ admin.site.unregister(Group)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Course)
 admin.site.register(Assignment)
+admin.site.register(SchoologyTokens)

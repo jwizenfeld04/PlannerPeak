@@ -141,7 +141,8 @@ class UserSpecificAssignmentUpdateView(APIView):
 # Get Request is Oauth1 Request Authorization and Post make sure it's authorized and run Auth and get access tokens
 
 
-class Schoology(APIView):
+class SchoologyAuth(APIView):
+    # authentication_classes = [authentication.TokenAuthentication]
     global auth
     auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
                           three_legged=True)
@@ -173,7 +174,3 @@ class Schoology(APIView):
         print('Your name is %s' % sc.get_me().name_display)
         print(sc.get_courses())
         return Response({'Success': auth.access_token}, status=HTTP_200_OK)
-
-
-# Maybe make a class and use self on the auth instance so it is the same auth and make the class an API View
-# Is their an Oauth Verifier I need in between the request_authorization and the authorize instances
