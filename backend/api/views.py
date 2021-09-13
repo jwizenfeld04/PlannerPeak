@@ -169,8 +169,46 @@ class SchoologyAuth(APIView):
         schooology_tokens.access_secret = auth.access_token_secret
         schooology_tokens.save()
         user.is_schoology_authenticated = True
-        user.save(update_fields=["is_schoology_authenticated"])
         sc = schoolopy.Schoology(auth)
-        print('Your name is %s' % sc.get_me().name_display)
-        print(sc.get_courses())
+        user.schoology_id = sc.get_me().uid
+        user.save(update_fields=["is_schoology_authenticated", "schoology_id"])
         return Response({'Success': auth.access_token}, status=HTTP_200_OK)
+
+
+class SchoologyCourses(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request, format=None):
+        user = CustomUser.objects.get(id=request.user.id)
+        user_courses = Course.objects.filter(user_id=user.id)
+        try:
+            tokens = SchoologyTokens.objects.get(user_id=request.user.id)
+        except:
+            return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
+        access_token = tokens.access_token
+        access_secret = tokens.access_secret
+        schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+                                       three_legged=True, access_token=access_token, access_token_secret=access_secret)
+        schoologyauth.oauth.token = {
+            'oauth_token': access_token, 'oauth_token_secret': access_secret}
+        sc = schoolopy.Schoology(schoologyauth)
+        schoology_courses = sc.get_user_sections(user_id=user.schoology_id)
+        course_with_ids = []
+        if len(user_courses) == 0:
+            pass
+        else:
+            for i in range(len(user_courses)):
+                if user_courses[i].schoology_class_id:
+                    course_with_ids.append(user_courses[i].schoology_class_id)
+        for i in range(len(schoology_courses)):
+            if schoology_courses[i]['course_id'] in course_with_ids:
+                pass
+            else:
+                course = Course()
+                course.user_id = user.id
+                course.name = schoology_courses[i]['course_title']
+                course.schoology_class_id = schoology_courses[i]['course_id']
+                course.schoology_section_id = schoology_courses[i]['id']
+                course.subject = "Test"
+                course.save()
+        return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)

@@ -48,6 +48,7 @@ export default function Home() {
       })
       .then((response) => {
         console.log(response.data["authUrl"]);
+        console.log(response);
         setUrl(response.data["authUrl"]);
       })
       .catch((e) => {
@@ -66,6 +67,21 @@ export default function Home() {
           },
         }
       )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const coursesSchoology = (token) => {
+    axios
+      .get("http://192.168.1.25:8000/api/schoology-courses/", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
       .then((response) => {
         console.log(response);
       })
@@ -328,6 +344,12 @@ export default function Home() {
         title="Schoology Authorize"
         onPress={() => {
           authorizeSchoology(token);
+        }}
+      />
+      <Button
+        title="Schoology Courses"
+        onPress={() => {
+          coursesSchoology(token);
         }}
       />
     </View>
