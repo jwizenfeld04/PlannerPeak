@@ -127,8 +127,8 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <StatusBar />
-        <HomeStack />
-        {/* {loginState.userToken !== null ? <HomeStack /> : <AuthStack />} */}
+        {<HomeStack />}
+        {/* loginState.userToken !== null ? <HomeStack /> : <AuthStack /> */}
       </NavigationContainer>
     </AuthContext.Provider>
   );
