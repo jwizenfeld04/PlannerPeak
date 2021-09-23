@@ -90,6 +90,21 @@ export default function Home() {
       });
   };
 
+  const gradesSchoology = (token) => {
+    axios
+      .get("http://192.168.1.25:8000/api/schoology-grades/", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   const loadInBrowser = () => {
     Linking.openURL(url).catch((err) =>
       console.error("Couldn't load page", err)
@@ -350,6 +365,12 @@ export default function Home() {
         title="Schoology Courses"
         onPress={() => {
           coursesSchoology(token);
+        }}
+      />
+      <Button
+        title="Schoology Grades"
+        onPress={() => {
+          gradesSchoology(token);
         }}
       />
     </View>

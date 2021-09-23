@@ -8,10 +8,6 @@ from rest_framework.response import Response
 from rest_framework.status import *
 from datetime import datetime
 import schoolopy
-import webbrowser as wb
-from django.http import HttpResponse
-from rest_framework.decorators import api_view, renderer_classes
-from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
 
 class UserSpecificCourseView(APIView):
@@ -176,6 +172,77 @@ class SchoologyAuth(APIView):
 
 
 class SchoologyCourses(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request, format=None):
+        user = CustomUser.objects.get(id=request.user.id)
+        user_courses = Course.objects.filter(user_id=user.id)
+        try:
+            tokens = SchoologyTokens.objects.get(user_id=request.user.id)
+        except:
+            return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
+        access_token = tokens.access_token
+        access_secret = tokens.access_secret
+        schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+                                       three_legged=True, access_token=access_token, access_token_secret=access_secret)
+        schoologyauth.oauth.token = {
+            'oauth_token': access_token, 'oauth_token_secret': access_secret}
+        sc = schoolopy.Schoology(schoologyauth)
+        schoology_courses = sc.get_user_sections(user_id=user.schoology_id)
+        course_with_ids = []
+        if len(user_courses) == 0:
+            pass
+        else:
+            for i in range(len(user_courses)):
+                if user_courses[i].schoology_class_id:
+                    course_with_ids.append(user_courses[i].schoology_class_id)
+        for i in range(len(schoology_courses)):
+            if schoology_courses[i]['course_id'] in course_with_ids:
+                pass
+            else:
+                course = Course()
+                course.user_id = user.id
+                course.name = schoology_courses[i]['course_title']
+                course.schoology_class_id = schoology_courses[i]['course_id']
+                course.schoology_section_id = schoology_courses[i]['id']
+                course.subject = "Test"
+                course.save()
+        return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
+
+
+class SchoologyGrades(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def get(self, request, format=None):
+        user = CustomUser.objects.get(id=request.user.id)
+        user_courses = Course.objects.filter(user_id=user.id)
+        try:
+            tokens = SchoologyTokens.objects.get(user_id=request.user.id)
+        except:
+            return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
+        access_token = tokens.access_token
+        access_secret = tokens.access_secret
+        schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+                                       three_legged=True, access_token=access_token, access_token_secret=access_secret)
+        schoologyauth.oauth.token = {
+            'oauth_token': access_token, 'oauth_token_secret': access_secret}
+        sc = schoolopy.Schoology(schoologyauth)
+        schoology_courses = []
+        for courses in user_courses:
+            if courses.schoology_section_id:
+                schoology_courses.append(courses)
+        for i in range(len(schoology_courses)):
+            section_id = sc.get_user_grades(user.schoology_id)[
+                i]['section_id']
+            course = Course.objects.get(
+                user_id=user.id, schoology_section_id=section_id)
+            course.grade = sc.get_user_grades(user.schoology_id)[
+                i]['final_grade'][1]['grade']
+            course.save(update_fields=['grade'])
+        return Response({"Success": "Works"}, status=HTTP_200_OK)
+
+
+class SchoologyAssignments(APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request, format=None):
