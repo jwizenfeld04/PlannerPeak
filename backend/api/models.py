@@ -43,6 +43,7 @@ class Course(models.Model):
     schoology_class_id = models.CharField(max_length=30, blank=True)
     grade = models.CharField(max_length=10, blank=True)
     schoology_section_id = models.CharField(max_length=15, blank=True)
+    is_schoology = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -56,6 +57,9 @@ class Assignment(models.Model):
     due_date = models.DateTimeField()
     grade = models.CharField(max_length=10, blank=True)
     schoology_assignment_id = models.CharField(max_length=15, blank=True)
+    assignment_type = models.CharField(max_length=20, blank=True)
+    is_completed = models.BooleanField(default=False)
+    is_schoology = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

@@ -206,6 +206,7 @@ class SchoologyCourses(APIView):
                 course.schoology_class_id = schoology_courses[i]['course_id']
                 course.schoology_section_id = schoology_courses[i]['id']
                 course.subject = "Test"
+                course.is_schoology = True
                 course.save()
         return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
 
@@ -259,23 +260,27 @@ class SchoologyAssignments(APIView):
         schoologyauth.oauth.token = {
             'oauth_token': access_token, 'oauth_token_secret': access_secret}
         sc = schoolopy.Schoology(schoologyauth)
-        schoology_courses = sc.get_user_sections(user_id=user.schoology_id)
-        course_with_ids = []
-        if len(user_courses) == 0:
-            pass
-        else:
-            for i in range(len(user_courses)):
-                if user_courses[i].schoology_class_id:
-                    course_with_ids.append(user_courses[i].schoology_class_id)
-        for i in range(len(schoology_courses)):
-            if schoology_courses[i]['course_id'] in course_with_ids:
-                pass
-            else:
-                course = Course()
-                course.user_id = user.id
-                course.name = schoology_courses[i]['course_title']
-                course.schoology_class_id = schoology_courses[i]['course_id']
-                course.schoology_section_id = schoology_courses[i]['id']
-                course.subject = "Test"
-                course.save()
-        return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
+        schoology_courses = []
+        for courses in user_courses:
+            if courses.schoology_section_id:
+                schoology_courses.append(courses)
+        for course in schoology_courses:
+            schoology_assignments = sc.get_assignments(
+                course.schoology_section_id)
+            user_assignments_id = list(Assignment.objects.filter(
+                course_id=course.id, is_schoology=True).values_list('schoology_assignment_id', flat=True
+                                                                    ))
+            for assignment in schoology_assignments:
+                print(assignment['id'])
+                if str(assignment['id']) not in user_assignments_id:
+                    new_assignment = Assignment()
+                    new_assignment.course_id = course.id
+                    new_assignment.schoology_assignment_id = assignment['id']
+                    new_assignment.description = assignment['description']
+                    new_assignment.name = assignment['title']
+                    new_assignment.due_date = assignment['due']
+                    new_assignment.assignment_type = assignment['type']
+                    new_assignment.is_completed = assignment['completed']
+                    new_assignment.is_schoology = True
+                    new_assignment.save()
+        return Response({'Success': "New Assignments Added"}, status=HTTP_200_OK)
