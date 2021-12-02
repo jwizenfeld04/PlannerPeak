@@ -24,7 +24,7 @@ export default function Home() {
   });
   if (token) {
     axios
-      .get("http://192.168.1.25:8000/api/dj-rest-auth/user/", {
+      .get("http://192.168.81.59:8000/api/dj-rest-auth/user/", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -41,7 +41,7 @@ export default function Home() {
 
   const authorizeSchoology = (token) => {
     axios
-      .get("http://192.168.1.25:8000/api/schoology-authorize/", {
+      .get("http://192.168.81.59:8000/api/schoology-authorize/", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -59,7 +59,7 @@ export default function Home() {
   const verifySchoology = (token) => {
     axios
       .post(
-        "http://192.168.1.25:8000/api/schoology-authorize/",
+        "http://192.168.81.59:8000/api/schoology-authorize/",
         { verify: true },
         {
           headers: {
@@ -77,7 +77,7 @@ export default function Home() {
 
   const coursesSchoology = (token) => {
     axios
-      .get("http://192.168.1.25:8000/api/schoology-courses/", {
+      .get("http://192.168.81.59:8000/api/schoology-courses/", {
         headers: {
           Authorization: `Token ${token}`,
         },

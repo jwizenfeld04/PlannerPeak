@@ -1,7 +1,6 @@
 from rest_framework import authentication
-from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
-from .serializers import CourseSerializer, AssignmentSerializer, CustomUserSerializer, CustomRegisterSerializer
+from .serializers import CourseSerializer, AssignmentSerializer
 from .models import Course, Assignment, CustomUser, SchoologyTokens
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -138,32 +137,51 @@ class UserSpecificAssignmentUpdateView(APIView):
 
 
 class SchoologyAuth(APIView):
-    # authentication_classes = [authentication.TokenAuthentication]
-    global auth
-    auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                          three_legged=True)
+    authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
-        if user.is_schoology_authenticated:
-            return Response({"Already Authorized With Schoology": "Yes"}, status=HTTP_204_NO_CONTENT)
+        # if user.is_schoology_authenticated:
+        #     return Response({"Already Authorized With Schoology": "Yes"}, status=HTTP_204_NO_CONTENT)
+        auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+                              three_legged=True)
         request_url = auth.request_authorization(
             callback_url="localhost:19006")
+        # Error handling for problem between get and post request of auth
+        # schooology_tokens = SchoologyTokens.objects.get(id=user.id)
+        # schooology_tokens.access_token = auth.request_token
+        # schooology_tokens.access_secret = auth.request_token_secret
+        # schooology_tokens.is_access = False
+        # schooology_tokens.save(
+        #     update_fields=["access_token", "access_secret", "is_access"])
+        # return Response({'authUrl': request_url}, status=HTTP_200_OK)
+        schooology_tokens = SchoologyTokens()
+        schooology_tokens.user_id = user.id
+        schooology_tokens.access_token = auth.request_token
+        schooology_tokens.access_secret = auth.request_token_secret
+        schooology_tokens.save()
         return Response({'authUrl': request_url}, status=HTTP_200_OK)
 
     # Need to pass reuqest token and secret here
     def post(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
-        if user.is_schoology_authenticated:
-            return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
+        # if user.is_schoology_authenticated:
+        #     return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
+        schooology_tokens = SchoologyTokens.objects.get(id=user.id)
+        request_token = schooology_tokens.access_token
+        request_secret = schooology_tokens.access_secret
+        auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+                              three_legged=True, request_token=request_token, request_token_secret=request_secret)
         auth.authorize()
         auth.oauth.token = {'oauth_token': auth.access_token,
                             'oauth_token_secret': auth.access_token_secret}
-        schooology_tokens = SchoologyTokens()
-        schooology_tokens.user_id = user.id
+        print(auth.request_token)
+        print(auth.access_token)
         schooology_tokens.access_token = auth.access_token
         schooology_tokens.access_secret = auth.access_token_secret
-        schooology_tokens.save()
+        schooology_tokens.is_access = True
+        schooology_tokens.save(
+            update_fields=["access_token", "access_secret", "is_access"])
         user.is_schoology_authenticated = True
         sc = schoolopy.Schoology(auth)
         user.schoology_id = sc.get_me().uid
@@ -171,40 +189,38 @@ class SchoologyAuth(APIView):
         return Response({'Success': auth.access_token}, status=HTTP_200_OK)
 
 
+def getSchoologyTokens(user_id):
+    try:
+        tokens = SchoologyTokens.objects.get(user_id=user_id)
+    except:
+        return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
+    access_token = tokens.access_token
+    access_secret = tokens.access_secret
+    schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+                                   three_legged=True, access_token=access_token, access_token_secret=access_secret)
+    schoologyauth.oauth.token = {
+        'oauth_token': access_token, 'oauth_token_secret': access_secret}
+    sc = schoolopy.Schoology(schoologyauth)
+    return sc
+
+
 class SchoologyCourses(APIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
-        user_courses = Course.objects.filter(user_id=user.id)
-        try:
-            tokens = SchoologyTokens.objects.get(user_id=request.user.id)
-        except:
-            return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
-        access_token = tokens.access_token
-        access_secret = tokens.access_secret
-        schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                                       three_legged=True, access_token=access_token, access_token_secret=access_secret)
-        schoologyauth.oauth.token = {
-            'oauth_token': access_token, 'oauth_token_secret': access_secret}
-        sc = schoolopy.Schoology(schoologyauth)
+        user_schoology_course_ids = list(Course.objects.filter(
+            user_id=user.id, is_schoology=True).values_list('schoology_section_id', flat=True))
+        sc = getSchoologyTokens(user.id)
         schoology_courses = sc.get_user_sections(user_id=user.schoology_id)
-        course_with_ids = []
-        if len(user_courses) == 0:
-            pass
-        else:
-            for i in range(len(user_courses)):
-                if user_courses[i].schoology_class_id:
-                    course_with_ids.append(user_courses[i].schoology_class_id)
         for i in range(len(schoology_courses)):
-            if schoology_courses[i]['course_id'] in course_with_ids:
-                pass
-            else:
+            if schoology_courses[i]['id'] not in user_schoology_course_ids:
                 course = Course()
                 course.user_id = user.id
                 course.name = schoology_courses[i]['course_title']
                 course.schoology_class_id = schoology_courses[i]['course_id']
                 course.schoology_section_id = schoology_courses[i]['id']
+                # Need to map the integer input of the subjects from schoology to get the right one
                 course.subject = "Test"
                 course.is_schoology = True
                 course.save()
@@ -216,23 +232,10 @@ class SchoologyGrades(APIView):
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
-        user_courses = Course.objects.filter(user_id=user.id)
-        try:
-            tokens = SchoologyTokens.objects.get(user_id=request.user.id)
-        except:
-            return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
-        access_token = tokens.access_token
-        access_secret = tokens.access_secret
-        schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                                       three_legged=True, access_token=access_token, access_token_secret=access_secret)
-        schoologyauth.oauth.token = {
-            'oauth_token': access_token, 'oauth_token_secret': access_secret}
-        sc = schoolopy.Schoology(schoologyauth)
-        schoology_courses = []
-        for courses in user_courses:
-            if courses.schoology_section_id:
-                schoology_courses.append(courses)
-        for i in range(len(schoology_courses)):
+        sc = getSchoologyTokens(user.id)
+        schoology_courses_ids = list(Course.objects.filter(
+            user_id=user.id, is_schoology=True).values_list('schoology_section_id', flat=True))
+        for i in range(len(schoology_courses_ids)):
             section_id = sc.get_user_grades(user.schoology_id)[
                 i]['section_id']
             course = Course.objects.get(
@@ -248,30 +251,16 @@ class SchoologyAssignments(APIView):
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
-        user_courses = Course.objects.filter(user_id=user.id)
-        try:
-            tokens = SchoologyTokens.objects.get(user_id=request.user.id)
-        except:
-            return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
-        access_token = tokens.access_token
-        access_secret = tokens.access_secret
-        schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                                       three_legged=True, access_token=access_token, access_token_secret=access_secret)
-        schoologyauth.oauth.token = {
-            'oauth_token': access_token, 'oauth_token_secret': access_secret}
-        sc = schoolopy.Schoology(schoologyauth)
-        schoology_courses = []
-        for courses in user_courses:
-            if courses.schoology_section_id:
-                schoology_courses.append(courses)
-        for course in schoology_courses:
+        user_schoology_courses = Course.objects.filter(
+            user_id=user.id, is_schoology=True)
+        sc = getSchoologyTokens(user.id)
+        for course in user_schoology_courses:
             schoology_assignments = sc.get_assignments(
                 course.schoology_section_id)
             user_assignments_id = list(Assignment.objects.filter(
                 course_id=course.id, is_schoology=True).values_list('schoology_assignment_id', flat=True
                                                                     ))
             for assignment in schoology_assignments:
-                print(assignment['id'])
                 if str(assignment['id']) not in user_assignments_id:
                     new_assignment = Assignment()
                     new_assignment.course_id = course.id

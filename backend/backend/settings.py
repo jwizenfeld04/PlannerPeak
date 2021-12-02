@@ -25,10 +25,11 @@ SECRET_KEY = 'tyleqh59li(-#^do&eg21rm9vn^@@ko9it%a3hr4-*jlw6z=(x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.25']
+ALLOWED_HOSTS = ['192.168.81.59']
 
 # Home '192.168.1.25'
-# YULA '192.168.41.59'
+# YULA '192.168.81.59'
+# Coby's '192.168.86.50'
 # Application definition
 
 INSTALLED_APPS = [
