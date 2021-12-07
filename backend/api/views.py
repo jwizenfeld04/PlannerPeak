@@ -1,5 +1,6 @@
 from rest_framework import authentication
 from rest_framework.views import APIView
+from schoolopy.authentication import Auth
 from .serializers import CourseSerializer, AssignmentSerializer
 from .models import Course, Assignment, CustomUser, SchoologyTokens
 from rest_framework.views import APIView
@@ -137,51 +138,31 @@ class UserSpecificAssignmentUpdateView(APIView):
 
 
 class SchoologyAuth(APIView):
-    authentication_classes = [authentication.TokenAuthentication]
+    global auth
+    auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+                          three_legged=True)
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
-        # if user.is_schoology_authenticated:
-        #     return Response({"Already Authorized With Schoology": "Yes"}, status=HTTP_204_NO_CONTENT)
-        auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                              three_legged=True)
+        if user.is_schoology_authenticated:
+            return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         request_url = auth.request_authorization(
             callback_url="localhost:19006")
-        # Error handling for problem between get and post request of auth
-        # schooology_tokens = SchoologyTokens.objects.get(id=user.id)
-        # schooology_tokens.access_token = auth.request_token
-        # schooology_tokens.access_secret = auth.request_token_secret
-        # schooology_tokens.is_access = False
-        # schooology_tokens.save(
-        #     update_fields=["access_token", "access_secret", "is_access"])
-        # return Response({'authUrl': request_url}, status=HTTP_200_OK)
-        schooology_tokens = SchoologyTokens()
-        schooology_tokens.user_id = user.id
-        schooology_tokens.access_token = auth.request_token
-        schooology_tokens.access_secret = auth.request_token_secret
-        schooology_tokens.save()
         return Response({'authUrl': request_url}, status=HTTP_200_OK)
 
     # Need to pass reuqest token and secret here
     def post(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
-        # if user.is_schoology_authenticated:
-        #     return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
-        schooology_tokens = SchoologyTokens.objects.get(id=user.id)
-        request_token = schooology_tokens.access_token
-        request_secret = schooology_tokens.access_secret
-        auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                              three_legged=True, request_token=request_token, request_token_secret=request_secret)
+        if user.is_schoology_authenticated:
+            return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         auth.authorize()
         auth.oauth.token = {'oauth_token': auth.access_token,
                             'oauth_token_secret': auth.access_token_secret}
-        print(auth.request_token)
-        print(auth.access_token)
-        schooology_tokens.access_token = auth.access_token
-        schooology_tokens.access_secret = auth.access_token_secret
-        schooology_tokens.is_access = True
-        schooology_tokens.save(
-            update_fields=["access_token", "access_secret", "is_access"])
+        schoology_tokens = SchoologyTokens()
+        schoology_tokens.user_id = user.id
+        schoology_tokens.access_token = auth.access_token
+        schoology_tokens.access_secret = auth.access_token_secret
+        schoology_tokens.save()
         user.is_schoology_authenticated = True
         sc = schoolopy.Schoology(auth)
         user.schoology_id = sc.get_me().uid

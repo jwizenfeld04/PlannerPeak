@@ -71,7 +71,6 @@ class SchoologyTokens(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=100)
     access_secret = models.CharField(max_length=100)
-    is_access = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user}'s Schoology Tokens"

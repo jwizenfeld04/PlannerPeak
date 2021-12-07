@@ -60,7 +60,7 @@ export default function Home() {
     axios
       .post(
         "http://192.168.81.59:8000/api/schoology-authorize/",
-        { verify: true },
+
         {
           headers: {
             Authorization: `Token ${token}`,
