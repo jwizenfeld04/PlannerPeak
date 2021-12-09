@@ -267,4 +267,5 @@ frontend/web-build/
 
 # schoology config
 /backend/api/.env
+/backend/backend/.env
 
