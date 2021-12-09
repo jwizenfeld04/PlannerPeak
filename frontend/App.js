@@ -57,7 +57,7 @@ export default function App() {
         let userToken;
         userToken = null;
         axios
-          .post("http://192.168.81.59:8000/api/dj-rest-auth/login/", {
+          .post(`http://192.168.81.59:8000/api/dj-rest-auth/login/`, {
             email: email,
             password: password,
           })
@@ -127,8 +127,8 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <StatusBar />
-        {<HomeStack />}
-        {/*loginState.userToken !== null ? <HomeStack /> : <AuthStack />*/}
+        {/*<HomeStack />*/}
+        {loginState.userToken !== null ? <HomeStack /> : <AuthStack />}
       </NavigationContainer>
     </AuthContext.Provider>
   );

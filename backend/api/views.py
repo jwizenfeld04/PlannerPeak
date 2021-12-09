@@ -1,3 +1,4 @@
+from re import U
 from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -199,6 +200,8 @@ def getSchoologyTokens(user_id):
     sc = schoolopy.Schoology(schoologyauth)
     return sc
 
+# TODO: Add function to check if courses are active and update them in DB
+
 
 class SchoologyCourses(APIView):
     authentication_classes = [authentication.TokenAuthentication]
@@ -211,6 +214,13 @@ class SchoologyCourses(APIView):
         sc = getSchoologyTokens(user.id)
         schoology_courses = sc.get_user_sections(user_id=user.schoology_id)
         for i in range(len(schoology_courses)):
+            if schoology_courses[i]['id'] in user_schoology_course_ids:
+                is_active = schoology_courses[i]['active']
+                course = Course.objects.get(
+                    user_id=user.id, schoology_section_id=schoology_courses[i]['id'])
+                if course.is_active != is_active:
+                    course.is_active = is_active
+                    course.save(update_fields=['is_active'])
             if schoology_courses[i]['id'] not in user_schoology_course_ids:
                 course = Course()
                 course.user_id = user.id
@@ -232,10 +242,13 @@ class SchoologyGrades(APIView):
         user = CustomUser.objects.get(id=request.user.id)
         sc = getSchoologyTokens(user.id)
         schoology_courses_ids = list(Course.objects.filter(
-            user_id=user.id, is_schoology=True).values_list('schoology_section_id', flat=True))
+            user_id=user.id, is_schoology=True, is_active=True).values_list('schoology_section_id', flat=True))
         for i in range(len(schoology_courses_ids)):
             section_id = sc.get_user_grades(user.schoology_id)[
                 i]['section_id']
+            # Checks for non-active courses to ignore grade
+            if section_id not in schoology_courses_ids:
+                break
             course = Course.objects.get(
                 user_id=user.id, schoology_section_id=section_id)
             course.grade = sc.get_user_grades(user.schoology_id)[

@@ -44,6 +44,7 @@ class Course(models.Model):
     grade = models.CharField(max_length=10, blank=True)
     schoology_section_id = models.CharField(max_length=15, blank=True)
     is_schoology = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
