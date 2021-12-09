@@ -297,7 +297,6 @@ export default function Home() {
     <View style={styles.container}>
       <Text>Welcome {userFirstName + " " + userLastName}</Text>
       <Text>{url ? loadInBrowser() : null}</Text>
-      <Text>{token}</Text>
 
       <Button
         title="Authorize"

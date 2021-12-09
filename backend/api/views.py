@@ -9,11 +9,21 @@ from rest_framework.response import Response
 from rest_framework.status import *
 from datetime import datetime
 import schoolopy
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+CONSUMER_KEY = os.environ.get("CONSUMER_KEY")
+CONSUMER_SECRET = os.environ.get("CONSUMER_SECRET")
 
 
 class UserSpecificCourseView(APIView):
     serializer_class = CourseSerializer
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         courses = Course.objects.filter(user_id=request.user.id)
@@ -37,6 +47,7 @@ class UserSpecificCourseView(APIView):
 class UserSpecificCourseUpdateView(APIView):
     serializer_class = CourseSerializer
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def verify_course(self, user_id, course_id):
         try:
@@ -74,6 +85,7 @@ class UserSpecificCourseUpdateView(APIView):
 class UserSpecificAssignmentView(APIView):
     serializer_class = AssignmentSerializer
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None, *args, **kwargs):
         assignments = Assignment.objects.filter(
@@ -110,6 +122,7 @@ class UserSpecificAssignmentView(APIView):
 class UserSpecificAssignmentUpdateView(APIView):
     serializer_class = AssignmentSerializer
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 # No User Verification Right Now, Pass Course ID in url to fix issue or add user foregin key in assignment
     def put(self, request, format=None, *args, **kwargs):
@@ -140,15 +153,13 @@ class UserSpecificAssignmentUpdateView(APIView):
 
 class SchoologyAuth(APIView):
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     global auth
-    auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
-                          three_legged=True)
+    auth = schoolopy.Auth(CONSUMER_KEY, CONSUMER_SECRET, three_legged=True)
 
     def get(self, request, format=None):
-        print(request.user.id)
         user = CustomUser.objects.get(id=request.user.id)
-        print(request.user)
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         request_url = auth.request_authorization(
@@ -156,16 +167,12 @@ class SchoologyAuth(APIView):
         return Response({'authUrl': request_url}, status=HTTP_200_OK)
 
     def post(self, request, format=None):
-        print("HERE1")
-        print(request.user.id)
         user = CustomUser.objects.get(id=request.user.id)
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
-        print("HERE2")
         auth.authorize()
         auth.oauth.token = {'oauth_token': auth.access_token,
                             'oauth_token_secret': auth.access_token_secret}
-        print("HERE3")
         schoology_tokens = SchoologyTokens()
         schoology_tokens.user_id = user.id
         schoology_tokens.access_token = auth.access_token
@@ -185,7 +192,7 @@ def getSchoologyTokens(user_id):
         return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
     access_token = tokens.access_token
     access_secret = tokens.access_secret
-    schoologyauth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
+    schoologyauth = schoolopy.Auth(CONSUMER_KEY, CONSUMER_SECRET,
                                    three_legged=True, access_token=access_token, access_token_secret=access_secret)
     schoologyauth.oauth.token = {
         'oauth_token': access_token, 'oauth_token_secret': access_secret}
@@ -195,6 +202,7 @@ def getSchoologyTokens(user_id):
 
 class SchoologyCourses(APIView):
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
@@ -218,6 +226,7 @@ class SchoologyCourses(APIView):
 
 class SchoologyGrades(APIView):
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
@@ -237,6 +246,7 @@ class SchoologyGrades(APIView):
 
 class SchoologyAssignments(APIView):
     authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)

@@ -265,3 +265,6 @@ frontend/web-build/
 # macOS
 .DS_Store
 
+# schoology config
+/backend/api/.env
+
