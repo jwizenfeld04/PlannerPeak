@@ -1,5 +1,6 @@
 from rest_framework import authentication
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from schoolopy.authentication import Auth
 from .serializers import CourseSerializer, AssignmentSerializer
 from .models import Course, Assignment, CustomUser, SchoologyTokens
@@ -138,26 +139,33 @@ class UserSpecificAssignmentUpdateView(APIView):
 
 
 class SchoologyAuth(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+
     global auth
     auth = schoolopy.Auth('74f43bf30d6895e48da903216442c45d060e18834', '06987ff5effb04457a21ffbeefff5106',
                           three_legged=True)
 
     def get(self, request, format=None):
+        print(request.user.id)
         user = CustomUser.objects.get(id=request.user.id)
+        print(request.user)
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         request_url = auth.request_authorization(
             callback_url="localhost:19006")
         return Response({'authUrl': request_url}, status=HTTP_200_OK)
 
-    # Need to pass reuqest token and secret here
     def post(self, request, format=None):
+        print("HERE1")
+        print(request.user.id)
         user = CustomUser.objects.get(id=request.user.id)
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
+        print("HERE2")
         auth.authorize()
         auth.oauth.token = {'oauth_token': auth.access_token,
                             'oauth_token_secret': auth.access_token_secret}
+        print("HERE3")
         schoology_tokens = SchoologyTokens()
         schoology_tokens.user_id = user.id
         schoology_tokens.access_token = auth.access_token

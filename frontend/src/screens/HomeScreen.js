@@ -60,7 +60,8 @@ export default function Home() {
     axios
       .post(
         "http://192.168.81.59:8000/api/schoology-authorize/",
-
+        // Extra dictionary here for empty payload, then after comes the headers
+        {},
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -128,7 +129,7 @@ export default function Home() {
 
   const getCourses = (token) => {
     axios
-      .get("http://192.168.1.25:8000/api/user-courses/", {
+      .get("http://192.168.81.59:8000/api/user-courses/", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -144,7 +145,7 @@ export default function Home() {
   const createCourse = (token, courseName, courseSubject) => {
     axios
       .post(
-        "http://192.168.1.25:8000/api/user-courses/",
+        "http://192.168.81.59:8000/api/user-courses/",
         {
           name: courseName,
           subject: courseSubject,
@@ -296,6 +297,7 @@ export default function Home() {
     <View style={styles.container}>
       <Text>Welcome {userFirstName + " " + userLastName}</Text>
       <Text>{url ? loadInBrowser() : null}</Text>
+      <Text>{token}</Text>
 
       <Button
         title="Authorize"

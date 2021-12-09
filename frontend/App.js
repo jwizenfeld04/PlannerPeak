@@ -82,7 +82,7 @@ export default function App() {
         let userToken;
         userToken = null;
         axios
-          .post("http://192.168.1.25:8000/api/dj-rest-auth/registration/", {
+          .post("http://192.168.1.23:8000/api/dj-rest-auth/registration/", {
             email: email,
             first_name: first_name,
             last_name: last_name,
