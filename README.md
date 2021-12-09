@@ -9,6 +9,7 @@ Jeremy:
 4. Incorporate Blackboard API into backend (similarily to Schoology)
 6. Learn and Create basic system archtiecture diagram
 7. Learn/Implement Redux and fix state and loging flow in frontend
+8. Incorporate Sign up with Schoology (have no clue where to start maybe allauth provider)
 
 Coby: 
 1. Obtain Blackboard API and read more into other LMS systems
