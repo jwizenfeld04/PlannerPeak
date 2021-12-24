@@ -31,11 +31,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.23', '192.168.81.59', '192.168.86.50']
+ALLOWED_HOSTS = ['192.168.1.23', '192.168.81.59', '192.168.86.53']
 
 # Home '192.168.1.23'
 # YULA '192.168.81.59'
-# Coby's '192.168.86.50'
+# Coby's '192.168.86.53'
 # Application definition
 
 INSTALLED_APPS = [

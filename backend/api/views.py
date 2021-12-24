@@ -246,7 +246,6 @@ class SchoologyGrades(APIView):
         for i in range(len(schoology_courses_ids)):
             section_id = sc.get_user_grades(user.schoology_id)[
                 i]['section_id']
-            # Checks for non-active courses to ignore grade
             if section_id not in schoology_courses_ids:
                 break
             course = Course.objects.get(
