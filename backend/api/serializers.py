@@ -61,3 +61,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
             'start_date': {'required': False},
             'description': {'required': False},
         }
+
+
+class SchoologyCallbackSerializer(serializers.Serializer):
+    callbackUrl = serializers.CharField(max_length=50)

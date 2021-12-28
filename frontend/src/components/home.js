@@ -11,11 +11,12 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser, getUserInfo } from "../redux/features/user/userSlice";
 import { useState, useEffect } from "react";
-import { selectToken } from "../redux/features/user/userSlice";
+import { selectToken, selectUserName } from "../redux/features/user/userSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
+  const name = useSelector(selectUserName);
 
   useEffect(() => {
     dispatch(getUserInfo(token));
@@ -24,6 +25,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text>Home</Text>
+      <Text>Welcome {name}</Text>
     </View>
   );
 }

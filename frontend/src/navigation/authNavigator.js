@@ -1,43 +1,23 @@
 import * as React from "react";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Login from "../components/login";
 import Register from "../components/register";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
   return (
-    <Tab.Navigator
+    <Stack.Navigator
       initialRouteName="Login"
-      activeColor="#fff"
-      barStyle={{ backgroundColor: "blue" }}
+      screenOptions={{
+        headerBackVisible: false,
+        headerShown: false,
+        animation: "none",
+      }}
     >
-      <Tab.Screen
-        name="Login"
-        component={Login}
-        options={{
-          tabBarLabel: "Login",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="login" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Register"
-        component={Register}
-        options={{
-          tabBarLabel: "Register",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="login-variant"
-              color={color}
-              size={26}
-            />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+    </Stack.Navigator>
   );
 };
 

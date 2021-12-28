@@ -3,7 +3,7 @@ from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from schoolopy.authentication import Auth
-from .serializers import CourseSerializer, AssignmentSerializer
+from .serializers import CourseSerializer, AssignmentSerializer, SchoologyCallbackSerializer
 from .models import Course, Assignment, CustomUser, SchoologyTokens
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -155,19 +155,23 @@ class UserSpecificAssignmentUpdateView(APIView):
 class SchoologyAuth(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    serializer_class = SchoologyCallbackSerializer
 
     global auth
     auth = schoolopy.Auth(CONSUMER_KEY, CONSUMER_SECRET, three_legged=True)
 
-    def get(self, request, format=None):
+    def post(self, request, format=None, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            callback = serializer.data.get('callbackUrl')
         user = CustomUser.objects.get(id=request.user.id)
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         request_url = auth.request_authorization(
-            callback_url="localhost:19006")
+            callback_url=callback)
         return Response({'authUrl': request_url}, status=HTTP_200_OK)
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         user = CustomUser.objects.get(id=request.user.id)
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)

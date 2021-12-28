@@ -4,10 +4,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import userReducer from "./features/user/userSlice";
+import schoologyReducer from "./features/schoology/schoologySlice";
 
 //ADD REDUCERS HERE
 const appReducer = combineReducers({
   user: userReducer,
+  schoology: schoologyReducer,
 });
 
 const rootReducer = (state, action) => {
