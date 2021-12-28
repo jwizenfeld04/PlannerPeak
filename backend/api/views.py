@@ -17,8 +17,8 @@ from dotenv import load_dotenv
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 
-CONSUMER_KEY = os.environ.get("CONSUMER_KEY")
-CONSUMER_SECRET = os.environ.get("CONSUMER_SECRET")
+CONSUMER_KEY = os.environ.get("SCHOOLOGY_CONSUMER_KEY")
+CONSUMER_SECRET = os.environ.get("SCHOOLOGY_CONSUMER_SECRET")
 
 
 class UserSpecificCourseView(APIView):
