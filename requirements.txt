@@ -68,7 +68,6 @@ PyGetWindow==0.0.8
 PyJWT==2.1.0
 PyMeta3==0.5.1
 PyMsgBox==1.0.8
-pyobjc==6.2
 pyparsing==2.4.7
 pyperclip==1.8.0
 PyRect==0.1.4
@@ -85,7 +84,7 @@ rsa==4.7.2
 ruamel.yaml==0.17.10
 ruamel.yaml.clib==0.2.6
 rubicon-objc==0.3.1
-schoolopy==0.2.2
+schoolopy==0.2.1
 selenium==3.141.0
 six==1.14.0
 sniffio==1.2.0
