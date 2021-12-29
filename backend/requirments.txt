@@ -74,7 +74,6 @@ PyJWT==2.1.0
 PyMeta3==0.5.1
 PyMsgBox==1.0.8
 pyobjc==6.2
-pyobjc-core==6.2
 pyobjc-framework-Accounts==6.2
 pyobjc-framework-AddressBook==6.2
 pyobjc-framework-AdSupport==6.2
