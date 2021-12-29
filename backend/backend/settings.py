@@ -12,11 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 from os.path import join, dirname
-from dotenv import load_dotenv
 import django_heroku
-
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
