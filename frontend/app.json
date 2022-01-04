@@ -2,7 +2,9 @@
   "expo": {
     "scheme":"plannerpeak",
     "name": "frontend",
-    "slug": "plannerpeak",
+    "owner": "plannerpeak",
+    "privacy": "hidden",
+    "slug": "planner-peak-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
@@ -18,13 +20,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.plannerpeak.plannerpeak",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.plannerpeak.plannerpeak",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
