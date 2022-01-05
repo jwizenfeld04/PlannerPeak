@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.account',
     'corsheaders',
-    'api',
+    'backend.api',
 ]
 
 SITE_ID = 1
@@ -117,7 +117,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:19006',
 ]
 
-ROOT_URLCONF = 'backend.urls'
+ROOT_URLCONF = 'backend.backend.urls'
 
 TEMPLATES = [
     {
