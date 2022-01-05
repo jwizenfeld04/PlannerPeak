@@ -269,3 +269,4 @@ frontend/web-build/
 /backend/api/.env
 /backend/backend/.env
 
+/backend/PlannerPeakDB
