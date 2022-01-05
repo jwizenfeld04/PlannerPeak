@@ -10,7 +10,7 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (authData, thunkAPI) => {
     const response = await axios
-      .post(`http://192.168.81.59:8000/api/dj-rest-auth/login/`, {
+      .post(`https://plannerpeak.herokuapp.com/api/dj-rest-auth/login/`, {
         email: authData.email,
         password: authData.password,
       })
@@ -25,13 +25,16 @@ export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (authData, thunkAPI) => {
     const response = await axios
-      .post(`http://192.168.81.59:8000/api/dj-rest-auth/registration/`, {
-        email: authData.email,
-        first_name: authData.firstName,
-        last_name: authData.lastName,
-        password1: authData.password1,
-        password2: authData.password2,
-      })
+      .post(
+        `https://plannerpeak.herokuapp.com/api/dj-rest-auth/registration/`,
+        {
+          email: authData.email,
+          first_name: authData.firstName,
+          last_name: authData.lastName,
+          password1: authData.password1,
+          password2: authData.password2,
+        }
+      )
       .catch((error) => {
         throw thunkAPI.rejectWithValue(error.response.data);
       });
@@ -43,7 +46,7 @@ export const getUserInfo = createAsyncThunk(
   "user/getUserInfo",
   async (token, thunkAPI) => {
     const response = await axios.get(
-      `http://192.168.81.59:8000/api/dj-rest-auth/user/`,
+      `https://plannerpeak.herokuapp.com/api/dj-rest-auth/user/`,
       {
         headers: {
           Authorization: `Token ${token}`,

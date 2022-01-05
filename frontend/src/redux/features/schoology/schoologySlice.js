@@ -6,7 +6,7 @@ export const authorizeSchoology = createAsyncThunk(
   async (schoologyConfig, thunkAPI) => {
     const response = await axios
       .post(
-        `http://192.168.81.59:8000/api/schoology-authorize/`,
+        `https://plannerpeak.herokuapp.com/api/schoology-authorize/`,
         {
           callbackUrl: schoologyConfig.callbackUrl, //PUT DEEP LINK CALLBACK URL HERE
         },
@@ -27,7 +27,7 @@ export const verifySchoology = createAsyncThunk(
   "user/verifySchoology",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`http://192.168.81.59:8000/api/schoology-authorize/`, {
+      .get(`https://plannerpeak.herokuapp.com/api/schoology-authorize/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
