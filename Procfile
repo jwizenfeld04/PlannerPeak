@@ -1,4 +1,3 @@
-heroku ps:scale web=1
-web: gunicorn backend.wsgi --log-file -
+web: gunicorn backend.backend.wsgi --log-file -
 release: python manage.py makemigrations --noinput
 release: python manage.py migrate --noinput
