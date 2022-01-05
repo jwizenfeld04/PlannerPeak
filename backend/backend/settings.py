@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.account',
     'corsheaders',
-    'backend.api',
+    'api',
 ]
 
 SITE_ID = 1
