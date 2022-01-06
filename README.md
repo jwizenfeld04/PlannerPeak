@@ -5,12 +5,10 @@ TODO:
 Jeremy:
 
 1. Axios API proxy for frontend
-2. Fix AsyncStorage Issue and Logging Out every time it reloads
 3. Set up Signup with Google using Allauth django library
 4. Map Schoology Subjects for classes from API Documentation (turn integers to strings)
 5. Incorporate Blackboard API into backend (similarily to Schoology)
 6. Learn and Create basic system archtiecture diagram
-7. Learn/Implement Redux and fix state and loging flow in frontend
 8. Incorporate Sign up with Schoology/Blackboard (have no clue where to start maybe allauth provider)
 
 Coby:
