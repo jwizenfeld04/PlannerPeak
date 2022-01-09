@@ -204,9 +204,6 @@ def getSchoologyTokens(user_id):
     sc = schoolopy.Schoology(schoologyauth)
     return sc
 
-# TODO: Add function to check if courses are active and update them in DB
-
-
 class SchoologyCourses(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -217,27 +214,25 @@ class SchoologyCourses(APIView):
             user_id=user.id, is_schoology=True).values_list('schoology_section_id', flat=True))
         sc = getSchoologyTokens(user.id)
         schoology_courses = sc.get_user_sections(user_id=user.schoology_id)
+        schoology_ids = []
         for i in range(len(schoology_courses)):
-            if schoology_courses[i]['id'] in user_schoology_course_ids:
-                is_active = schoology_courses[i]['active']
-                course = Course.objects.get(
-                    user_id=user.id, schoology_section_id=schoology_courses[i]['id'])
-                if course.is_active != is_active:
-                    course.is_active = is_active
-                    course.save(update_fields=['is_active'])
-                elif course.is_active == is_active:
-                    course.is_active = is_active
-                    course.save(update_fields=['is_active'])
+            schoology_ids.append(schoology_courses[i]['id'])
+        for i in range(len(schoology_courses)):
             if schoology_courses[i]['id'] not in user_schoology_course_ids:
                 course = Course()
                 course.user_id = user.id
                 course.name = schoology_courses[i]['course_title']
                 course.schoology_class_id = schoology_courses[i]['course_id']
                 course.schoology_section_id = schoology_courses[i]['id']
-                # Need to map the integer input of the subjects from schoology to get the right one
+                # TODO: Need to map the integer input of the subjects from schoology to get the right one
                 course.subject = "Test"
                 course.is_schoology = True
                 course.save()
+        for id in user_schoology_course_ids:
+            if id not in schoology_ids:
+                course = Course.objects.get(user_id=user.id, schoology_section_id=id)
+                course.is_active = False
+                course.save(update_fields=['is_active'])
         return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
 
 
