@@ -27,7 +27,7 @@ class UserSpecificCourseView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        courses = Course.objects.filter(user_id=request.user.id)
+        courses = Course.objects.filter(user_id=request.user.id, is_active=True)
         if len(courses) > 0:
             data = self.serializer_class(courses, many=True).data
             return Response(data, status=HTTP_200_OK)
