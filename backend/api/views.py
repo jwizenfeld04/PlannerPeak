@@ -225,6 +225,9 @@ class SchoologyCourses(APIView):
                 if course.is_active != is_active:
                     course.is_active = is_active
                     course.save(update_fields=['is_active'])
+                elif course.is_active == is_active:
+                    course.is_active = is_active
+                    course.save(update_fields=['is_active'])
             if schoology_courses[i]['id'] not in user_schoology_course_ids:
                 course = Course()
                 course.user_id = user.id
