@@ -5,11 +5,13 @@ import { persistReducer } from "redux-persist";
 import thunk from "redux-thunk";
 import userReducer from "./features/user/userSlice";
 import schoologyReducer from "./features/schoology/schoologySlice";
+import courseReducer from "./features/course/courseSlice";
 
 //ADD REDUCERS HERE
 const appReducer = combineReducers({
   user: userReducer,
   schoology: schoologyReducer,
+  course: courseReducer,
 });
 
 const rootReducer = (state, action) => {

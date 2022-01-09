@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Redcuers & Actions: Signup, Login, Logout, getUserInfo
-// 192.168.86.53
-// 192.168.81.59
-// 192.168.1.23
-
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (authData, thunkAPI) => {
@@ -70,7 +65,7 @@ const initialState = {
     firstName: "",
     lastName: "",
     email: "",
-    isSchoologyAuthenticated: "",
+    isSchoologyAuthenticated: false,
   },
 };
 
@@ -116,6 +111,8 @@ export const userSlice = createSlice({
 
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
 export const selectUserName = (state) => state.user.user.firstName;
+export const selectIsSchoologyAuthenticated = (state) =>
+  state.user.user.isSchoologyAuthenticated;
 export const selectToken = (state) => state.user.accesstoken;
 export const selectError = (state) => state.user.error;
 

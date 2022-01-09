@@ -6,34 +6,66 @@ import {
   TouchableOpacity,
   Button,
   Linking,
+  Alert,
 } from "react-native";
 import store from "../redux/store";
-import { selectError, selectToken } from "../redux/features/user/userSlice";
+import { selectToken } from "../redux/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  selectUrl,
   authorizeSchoology,
-  verifySchoology,
+  resetLink,
 } from "../redux/features/schoology/schoologySlice";
-import { selectUrl } from "../redux/features/schoology/schoologySlice";
+import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
 
 export default function Settings() {
   const dispatch = useDispatch();
   const schoologyUrl = useSelector(selectUrl);
+  const isSchoologyAuth = useSelector(selectIsSchoologyAuthenticated);
   const schoologyConfig = {
     token: useSelector(selectToken),
-    callbackUrl: "plannerpeak.com",
+    callbackUrl: "plannerpeak.com/schoologyredirect",
   };
 
   useEffect(() => {
-    if (schoologyUrl) {
+    if (schoologyUrl === null) {
+      console.log("servor error");
+    } else if (schoologyUrl !== "" && schoologyUrl !== null) {
       Linking.openURL(schoologyUrl);
+      dispatch(resetLink());
     }
-  }, []);
+  }, [schoologyUrl]);
+
+  const schoologyAlert = () =>
+    Alert.alert("Connet Your Schoology Account", "", [
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Continue",
+        onPress: () => dispatch(authorizeSchoology(schoologyConfig)),
+      },
+    ]);
+
+  const schoologyLoginButton = () => {
+    if (isSchoologyAuth) {
+      return <Text>Schoology Authenticated</Text>;
+    } else {
+      return (
+        <Button
+          title="Connect Schoology"
+          onPress={() => {
+            schoologyAlert();
+          }}
+        />
+      );
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Settings</Text>
-      <Text>{schoologyUrl}</Text>
       <Button
         title="Logout"
         onPress={() => {
@@ -42,18 +74,7 @@ export default function Settings() {
           });
         }}
       />
-      <Button
-        title="Connect Schoology"
-        onPress={() => {
-          dispatch(authorizeSchoology(schoologyConfig));
-        }}
-      />
-      <Button
-        title="open link"
-        onPress={() => {
-          Linking.openURL(schoologyUrl);
-        }}
-      />
+      {schoologyLoginButton()}
     </View>
   );
 }

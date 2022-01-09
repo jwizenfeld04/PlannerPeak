@@ -9,22 +9,23 @@ import {
   TextInput,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser, getUserInfo } from "../redux/features/user/userSlice";
+import { getUserInfo } from "../redux/features/user/userSlice";
 import { useState, useEffect } from "react";
 import { selectToken, selectUserName } from "../redux/features/user/userSlice";
+import { selectIsVerified } from "../redux/features/schoology/schoologySlice";
 
 export default function Home() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const name = useSelector(selectUserName);
+  const isVerified = useSelector(selectIsVerified);
 
   useEffect(() => {
     dispatch(getUserInfo(token));
-  }, []);
+  }, [isVerified]);
 
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
       <Text>Welcome {name}</Text>
     </View>
   );
