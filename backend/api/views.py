@@ -257,6 +257,7 @@ class SchoologyGrades(APIView):
                 user_id=user.id, schoology_section_id=section_id)
             course.grade = sc.get_user_grades(user.schoology_id)[
                 i]['final_grade'][1]['grade']
+            print(course.grade)
             course.save(update_fields=['grade'])
         return Response({"Success": "Works"}, status=HTTP_200_OK)
 

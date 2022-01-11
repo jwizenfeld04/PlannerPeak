@@ -17,7 +17,10 @@ import {
   selectToken,
   selectIsSchoologyAuthenticated,
 } from "../redux/features/user/userSlice";
-import { getSchoologyCourses } from "../redux/features/schoology/schoologySlice";
+import {
+  getSchoologyCourses,
+  getSchoologyGrades,
+} from "../redux/features/schoology/schoologySlice";
 import {
   selectCourses,
   getUserCourses,
@@ -38,6 +41,7 @@ export default function Courses() {
       dispatch(getSchoologyCourses(token))
         .then(unwrapResult)
         .then((obj) => {
+          dispatch(getSchoologyGrades(token));
           dispatch(getUserCourses(token));
         })
         .catch((obj) => {
@@ -77,6 +81,7 @@ export default function Courses() {
           return (
             <View>
               <Text>{item.name}</Text>
+              <Text>{item.grade}</Text>
             </View>
           );
         }}

@@ -56,6 +56,23 @@ export const getSchoologyCourses = createAsyncThunk(
   }
 );
 
+export const getSchoologyGrades = createAsyncThunk(
+  "user/getSchoologyGrades",
+  async (token, thunkAPI) => {
+    const response = await axios
+      .get(`https://plannerpeak.herokuapp.com/api/schoology-grades/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .catch((error) => {
+        throw thunkAPI.rejectWithValue(error.response.data);
+      });
+    console.log(response);
+    return response;
+  }
+);
+
 const initialState = {
   isSchoologyAuthorized: false,
   isSchoologyVerified: false,
@@ -100,6 +117,15 @@ export const schoologySlice = createSlice({
       state.status = "loading";
     },
     [getSchoologyCourses.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+    [getSchoologyGrades.fulfilled]: (state, action) => {
+      state.status = "success";
+    },
+    [getSchoologyGrades.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [getSchoologyGrades.rejected]: (state, action) => {
       state.status = "failed";
     },
   },
