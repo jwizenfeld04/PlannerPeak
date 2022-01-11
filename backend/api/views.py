@@ -228,14 +228,13 @@ class SchoologyCourses(APIView):
                 course.subject = "Test"
                 course.is_schoology = True
                 course.save()
-            if schoology_courses[i]['id'] in user_schoology_course_ids:
-                course = Course.objects.get(user_id=user.id, schoology_section_id=schoology_courses[i]['id'])
-                course.is_active = True
-                course.save(update_fields=['is_active'])
         for id in user_schoology_course_ids:
+            course = Course.objects.get(user_id=user.id, schoology_section_id=id)
             if id not in schoology_ids:
-                course = Course.objects.get(user_id=user.id, schoology_section_id=id)
                 course.is_active = False
+                course.save(update_fields=['is_active'])
+            if id in schoology_ids:
+                course.is_active = True
                 course.save(update_fields=['is_active'])
         return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
 
