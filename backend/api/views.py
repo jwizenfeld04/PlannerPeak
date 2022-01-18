@@ -27,7 +27,8 @@ class UserSpecificCourseView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        courses = Course.objects.filter(user_id=request.user.id, is_active=True)
+        courses = Course.objects.filter(
+            user_id=request.user.id, is_active=True)
         if len(courses) > 0:
             data = self.serializer_class(courses, many=True).data
             return Response(data, status=HTTP_200_OK)
@@ -81,6 +82,25 @@ class UserSpecificCourseUpdateView(APIView):
             course.delete()
             return Response({"Successful": "Course Deleted"}, status=HTTP_204_NO_CONTENT)
         return Response({"Error": "Invalid Course Id or Permissions "}, status=HTTP_403_FORBIDDEN)
+
+
+class UserAssignmentView(APIView):
+    serializer_class = AssignmentSerializer
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None, *args, **kwargs):
+        course_ids = Course.objects.filter(
+            user_id=request.user.id).values_list('pk', flat=True)
+        if len(course_ids) == 0:
+            return Response({"No Content": "No Assignments Found"}, status=HTTP_204_NO_CONTENT)
+        data = []
+        for id in course_ids:
+            assignments = Assignment.objects.filter(
+                course_id=id)
+            if len(assignments) > 0:
+                data.append(self.serializer_class(assignments, many=True).data)
+        return Response(data, status=HTTP_200_OK)
 
 
 class UserSpecificAssignmentView(APIView):
@@ -204,6 +224,7 @@ def getSchoologyTokens(user_id):
     sc = schoolopy.Schoology(schoologyauth)
     return sc
 
+
 class SchoologyCourses(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -229,7 +250,8 @@ class SchoologyCourses(APIView):
                 course.is_schoology = True
                 course.save()
         for id in user_schoology_course_ids:
-            course = Course.objects.get(user_id=user.id, schoology_section_id=id)
+            course = Course.objects.get(
+                user_id=user.id, schoology_section_id=id)
             if id not in schoology_ids:
                 course.is_active = False
                 course.save(update_fields=['is_active'])
