@@ -1,4 +1,4 @@
-import React, { Component, useRef } from "react";
+import React, { Component, useRef, useState } from "react";
 import {
   View,
   ScrollView,
@@ -15,20 +15,18 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { registerUser } from "../redux/features/user/userSlice";
-import { useState } from "react";
 import styles from "../styles/styles";
 import logo from "../assets/images/logo.png";
-import { useHeaderHeight } from "@react-navigation/elements";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function Register({ navigation }) {
+  // Object that must include first name, last name, email, password, and confirm password sent in Register API Request
   const [authData, setAuthData] = useState({});
 
+  // Ref used to auto switch to next text input when pressing "return" key on keyboard
   const ref_input2 = useRef();
   const ref_input3 = useRef();
   const ref_input4 = useRef();
   const ref_input5 = useRef();
-  const headerHeight = useHeaderHeight();
 
   const dispatch = useDispatch();
   return (
@@ -37,6 +35,7 @@ export default function Register({ navigation }) {
         <View>
           <Image style={styles.registerImage} source={logo} />
         </View>
+        {/* ALL TEXT INPUTS SENT IN API REQUEST TO CREATE A NEW ACCOUNT */}
         <View style={styles.inputView}>
           <TextInput
             style={styles.textInput}

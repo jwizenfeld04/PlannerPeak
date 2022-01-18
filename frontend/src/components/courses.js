@@ -20,6 +20,7 @@ import {
 import {
   getSchoologyCourses,
   getSchoologyGrades,
+  getSchoologyAssignments,
 } from "../redux/features/schoology/schoologySlice";
 import {
   selectCourses,
@@ -27,41 +28,70 @@ import {
 } from "../redux/features/course/courseSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { ListItem } from "react-native-elements";
-import schoologyIcon from "../assets/images/schoology_icon.jpeg";
+import {
+  getUserAssignments,
+  selectAssignments,
+} from "../redux/features/assignment/assignmentSlice";
 
 export default function Courses() {
   const dispatch = useDispatch();
-  const token = useSelector(selectToken);
-  const courses = useSelector(selectCourses);
-  const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const token = useSelector(selectToken); // Gets string of user token from DB
+  const courses = useSelector(selectCourses); // Gets array of objects for all user courses
+  const assignments = useSelector(selectAssignments); // Gets array of objects for all user assignments
+  const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated); // Gets boolean of whether their Schoology account is authenticated or not
+  const [isRefreshing, setIsRefreshing] = useState(false); // Used for pulldown refresh
 
+  // Makes API request to Schoology and then makes API request to DB to get all courses
   const getCourses = (token, isSchoologyAuth) => {
     if (isSchoologyAuth === true) {
-      dispatch(getSchoologyCourses(token))
-        .then(unwrapResult)
+      // Checks whether Schoology is Authenticated
+      dispatch(getSchoologyCourses(token)) // Adds Schoology Courses to DB
+        .then(unwrapResult) // Waits until this dispatch method finishes before continuing
         .then((obj) => {
           dispatch(getSchoologyGrades(token));
-          dispatch(getUserCourses(token));
+          dispatch(getUserCourses(token)); // Retreives all courses in DB
         })
         .catch((obj) => {
           console.log(obj);
         });
     } else {
-      dispatch(getUserCourses(token));
+      dispatch(getUserCourses(token)); // If Schoology not authenticated, skip striaght to retreive from DB
     }
   };
 
+  // Makes API request to Schoology and then makes API request to DB to get all assignments
+  // Same structure at getCourses function
+  const getAssignments = (token, isSchoologyAuth) => {
+    if (isSchoologyAuth === true) {
+      dispatch(getSchoologyAssignments(token))
+        .then(unwrapResult)
+        .then((obj) => {
+          dispatch(getUserAssignments(token));
+        })
+        .catch((obj) => {
+          console.log(obj);
+        });
+    } else {
+      dispatch(getUserAssignments(token));
+    }
+  };
+
+  // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
     getCourses(token, isSchoologyAuthenticated);
   }, [isSchoologyAuthenticated]);
 
+  // Retreives all courses on pull-down refresh; this function is passed into the flatlist
   const onRefresh = () => {
-    setIsRefreshing(true);
+    setIsRefreshing(true); // Must set to true to initate refresh
+    // Refresh code goes here
     getCourses(token, isSchoologyAuthenticated);
-    setIsRefreshing(false);
+    getAssignments(token, isSchoologyAuthenticated);
+    console.log(assignments);
+    setIsRefreshing(false); // Must set to false to end refresh
   };
 
+  // Anything displayed in header goes here with styles; this function is passed into the flatlist
   const ListHeader = () => {
     return (
       <View>

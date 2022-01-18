@@ -18,8 +18,8 @@ import logo from "../assets/images/logo.png";
 import styles from "../styles/styles";
 
 export default function Login({ navigation }) {
-  const [authData, setAuthData] = useState({});
-  const error = useSelector(selectError);
+  const [authData, setAuthData] = useState({}); // Object that must include email and password sent in Login API Request
+  const error = useSelector(selectError); // TODO: Fix error messages from invalid Login API Request
 
   const ref_input2 = useRef();
 
@@ -28,6 +28,7 @@ export default function Login({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <Image style={styles.loginImage} source={logo} />
+        {/* ALL TEXT INPUTS SENT IN API REQUEST TO LOGIN*/}
         <View style={styles.inputView}>
           <TextInput
             style={styles.textInput}
