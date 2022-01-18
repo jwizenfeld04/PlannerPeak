@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getSchoologyCourses } from "../schoology/schoologySlice";
 
 export const getUserCourses = createAsyncThunk(
   "user/getUserCourses",

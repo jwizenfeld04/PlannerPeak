@@ -6,12 +6,14 @@ import thunk from "redux-thunk";
 import userReducer from "./features/user/userSlice";
 import schoologyReducer from "./features/schoology/schoologySlice";
 import courseReducer from "./features/course/courseSlice";
+import assignmentReducer from "./features/assignment/assignmentSlice";
 
 //ADD REDUCERS HERE
 const appReducer = combineReducers({
   user: userReducer,
   schoology: schoologyReducer,
   course: courseReducer,
+  assignment: assignmentReducer,
 });
 
 const rootReducer = (state, action) => {

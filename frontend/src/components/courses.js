@@ -20,6 +20,7 @@ import {
 import {
   getSchoologyCourses,
   getSchoologyGrades,
+  getSchoologyAssignments,
 } from "../redux/features/schoology/schoologySlice";
 import {
   selectCourses,
@@ -28,11 +29,16 @@ import {
 import { unwrapResult } from "@reduxjs/toolkit";
 import { ListItem } from "react-native-elements";
 import schoologyIcon from "../assets/images/schoology_icon.jpeg";
+import {
+  getUserAssignments,
+  selectAssignments,
+} from "../redux/features/assignment/assignmentSlice";
 
 export default function Courses() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken); // Gets string of user token from DB
   const courses = useSelector(selectCourses); // Gets array of objects for all user courses
+  const assignments = useSelector(selectAssignments); // Gets array of objects for all user assignments
   const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated); // Gets boolean of whether their Schoology account is authenticated or not
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -42,7 +48,7 @@ export default function Courses() {
       dispatch(getSchoologyCourses(token))
         .then(unwrapResult)
         .then((obj) => {
-          dispatch(getSchoologyGrades(token));
+          // dispatch(getSchoologyGrades(token));
           dispatch(getUserCourses(token));
         })
         .catch((obj) => {
@@ -50,6 +56,21 @@ export default function Courses() {
         });
     } else {
       dispatch(getUserCourses(token));
+    }
+  };
+
+  const getAssignments = (token, isSchoologyAuth) => {
+    if (isSchoologyAuth === true) {
+      dispatch(getSchoologyAssignments(token))
+        .then(unwrapResult)
+        .then((obj) => {
+          dispatch(getUserAssignments(token));
+        })
+        .catch((obj) => {
+          console.log(obj);
+        });
+    } else {
+      dispatch(getUserAssignments(token));
     }
   };
 
@@ -63,6 +84,7 @@ export default function Courses() {
     setIsRefreshing(true); // Must set to true to initate it
     // Refresh code goes here
     getCourses(token, isSchoologyAuthenticated);
+    getAssignments(token, isSchoologyAuthenticated);
     setIsRefreshing(false); // Must set to false to end refresh
   };
 
