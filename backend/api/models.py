@@ -47,7 +47,7 @@ class Course(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.name
+        return self.name + " -- " + self.user.first_name + " " + self.user.last_name
 
 
 class Assignment(models.Model):
@@ -63,7 +63,7 @@ class Assignment(models.Model):
     is_schoology = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.name + " -- " + self.course.user.first_name + " " + self.course.user.last_name
 
 
 # TODO: Make user only allowed to have one SchoologyTokens entry
