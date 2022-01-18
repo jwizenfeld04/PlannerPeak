@@ -48,7 +48,7 @@ export default function Courses() {
       dispatch(getSchoologyCourses(token)) // Adds Schoology Courses to DB
         .then(unwrapResult) // Waits until this dispatch method finishes before continuing
         .then((obj) => {
-          // dispatch(getSchoologyGrades(token));
+          dispatch(getSchoologyGrades(token));
           dispatch(getUserCourses(token)); // Retreives all courses in DB
         })
         .catch((obj) => {

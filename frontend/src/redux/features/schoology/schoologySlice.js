@@ -78,7 +78,6 @@ export const getSchoologyAssignments = createAsyncThunk(
 );
 
 // API Request that adds connets Schoology Grades to respective courses into the DB, returns no data
-// TODO: Currently not working, API request goes through but no updated grades
 export const getSchoologyGrades = createAsyncThunk(
   "user/getSchoologyGrades",
   async (token, thunkAPI) => {
