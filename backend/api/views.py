@@ -311,3 +311,7 @@ class SchoologyAssignments(APIView):
                     new_assignment.is_schoology = True
                     new_assignment.save()
         return Response({'Success': "New Assignments Added"}, status=HTTP_200_OK)
+
+
+class GoogleCalendar(APIView):
+    pass
