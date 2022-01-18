@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// API Request that creates a Schoology Oauth URL with callback of deep link to app
 export const authorizeSchoology = createAsyncThunk(
   "user/authorizeSchoology",
+  // schoologyConfig is an object includes callbackUrl and token
   async (schoologyConfig, thunkAPI) => {
     const response = await axios
       .post(
@@ -19,11 +21,12 @@ export const authorizeSchoology = createAsyncThunk(
       .catch((error) => {
         throw thunkAPI.rejectWithValue(error.response.data);
       });
-    console.log(response);
     return response;
   }
 );
 
+// API Request that finishes Schoology Oauth process by retreiving access tokens
+// Dispatched after deep link is hit
 export const verifySchoology = createAsyncThunk(
   "user/verifySchoology",
   async (token, thunkAPI) => {
@@ -40,6 +43,7 @@ export const verifySchoology = createAsyncThunk(
   }
 );
 
+// API Request that adds all Schoology Courses into the DB, returns no data
 export const getSchoologyCourses = createAsyncThunk(
   "user/getSchoologyCourses",
   async (token, thunkAPI) => {
@@ -56,6 +60,7 @@ export const getSchoologyCourses = createAsyncThunk(
   }
 );
 
+// API Request that adds all Schoology Assignments into the DB, returns no data
 export const getSchoologyAssignments = createAsyncThunk(
   "user/getSchoologyAssignments",
   async (token, thunkAPI) => {
@@ -72,6 +77,8 @@ export const getSchoologyAssignments = createAsyncThunk(
   }
 );
 
+// API Request that adds connets Schoology Grades to respective courses into the DB, returns no data
+// TODO: Currently not working, API request goes through but no updated grades
 export const getSchoologyGrades = createAsyncThunk(
   "user/getSchoologyGrades",
   async (token, thunkAPI) => {
@@ -84,15 +91,15 @@ export const getSchoologyGrades = createAsyncThunk(
       .catch((error) => {
         throw thunkAPI.rejectWithValue(error.response.data);
       });
-    console.log(response);
+    console.log(response.data);
     return response;
   }
 );
 
 const initialState = {
-  isSchoologyAuthorized: false,
-  isSchoologyVerified: false,
-  schoologyUrl: "",
+  isSchoologyAuthorized: false, // Boolean whether authorizeSchoology is dispatched succesfully
+  isSchoologyVerified: false, // Boolean whether verifySchoology is dispatched succesfully
+  schoologyUrl: "", // String of Schoology Oauth URL
 };
 
 export const schoologySlice = createSlice({
@@ -156,7 +163,7 @@ export const schoologySlice = createSlice({
   },
 });
 
-export const { resetLink } = schoologySlice.actions;
+export const { resetLink } = schoologySlice.actions; // Dispatch method to reset link to avoid errors if Schoology Oauth failes the first time
 export const selectUrl = (state) => state.schoology.schoologyUrl;
 export const selectIsVerified = (state) => state.schoology.isSchoologyVerified;
 export const selectIsAuthorized = (state) =>

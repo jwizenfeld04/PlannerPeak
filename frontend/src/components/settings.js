@@ -20,22 +20,24 @@ import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice
 
 export default function Settings() {
   const dispatch = useDispatch();
-  const schoologyUrl = useSelector(selectUrl);
-  const isSchoologyAuth = useSelector(selectIsSchoologyAuthenticated);
+  const schoologyUrl = useSelector(selectUrl); // Gets Schoology URL from Schoology API Request
+  const isSchoologyAuth = useSelector(selectIsSchoologyAuthenticated); // Boolean whether schoology auth or not
   const schoologyConfig = {
     token: useSelector(selectToken),
-    callbackUrl: "plannerpeak.com/schoologyredirect",
+    callbackUrl: "plannerpeak.com/schoologyredirect", // TODO: Change to DEEP LINK when available
   };
 
+  // Opens Schoology URL if button pressed to connect Schoology
   useEffect(() => {
     if (schoologyUrl === null) {
       console.log("servor error");
     } else if (schoologyUrl !== "" && schoologyUrl !== null) {
       Linking.openURL(schoologyUrl);
-      dispatch(resetLink());
+      dispatch(resetLink()); // Resets link in Async Storage after dispatch to avoid errors if OAuth procedure fails
     }
   }, [schoologyUrl]);
 
+  // Creates alert and when "Continue" is pressed, makes API request to retreive Schoology URL
   const schoologyAlert = () =>
     Alert.alert("Connet Your Schoology Account", "", [
       {
@@ -49,6 +51,7 @@ export default function Settings() {
       },
     ]);
 
+  // Button tied to Schoology alert: initiate Oauth process
   const schoologyLoginButton = () => {
     if (isSchoologyAuth) {
       return <Text>Schoology Authenticated</Text>;

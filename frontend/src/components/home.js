@@ -18,10 +18,10 @@ export default function Home() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const name = useSelector(selectUserName);
-  const isVerified = useSelector(selectIsVerified);
+  const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
 
   useEffect(() => {
-    dispatch(getUserInfo(token));
+    dispatch(getUserInfo(token)); // Rerenders user info any time page renders or schoology becomes authenticated
   }, [isVerified]);
 
   return (

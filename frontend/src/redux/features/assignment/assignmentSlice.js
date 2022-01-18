@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// API Request that returns array of all user assignments
+// Array is further broken down to sub-arrays per class that contain all assignments
 export const getUserAssignments = createAsyncThunk(
   "user/getUserAssignments",
   async (token, thunkAPI) => {
@@ -41,6 +43,7 @@ export const assignmentsSlice = createSlice({
   },
 });
 
+// Access assignments with useSelector(selectAssignments)
 export const selectAssignments = (state) => state.assignment.assignments;
 
 export default assignmentsSlice.reducer;

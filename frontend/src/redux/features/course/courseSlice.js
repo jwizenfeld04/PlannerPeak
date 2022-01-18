@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// API Request that retreives all courses from DB and returns in array of objects
 export const getUserCourses = createAsyncThunk(
   "user/getUserCourses",
   async (token, thunkAPI) => {
@@ -39,6 +40,7 @@ export const courseSlice = createSlice({
   },
 });
 
+// Access courses with useSelector(selectCourses)
 export const selectCourses = (state) => state.course.courses;
 
 export default courseSlice.reducer;
