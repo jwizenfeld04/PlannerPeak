@@ -31,11 +31,12 @@ import schoologyIcon from "../assets/images/schoology_icon.jpeg";
 
 export default function Courses() {
   const dispatch = useDispatch();
-  const token = useSelector(selectToken);
-  const courses = useSelector(selectCourses);
-  const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated);
+  const token = useSelector(selectToken); // Gets string of user token from DB
+  const courses = useSelector(selectCourses); // Gets array of objects for all user courses
+  const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated); // Gets boolean of whether their Schoology account is authenticated or not
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  // Makes API request to Schoology and then makes API request to DB to get all courses
   const getCourses = (token, isSchoologyAuth) => {
     if (isSchoologyAuth === true) {
       dispatch(getSchoologyCourses(token))
@@ -52,16 +53,20 @@ export default function Courses() {
     }
   };
 
+  // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
     getCourses(token, isSchoologyAuthenticated);
   }, [isSchoologyAuthenticated]);
 
+  // Retreives all courses on pull-down refresh; this function is passed into the flatlist
   const onRefresh = () => {
-    setIsRefreshing(true);
+    setIsRefreshing(true); // Must set to true to initate it
+    // Refresh code goes here
     getCourses(token, isSchoologyAuthenticated);
-    setIsRefreshing(false);
+    setIsRefreshing(false); // Must set to false to end refresh
   };
 
+  // Anything displayed in header goes here with styles; this function is passed into the flatlist
   const ListHeader = () => {
     return (
       <View>
