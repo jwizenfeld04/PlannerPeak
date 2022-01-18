@@ -59,6 +59,7 @@ export default function Courses() {
     }
   };
 
+  // Makes API request to Schoology and then makes API request to DB to get all assignments
   const getAssignments = (token, isSchoologyAuth) => {
     if (isSchoologyAuth === true) {
       dispatch(getSchoologyAssignments(token))
@@ -85,6 +86,7 @@ export default function Courses() {
     // Refresh code goes here
     getCourses(token, isSchoologyAuthenticated);
     getAssignments(token, isSchoologyAuthenticated);
+    console.log(assignments);
     setIsRefreshing(false); // Must set to false to end refresh
   };
 
