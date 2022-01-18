@@ -78,6 +78,7 @@ export const getSchoologyAssignments = createAsyncThunk(
 );
 
 // API Request that adds connets Schoology Grades to respective courses into the DB, returns no data
+// TODO: Fix API Request to skip user owned courses or archived courses with no grades/multiple sections
 export const getSchoologyGrades = createAsyncThunk(
   "user/getSchoologyGrades",
   async (token, thunkAPI) => {
@@ -90,7 +91,6 @@ export const getSchoologyGrades = createAsyncThunk(
       .catch((error) => {
         throw thunkAPI.rejectWithValue(error.response.data);
       });
-    console.log(response.data);
     return response;
   }
 );
