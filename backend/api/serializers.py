@@ -40,7 +40,7 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'user', 'name', 'subject', 'grade',
-                  'schoology_class_id', 'schoology_section_id']
+                  'schoology_class_id', 'schoology_section_id', 'is_schoology']
         extra_kwargs = {
             'user': {'required': False},
             'grade': {'required': False},
@@ -53,7 +53,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = ['id', 'course', 'name', 'description', 'start_date',
-                  'due_date', 'grade', 'schoology_assignment_id']
+                  'due_date', 'grade', 'schoology_assignment_id', 'is_schoology']
         extra_kwargs = {
             'grade': {'required': False},
             'schoology_assignment_id': {'required': False},
