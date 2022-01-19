@@ -1,3 +1,4 @@
+from re import M
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
@@ -68,10 +69,21 @@ class Assignment(models.Model):
 
 # TODO: Make user only allowed to have one SchoologyTokens entry
 
-class SchoologyTokens(models.Model):
+class SchoologyToken(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=100)
     access_secret = models.CharField(max_length=100)
 
     def __str__(self):
         return f"{self.user}'s Schoology Tokens"
+
+# TODO: Make user only allowed to have one GoogleCalednarTokens entry
+
+
+class GoogleCalendarTokens(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    token = models.CharField(max_length=100)
+    refresh_token = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.user}'s Google Calendar Tokens"
