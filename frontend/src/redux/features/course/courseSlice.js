@@ -18,6 +18,27 @@ export const getUserCourses = createAsyncThunk(
   }
 );
 
+export const updateUserCoursePrefrences = createAsyncThunk(
+  "user/updateUserCoursePrefrences",
+  async (prefrencesData, thunkAPI) => {
+    const response = await axios
+    .put(`https://plannerpeak.herokuapp.com/api/user-courses-update/${prefrencesData.id}`, {
+      color: prefrencesData.color,
+      notifications: prefrencesData.notifications,
+      priority: prefrencesData.priority,
+    },{
+      headers: {
+        Authorization: `Token ${prefrencesData.token}`,
+      },
+    })
+    .catch((error) => {
+      console.log(error.response.data)
+      throw thunkAPI.rejectWithValue(error.response.data);
+      });
+    return response;
+  }
+);
+
 const initialState = {
   courses: [],
 };
@@ -35,6 +56,15 @@ export const courseSlice = createSlice({
       state.status = "loading";
     },
     [getUserCourses.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+    [updateUserCoursePrefrences.fulfilled]: (state, action) => {
+      state.status = "success";
+    },
+    [updateUserCoursePrefrences.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [updateUserCoursePrefrences.rejected]: (state, action) => {
       state.status = "failed";
     },
   },

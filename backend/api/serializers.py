@@ -46,6 +46,12 @@ class CourseSerializer(serializers.ModelSerializer):
             'grade': {'required': False},
             'schoology_class_id': {'required': False},
             'schoology_section_id': {'required': False},
+            'name': {'required': False},
+            'subject': {'required': False},
+            'color': {'required': False},
+            'priority': {'required': False},
+            'notifications': {'required': False},
+            'is_schoology': {'required': False},
         }
 
 

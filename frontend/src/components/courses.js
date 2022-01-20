@@ -18,7 +18,10 @@ import {
   selectToken,
   selectIsSchoologyAuthenticated,
 } from "../redux/features/user/userSlice";
-import { selectCourses } from "../redux/features/course/courseSlice";
+import {
+  selectCourses,
+  updateUserCoursePrefrences,
+} from "../redux/features/course/courseSlice";
 import { ListItem } from "react-native-elements";
 import {
   selectAssignments,
@@ -28,6 +31,8 @@ import {
 import courseScreenStyles from "../styles/courseScreenStyles";
 import { getCourses } from "./getCourses";
 import { getAssignments } from "./getAssignments";
+import { Ionicons } from "@expo/vector-icons";
+import { RadioButton } from "react-native-paper";
 
 export default function Courses() {
   const dispatch = useDispatch();
@@ -42,17 +47,52 @@ export default function Courses() {
   const getAllCourses = getCourses(dispatch);
   const getAllAssignments = getAssignments(dispatch);
   const [courseData, setCourseData] = useState({});
+  const [checkedColor, setCheckedColor] = useState("first");
+  const [prefrencesData, setPrefrencesData] = useState({});
 
   const handleOnCoursePressIn = (item) => {
     setCourseData({ token: token, id: item.id });
     setModalVisible(true);
-    setModalData({ name: item.name, grade: item.grade, color:item.color, priority:item.priority, notifications:item.notifications });
+    setModalData({
+      name: item.name,
+      grade: item.grade,
+      color: item.color,
+      priority: item.priority,
+      notifications: item.notifications,
+    });
+    setPrefrencesData({
+      id: item.id,
+      token: token,
+      color: item.color,
+      priority: item.priority,
+      notifications: item.notifications,
+    });
   };
 
-  const getAssignmentsForCourse = (assignments) => {
-    return assignments.map((item, index) => (
-      <Text key={index}>{item.name}</Text>
-    ));
+  const handleAssignmentListEmpty = () => {
+    return <Text style={courseScreenStyles.courseTitle}>No assignments</Text>;
+  };
+
+  const NotificationCheckBox = () => {
+    const [courseNotifications, setCourseNotifications] = useState(true);
+
+    function onCheckmarkPress() {
+      setCourseNotifications(!courseNotifications);
+    }
+
+    return (
+      <Pressable
+        style={[
+          courseScreenStyles.checkboxBase,
+          courseNotifications && courseScreenStyles.checkboxChecked,
+        ]}
+        onPress={onCheckmarkPress}
+      >
+        {courseNotifications && (
+          <Ionicons name="checkmark" size={24} color="white" />
+        )}
+      </Pressable>
+    );
   };
 
   // Retrieves all courses any time the tab renders or user signs in with Schoology
@@ -84,21 +124,62 @@ export default function Courses() {
 
   return (
     <SafeAreaView style={courseScreenStyles.container}>
-      <Modal animationType="slide" visible={modalVisible} transparent={false}>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        transparent={false}
+        onDismiss={() => {
+          dispatch(updateUserCoursePrefrences(prefrencesData));
+        }}
+      >
         <SafeAreaView>
           <TouchableOpacity
             onPress={() => {
               setModalVisible(false);
             }}
           >
-            <Text style={courseScreenStyles.closeText}>Go back</Text>
-            <Text>{modalData.name}</Text>
-            <Text>{modalData.color}</Text>
-            <Text>{modalData.priority}</Text>
-            {modalData.notifications? <Text>Notifications Enabled</Text> : <Text>Notifications Disabled</Text>}
-            <Text>ASSIGNMENTS:</Text>
-            {getAssignmentsForCourse(courseSpecficAssignments)}
+            <Text style={courseScreenStyles.closeText}>Return to Courses</Text>
           </TouchableOpacity>
+          <Text style={courseScreenStyles.courseModalName}>
+            {modalData.name}
+          </Text>
+
+          <View>
+            <View style={courseScreenStyles.assignmentBorder}>
+              <FlatList
+                ListEmptyComponent={handleAssignmentListEmpty}
+                data={courseSpecficAssignments}
+                // missing item key - possibly uses db id instead solution would be keyExtractorgit
+                renderItem={({ item }) => {
+                  return (
+                    <View style={courseScreenStyles.courseBorder}>
+                      <ListItem.Title style={courseScreenStyles.courseTitle}>
+                        {item.name}
+                      </ListItem.Title>
+                    </View>
+                  );
+                }}
+              />
+            </View>
+          </View>
+
+          <Text>Color: {modalData.color}</Text>
+          
+        <RadioButton.Group onValueChange={checkedColor => setCheckedColor(checkedColor)} checkedColor={checkedColor}>
+         <RadioButton.Item label="green" value="first" />
+        <RadioButton.Item label="red" value="second" />
+        <RadioButton.Item label="purple" value="third" />
+        </RadioButton.Group>
+
+         
+
+          <Text>{modalData.priority}</Text>
+          <NotificationCheckBox />
+          {modalData.notifications ? (
+            <Text>Notifications Enabled</Text>
+          ) : (
+            <Text>Notifications Disabled</Text>
+          )}
         </SafeAreaView>
       </Modal>
       <View>

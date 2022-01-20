@@ -34,6 +34,31 @@ const courseScreenStyles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
   },
+  courseModalName: {
+    fontSize: 30,
+    textAlign: "center",
+    justifyContent: "center",
+    color: "blue"
+  },
+  assignmentBorder: {
+    borderColor: "black",
+    borderWidth: 2,
+    margin: 20,
+  },
+  checkboxBase: {
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderWidth: 2,
+    borderColor: 'coral',
+    backgroundColor: 'transparent',
+  },
+
+  checkboxChecked: {
+    backgroundColor: 'coral',
+  },
 });
 
 export default courseScreenStyles;
