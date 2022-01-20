@@ -46,7 +46,7 @@ export default function Courses() {
   const handleOnCoursePressIn = (item) => {
     setCourseData({ token: token, id: item.id });
     setModalVisible(true);
-    setModalData({ name: item.name, grade: item.grade });
+    setModalData({ name: item.name, grade: item.grade, color:item.color, priority:item.priority });
   };
 
   const getAssignmentsForCourse = (assignments) => {
@@ -93,6 +93,8 @@ export default function Courses() {
           >
             <Text style={courseScreenStyles.closeText}>Go back</Text>
             <Text>{modalData.name}</Text>
+            <Text>{modalData.color}</Text>
+            <Text>{modalData.priority}</Text>
             <Text>ASSIGNMENTS:</Text>
             {getAssignmentsForCourse(courseSpecficAssignments)}
           </TouchableOpacity>

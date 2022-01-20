@@ -40,7 +40,7 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'user', 'name', 'subject', 'grade',
-                  'schoology_class_id', 'schoology_section_id', 'is_schoology']
+                  'schoology_class_id', 'schoology_section_id', 'is_schoology', 'color', 'priority', 'notifications']
         extra_kwargs = {
             'user': {'required': False},
             'grade': {'required': False},
