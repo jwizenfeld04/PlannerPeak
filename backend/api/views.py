@@ -1,4 +1,3 @@
-from re import U
 from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -311,3 +310,7 @@ class SchoologyAssignments(APIView):
                     new_assignment.is_schoology = True
                     new_assignment.save()
         return Response({'Success': "New Assignments Added"}, status=HTTP_200_OK)
+
+
+class GoogleCalendar(APIView):
+    pass

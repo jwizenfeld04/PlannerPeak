@@ -1,3 +1,4 @@
+from re import M
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
@@ -45,6 +46,9 @@ class Course(models.Model):
     schoology_section_id = models.CharField(max_length=15, blank=True)
     is_schoology = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    color = models.CharField(max_length=20, default="blue")
+    priority = models.IntegerField(default=1)
+    notifications = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name + " -- " + self.user.first_name + " " + self.user.last_name
@@ -75,3 +79,14 @@ class SchoologyTokens(models.Model):
 
     def __str__(self):
         return f"{self.user}'s Schoology Tokens"
+
+# TODO: Make user only allowed to have one GoogleCalednarTokens entry
+
+
+class GoogleCalendarTokens(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    token = models.CharField(max_length=100)
+    refresh_token = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.user}'s Google Calendar Tokens"
