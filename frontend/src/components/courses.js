@@ -46,7 +46,7 @@ export default function Courses() {
   const handleOnCoursePressIn = (item) => {
     setCourseData({ token: token, id: item.id });
     setModalVisible(true);
-    setModalData({ name: item.name, grade: item.grade, color:item.color, priority:item.priority });
+    setModalData({ name: item.name, grade: item.grade, color:item.color, priority:item.priority, notifications:item.notifications });
   };
 
   const getAssignmentsForCourse = (assignments) => {
@@ -95,6 +95,7 @@ export default function Courses() {
             <Text>{modalData.name}</Text>
             <Text>{modalData.color}</Text>
             <Text>{modalData.priority}</Text>
+            {modalData.notifications? <Text>Notifications Enabled</Text> : <Text>Notifications Disabled</Text>}
             <Text>ASSIGNMENTS:</Text>
             {getAssignmentsForCourse(courseSpecficAssignments)}
           </TouchableOpacity>
