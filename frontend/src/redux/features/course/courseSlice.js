@@ -20,21 +20,20 @@ export const getUserCourses = createAsyncThunk(
 
 export const updateUserCoursePrefrences = createAsyncThunk(
   "user/updateUserCoursePrefrences",
-  async (prefrencesData, thunkAPI) => {
+  async (modalData, thunkAPI) => {
     const response = await axios
-    .put(`https://plannerpeak.herokuapp.com/api/user-courses-update/${prefrencesData.id}`, {
-      color: prefrencesData.color,
-      notifications: prefrencesData.notifications,
-      priority: prefrencesData.priority,
+    .put(`https://plannerpeak.herokuapp.com/api/user-courses-update/${modalData.id}`, {
+      color: modalData.color,
+      notifications: modalData.notifications,
+      priority: modalData.priority,
     },{
       headers: {
-        Authorization: `Token ${prefrencesData.token}`,
+        Authorization: `Token ${modalData.token}`,
       },
     })
     .catch((error) => {
-      console.log(error.response.data)
       throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    });
     return response;
   }
 );

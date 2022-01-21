@@ -21,11 +21,11 @@ export const getUserAssignments = createAsyncThunk(
 
 export const getCourseSpecificAssignments = createAsyncThunk(
   "user/getCourseSpecificAssignments",
-  async (courseData, thunkAPI) => {
+  async (modalData, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/user-assignments/${courseData.id}`, {
+      .get(`https://plannerpeak.herokuapp.com/api/user-assignments/${modalData.id}`, {
         headers: {
-          Authorization: `Token ${courseData.token}`,
+          Authorization: `Token ${modalData.token}`,
         },
       })
       .catch((error) => {
