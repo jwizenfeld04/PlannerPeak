@@ -12,6 +12,7 @@ import {
   Image,
   Modal,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -22,7 +23,7 @@ import {
   selectCourses,
   updateUserCoursePrefrences,
 } from "../redux/features/course/courseSlice";
-import { ListItem } from "react-native-elements";
+import { ListItem, Icon } from "react-native-elements";
 import {
   getCourseSpecificAssignments,
   selectCourseSpecficAssignments,
@@ -36,6 +37,8 @@ import RadioForm, {
   RadioButtonInput,
 } from "react-native-simple-radio-button";
 import { radioButtonsData } from "./courseRadioButtons";
+import SchoologyIcon from "../assets/images/schoology_icon.png";
+import PlannerPeakIcon from "../assets/images/planner_peak_logo.png";
 
 export default function Courses() {
   const dispatch = useDispatch();
@@ -50,7 +53,7 @@ export default function Courses() {
   const getAllAssignments = getAssignments(dispatch);
   const [radioButtons, setRadioButtons] = useState(radioButtonsData);
 
-  const handleOnCoursePressIn = (item) => {
+  const handleOnCoursePress = (item) => {
     setModalData({
       id: item.id,
       token: token,
@@ -65,27 +68,6 @@ export default function Courses() {
 
   const handleAssignmentListEmpty = () => {
     return <Text style={courseScreenStyles.courseTitle}>No Assignments</Text>;
-  };
-
-  const handleRadioButtonColor = () => {
-    if (modalData.color === "red") {
-      return 0;
-    }
-    if (modalData.color === "orange") {
-      return 1;
-    }
-    if (modalData.color === "yellow") {
-      return 2;
-    }
-    if (modalData.color === "green") {
-      return 3;
-    }
-    if (modalData.color === "blue") {
-      return 4;
-    }
-    if (modalData.color === "purple") {
-      return 5;
-    }
   };
 
   const NotificationCheckBox = () => {
@@ -118,40 +100,51 @@ export default function Courses() {
 
   const CourseColorRadioButtons = () => {
     const [checkedColor, setCheckedColor] = useState(modalData.color);
-    const [value, setValue] = useState(handleRadioButtonColor());
 
-    function onRadioPress(checkedColor, i) {
+    function onRadioPress(checkedColor) {
       setCheckedColor(checkedColor);
       setModalData((prevState) => ({
         ...prevState,
         color: checkedColor,
       }));
-      setValue(i);
     }
 
     return (
       <View style={courseScreenStyles.radioButton}>
-        <RadioForm formHorizontal={true} animation={true} initial={value}>
-          {/* To create radio buttons, loop through your array of options */}
-          {radioButtons.map((obj, i) => (
-            <RadioButton labelHorizontal={true} key={i}>
-              {/*  You can set RadioButtonLabel before RadioButtonInput */}
-              <RadioButtonInput
-                obj={obj}
-                index={i}
-                isSelected={value === i}
-                onPress={() => onRadioPress(obj.value, i)}
-                borderWidth={1}
-                buttonInnerColor={value === i ? checkedColor : "#000"}
-                buttonOuterColor={value === i ? "#2196f3" : "#000"}
-                buttonSize={30}
-                buttonOuterSize={40}
-                buttonStyle={{}}
-                buttonWrapStyle={{ marginLeft: 20 }}
-              />
-            </RadioButton>
-          ))}
-        </RadioForm>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          decelerationRate={0}
+          snapToInterval={225} //your element width
+          snapToAlignment={"center"}
+        >
+          <RadioForm
+            formHorizontal={true}
+            animation={true}
+            initial={checkedColor}
+          >
+            {/* To create radio buttons, loop through your array of options */}
+            {radioButtons.map((obj, i) => (
+              <RadioButton labelHorizontal={true} key={i}>
+                {/*  You can set RadioButtonLabel before RadioButtonInput */}
+                <RadioButtonInput
+                  obj={obj}
+                  index={i}
+                  isSelected={true}
+                  onPress={() => onRadioPress(obj.value)}
+                  borderWidth={2}
+                  buttonInnerColor={obj.value}
+                  buttonOuterColor={
+                    checkedColor === obj.value ? "black" : "white"
+                  }
+                  buttonSize={30}
+                  buttonOuterSize={39}
+                  buttonWrapStyle={{ marginLeft: 12, marginRight:12 }}
+                />
+              </RadioButton>
+            ))}
+          </RadioForm>
+        </ScrollView>
       </View>
     );
   };
@@ -194,13 +187,20 @@ export default function Courses() {
   const styles = (color) =>
     StyleSheet.create({
       courseView: {
-        borderColor: color,
-        borderWidth: 3,
-        borderRadius: 30,
-        width: "100%",
+        backgroundColor: color,
+        borderWidth: 0,
+        borderRadius: 10,
+        width: 350,
         height: 45,
         marginBottom: 12,
         marginTop: 12,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        shadowOffset: { height: 3, width: -3 },
+        shadowColor: color,
+        shadowOpacity: 0.5,
+        shadowRadius: 3,
+        flexDirection: "row",
       },
     });
 
@@ -212,10 +212,24 @@ export default function Courses() {
       color: handleModalNameColor(),
     },
     courseTitle: {
-      fontSize: 24,
+      fontSize: 20,
+      color: "black",
+      justifyContent: "center",
+    },
+    flatList: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    courseIcon: {
+      width: "13%",
+      height: "100%",
+      marginRight: 10,
+    },
+    courseHeaderTitle: {
+      fontSize: 40,
       color: "black",
       textAlign: "center",
-      justifyContent: "center",
+      marginBottom: 10,
     },
   });
 
@@ -236,10 +250,13 @@ export default function Courses() {
               setModalVisible(false);
             }}
           >
-            <Text style={courseScreenStyles.closeText}>Return to Courses</Text>
+            <Ionicons
+              name="arrow-back-outline"
+              size={40}
+              color={modalData.color}
+            />
           </TouchableOpacity>
           <Text style={styles2.courseModalName}>{modalData.name}</Text>
-
           <View>
             <View style={courseScreenStyles.assignmentBorder}>
               <FlatList
@@ -259,7 +276,9 @@ export default function Courses() {
             </View>
           </View>
           <Text style={courseScreenStyles.coursePreferences}>Prefrences</Text>
-          <Text>Color: {modalData.color}</Text>
+          <Text style={{ textAlign: "center", marginTop: 20, fontSize: 20 }}>
+            Color
+          </Text>
 
           <CourseColorRadioButtons />
           <Text>Priority: {modalData.priority}</Text>
@@ -271,26 +290,35 @@ export default function Courses() {
           )}
         </SafeAreaView>
       </Modal>
-      <View>
+      <View style={{ height: 675 }}>
+        <Text style={styles2.courseHeaderTitle}>My Courses</Text>
         <FlatList
           onRefresh={onRefresh}
           refreshing={isRefreshing}
-          ListHeaderComponent={ListHeader}
           data={courses}
+          contentContainerStyle={styles2.flatList}
           // missing item key - possibly uses db id instead solution would be keyExtractorgit
           renderItem={({ item }) => {
             return (
-              <Pressable
-                onPressIn={() => {
-                  handleOnCoursePressIn(item);
+              <TouchableOpacity
+                onPress={() => {
+                  handleOnCoursePress(item);
                 }}
               >
                 <View style={styles(item.color).courseView}>
+                  {item.is_schoology ? (
+                    <Image source={SchoologyIcon} style={styles2.courseIcon} />
+                  ) : (
+                    <Image
+                      source={PlannerPeakIcon}
+                      style={styles2.courseIcon}
+                    />
+                  )}
                   <ListItem.Title style={styles2.courseTitle}>
                     {item.name}
                   </ListItem.Title>
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             );
           }}
         />

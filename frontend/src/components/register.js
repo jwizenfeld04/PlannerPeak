@@ -16,7 +16,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { registerUser } from "../redux/features/user/userSlice";
 import styles from "../styles/styles";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/logo2.png";
 
 export default function Register({ navigation }) {
   // Object that must include first name, last name, email, password, and confirm password sent in Register API Request

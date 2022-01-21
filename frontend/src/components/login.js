@@ -14,7 +14,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/features/user/userSlice";
 import { selectError } from "../redux/features/user/userSlice";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/logo2.png";
 import styles from "../styles/styles";
 
 export default function Login({ navigation }) {
