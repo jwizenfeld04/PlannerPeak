@@ -245,8 +245,6 @@ class SchoologyCourses(APIView):
                 course.name = schoology_courses[i]['course_title']
                 course.schoology_class_id = schoology_courses[i]['course_id']
                 course.schoology_section_id = schoology_courses[i]['id']
-                # TODO: Need to map the integer input of the subjects from schoology to get the right one
-                # TODO: TEST
                 course.subject = mapSchoologyCourseSubject(
                     schoology_courses[i]['subject'])
                 course.is_schoology = True
