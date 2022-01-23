@@ -1,4 +1,3 @@
-from re import sub
 from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
