@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     marginTop: 50,
-    marginBottom: 100,
+    marginBottom: 100,    
   },
   inputView: {
     backgroundColor: "#ADD8E6",
