@@ -244,7 +244,8 @@ class SchoologyCourses(APIView):
                 course.name = schoology_courses[i]['course_title']
                 course.schoology_class_id = schoology_courses[i]['course_id']
                 course.schoology_section_id = schoology_courses[i]['id']
-                course.subject = 'Test'
+                course.subject = mapSchoologyCourseSubject(
+                    schoology_courses[i]['subject_area'])
                 course.is_schoology = True
                 course.save()
         for id in user_schoology_course_ids:
@@ -259,27 +260,27 @@ class SchoologyCourses(APIView):
         return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
 
 
-# def mapSchoologyCourseSubject(subject):
-#     if subject == 0:
-#         return "Other"
-#     if subject == 1:
-#         return "Health & Physical Education"
-#     if subject == 2:
-#         return "Langauge Arts"
-#     if subject == 3:
-#         return "Mathematics"
-#     if subject == 4:
-#         return "Professional Development"
-#     if subject == 5:
-#         return "Science"
-#     if subject == 6:
-#         return "Social Studies"
-#     if subject == 7:
-#         return "Special Education"
-#     if subject == 8:
-#         return "Technology"
-#     if subject == 9:
-#         return "Arts"
+def mapSchoologyCourseSubject(subject):
+    if subject == "0":
+        return "Other"
+    if subject == "1":
+        return "Health & Physical Education"
+    if subject == "2":
+        return "Langauge Arts"
+    if subject == "3":
+        return "Mathematics"
+    if subject == "4":
+        return "Professional Development"
+    if subject == "5":
+        return "Science"
+    if subject == "6":
+        return "Social Studies"
+    if subject == "7":
+        return "Special Education"
+    if subject == "8":
+        return "Technology"
+    if subject == "9":
+        return "Arts"
 
 
 class SchoologyGrades(APIView):
