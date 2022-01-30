@@ -54,6 +54,14 @@ class Course(models.Model):
         return self.name + " -- " + self.user.first_name + " " + self.user.last_name
 
 
+class CourseMeetingDay(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    meeting_day = models.CharField(max_length=10, blank=True)
+
+    def __str__(self):
+        return self.course.name + "on " + self.meeting_day
+
+
 class Assignment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)

@@ -1,4 +1,4 @@
-from .models import Course, Assignment, CustomUser
+from .models import Course, Assignment, CustomUser, CourseMeetingDay
 from rest_framework import serializers
 from django.db import transaction
 from dj_rest_auth.registration.serializers import RegisterSerializer
@@ -53,6 +53,12 @@ class CourseSerializer(serializers.ModelSerializer):
             'notifications': {'required': False},
             'is_schoology': {'required': False},
         }
+
+
+class CourseMeetingDaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseMeetingDay
+        fields = ['id', 'course', 'meeting_day']
 
 
 class AssignmentSerializer(serializers.ModelSerializer):

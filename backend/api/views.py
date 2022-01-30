@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from schoolopy.authentication import Auth
 from .serializers import CourseSerializer, AssignmentSerializer, SchoologyCallbackSerializer
-from .models import Course, Assignment, CustomUser, SchoologyTokens
+from .models import Course, Assignment, CustomUser, SchoologyTokens, CourseMeetingDay
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import *
@@ -246,8 +246,10 @@ class SchoologyCourses(APIView):
                 course.schoology_section_id = schoology_courses[i]['id']
                 course.subject = mapSchoologyCourseSubject(
                     schoology_courses[i]['subject_area'])
+                meeting_days = schoology_courses[i]['meeting_days']
                 course.is_schoology = True
                 course.save()
+                addMeetingDays(course.id, meeting_days)
         for id in user_schoology_course_ids:
             course = Course.objects.get(
                 user_id=user.id, schoology_section_id=id)
@@ -258,6 +260,29 @@ class SchoologyCourses(APIView):
                 course.is_active = True
                 course.save(update_fields=['is_active'])
         return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
+
+
+def addMeetingDays(course_id, meeting_days):
+    for day in meeting_days:
+        name_of_day = None
+        if day == '0':
+            name_of_day = "Sunday"
+        if day == '1':
+            name_of_day = "Monday"
+        if day == '2':
+            name_of_day = "Tuesday"
+        if day == '3':
+            name_of_day = "Wednesday"
+        if day == '4':
+            name_of_day = "Thursday"
+        if day == '5':
+            name_of_day = "Friday"
+        if day == '6':
+            name_of_day = "Saturday"
+        course_meetings_day = CourseMeetingDay()
+        course_meetings_day.course_id = course_id
+        course_meetings_day.meeting_day = name_of_day
+        course_meetings_day.save()
 
 
 def mapSchoologyCourseSubject(subject):
