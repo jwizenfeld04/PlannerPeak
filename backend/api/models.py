@@ -59,7 +59,7 @@ class CourseMeetingDay(models.Model):
     meeting_day = models.CharField(max_length=10, blank=True)
 
     def __str__(self):
-        return self.course.name + "on " + self.meeting_day
+        return self.course.name + " on " + self.meeting_day
 
 
 class Assignment(models.Model):
