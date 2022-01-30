@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, Group
 from .forms import RegisterForm
-from .models import CustomUser, Course, Assignment, SchoologyTokens
+from .models import CustomUser, Course, Assignment, SchoologyTokens, CourseMeetingDay
 
 
 class CustomUserAdmin(UserAdmin):
@@ -42,3 +42,4 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Course)
 admin.site.register(Assignment)
 admin.site.register(SchoologyTokens)
+admin.site.register(CourseMeetingDay)
