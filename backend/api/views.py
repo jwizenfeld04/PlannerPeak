@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from schoolopy.authentication import Auth
 from .serializers import CourseSerializer, AssignmentSerializer, SchoologyCallbackSerializer
-from .models import Course, Assignment, CustomUser, SchoologyTokens, CourseMeetingDay
+from .models import Course, Assignment, CustomUser, SchoologyToken, CourseMeetingDay
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import *
@@ -197,7 +197,7 @@ class SchoologyAuth(APIView):
         auth.authorize()
         auth.oauth.token = {'oauth_token': auth.access_token,
                             'oauth_token_secret': auth.access_token_secret}
-        schoology_tokens = SchoologyTokens()
+        schoology_tokens = SchoologyToken()
         schoology_tokens.user_id = user.id
         schoology_tokens.access_token = auth.access_token
         schoology_tokens.access_secret = auth.access_token_secret
@@ -211,7 +211,7 @@ class SchoologyAuth(APIView):
 
 def getSchoologyTokens(user_id):
     try:
-        tokens = SchoologyTokens.objects.get(user_id=user_id)
+        tokens = SchoologyToken.objects.get(user_id=user_id)
     except:
         return Response({'Unauthorized': 'Please Authorize with Schoology'}, status=HTTP_401_UNAUTHORIZED)
     access_token = tokens.access_token
