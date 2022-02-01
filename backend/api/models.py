@@ -80,8 +80,8 @@ class Assignment(models.Model):
 
 # TODO: Make user only allowed to have one SchoologyTokens entry
 
-class SchoologyTokens(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+class SchoologyToken(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=100)
     access_secret = models.CharField(max_length=100)
 
@@ -91,8 +91,8 @@ class SchoologyTokens(models.Model):
 # TODO: Make user only allowed to have one GoogleCalednarTokens entry
 
 
-class GoogleCalendarTokens(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+class GoogleCalendarToken(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     token = models.CharField(max_length=100)
     refresh_token = models.CharField(max_length=100)
 

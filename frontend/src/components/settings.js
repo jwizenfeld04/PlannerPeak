@@ -37,6 +37,8 @@ export default function Settings() {
     }
   }, [schoologyUrl]);
 
+  useEffect(() => {}, [isSchoologyAuth]);
+
   // Creates alert and when "Continue" is pressed, makes API request to retreive Schoology URL
   const schoologyAlert = () =>
     Alert.alert("Connet Your Schoology Account", "", [
