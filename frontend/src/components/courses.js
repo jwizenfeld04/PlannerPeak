@@ -98,6 +98,27 @@ export default function Courses() {
     );
   };
 
+  const PriorityBoxes = () => {
+
+    function onPriorityPress(number) {
+      setModalData((prevState) => ({
+        ...prevState,
+        priority: number,
+      }))
+    }
+
+    return (
+      <View>
+        <Text>Priority: {modalData.priority}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Button title="1" onPress={() => {onPriorityPress(1)}} />
+          <Button title="2" onPress={() => {onPriorityPress(2)}} />
+          <Button title="3" onPress={() => {onPriorityPress(3)}} />
+        </View>
+      </View>
+    );
+  };
+
   const CourseColorRadioButtons = () => {
     const [checkedColor, setCheckedColor] = useState(modalData.color);
 
@@ -139,7 +160,7 @@ export default function Courses() {
                   }
                   buttonSize={30}
                   buttonOuterSize={39}
-                  buttonWrapStyle={{ marginLeft: 12, marginRight:12 }}
+                  buttonWrapStyle={{ marginLeft: 12, marginRight: 12 }}
                 />
               </RadioButton>
             ))}
@@ -281,7 +302,7 @@ export default function Courses() {
           </Text>
 
           <CourseColorRadioButtons />
-          <Text>Priority: {modalData.priority}</Text>
+          <PriorityBoxes />
           <NotificationCheckBox />
           {modalData.notifications ? (
             <Text>Notifications Enabled</Text>
@@ -326,4 +347,3 @@ export default function Courses() {
     </SafeAreaView>
   );
 }
-
