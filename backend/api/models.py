@@ -1,4 +1,4 @@
-from re import M
+from re import M, T
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
@@ -69,10 +69,14 @@ class Assignment(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField()
     grade = models.CharField(max_length=10, blank=True)
+    max_points = models.IntegerField(blank=True, null=True)
     schoology_assignment_id = models.CharField(max_length=15, blank=True)
     assignment_type = models.CharField(max_length=20, blank=True)
     is_completed = models.BooleanField(default=False)
     is_schoology = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+    scheduled_start = models.DateTimeField(blank=True, null=True)
+    scheduled_finish = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.name + " -- " + self.course.user.first_name + " " + self.course.user.last_name
