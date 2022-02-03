@@ -388,11 +388,9 @@ class ScheduleAssignments(APIView):
 def addScheduleTimes(assignments):
     current_time = datetime.now()
     for assignment in assignments:
-        current_assignment = Assignment.objects.get(id=assignment.id)
-        current_assignment.scheduled_start = current_time
-        current_assignment.scheduled_finish = current_time + \
-            timedelta(minutes=1)
-        current_assignment.save(
+        assignment.scheduled_start = current_time
+        assignment.scheduled_finish = current_time + timedelta(minutes=1)
+        assignment.save(
             update_fields=['scheduled_start', 'scheduled_finish'])
         current_time += timedelta(minutes=1)
 

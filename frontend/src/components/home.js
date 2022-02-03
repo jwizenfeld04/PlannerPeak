@@ -13,6 +13,7 @@ import { getUserInfo } from "../redux/features/user/userSlice";
 import { useState, useEffect } from "react";
 import { selectToken, selectUserName } from "../redux/features/user/userSlice";
 import { selectIsVerified } from "../redux/features/schoology/schoologySlice";
+import { scheduleAssignments } from "../redux/features/assignment/assignmentSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ export default function Home() {
     <View style={styles.container}>
       <Text>Welcome {name}</Text>
       <CurrentAssignment />
+      <Button title="Update Schedule" onPress={()=> {dispatch(scheduleAssignments(token))}} />
     </View>
   );
 }

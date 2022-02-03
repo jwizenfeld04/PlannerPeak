@@ -35,6 +35,22 @@ export const getCourseSpecificAssignments = createAsyncThunk(
   }
 );
 
+export const scheduleAssignments = createAsyncThunk(
+  "user/scheduleAssignments",
+  async (token, thunkAPI) => {
+    const response = await axios
+      .get(`https://plannerpeak.herokuapp.com/api/schedule-assignments/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .catch((error) => {
+        throw thunkAPI.rejectWithValue(error.response.data);
+      });
+    return response;
+  }
+);
+
 const initialState = {
   assignments: [],
   courseSpecficAssignments: [],
@@ -68,6 +84,15 @@ export const assignmentsSlice = createSlice({
       state.status = "loading";
     },
     [getCourseSpecificAssignments.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+    [scheduleAssignments.fulfilled]: (state, action) => {
+      state.status = "success";
+    },
+    [scheduleAssignments.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [scheduleAssignments.rejected]: (state, action) => {
       state.status = "failed";
     },
   },
