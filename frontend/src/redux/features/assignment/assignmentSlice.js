@@ -61,8 +61,10 @@ export const getCurrentAssignment = createAsyncThunk(
         },
       })
       .catch((error) => {
+        console.log(error)
         throw thunkAPI.rejectWithValue(error.response.data);
       });
+    console.log(response)
     return response;
   }
 );
