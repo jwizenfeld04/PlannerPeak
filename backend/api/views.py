@@ -377,11 +377,14 @@ class ScheduleAssignments(APIView):
         all_assignments = []
         for id in course_ids:
             assignments = Assignment.objects.filter(
-                course_id=id)
+                course_id=id).order_by('id')
             if len(assignments) > 0:
                 all_assignments.append(
-                    self.serializer_class(assignments, many=True).data)
-        addScheduleTimes(all_assignments)
+                    assignments)
+        flatlist_all_assignments = [
+            element for sublist in all_assignments for element in sublist]
+        # TODO: Change when this addScheduleTimes function is run
+        addScheduleTimes(flatlist_all_assignments)
         return Response({'Success': "Added Assignment Times"}, status=HTTP_200_OK)
 
 
