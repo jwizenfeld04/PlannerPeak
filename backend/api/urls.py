@@ -1,6 +1,10 @@
 from django.urls import path
 from django.urls.conf import include
-from .views import *
+from views.schoologyViews import *
+from views.courseViews import *
+from views.assignmentViews import *
+from views.scheduleViews import *
+from views.googleCalendarViews import *
 
 
 urlpatterns = [
