@@ -8,6 +8,8 @@ from views.googleCalendarViews import *
 
 
 urlpatterns = [
+    path('current-assignment/', CurrentAssignment.as_view(),
+         name='current_assignment'),
     path('schedule-assignments/', ScheduleAssignments.as_view(),
          name='schedule_assignments'),
     path('schoology-assignments/', SchoologyAssignments.as_view(),

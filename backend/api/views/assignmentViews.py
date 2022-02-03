@@ -8,13 +8,41 @@ from rest_framework.status import *
 from datetime import datetime
 
 
-class UserCurrentAssignmentView(APIView):
+def getAssignments(user_id):
+    course_ids = Course.objects.filter(
+        user_id=user_id).values_list('pk', flat=True).order_by('-priority')
+    if len(course_ids) == 0:
+        return Response({"No Content": "No Assignments Found"}, status=HTTP_204_NO_CONTENT)
+    all_assignments = []
+    for id in course_ids:
+        assignments = Assignment.objects.filter(
+            course_id=id).order_by('due_date')
+        if len(assignments) > 0:
+            all_assignments.append(
+                assignments)
+    flatlist_all_assignments = [
+        element for sublist in all_assignments for element in sublist]
+    return flatlist_all_assignments
+
+
+class CurrentAssignment(APIView):
     serializer_class = AssignmentSerializer
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        pass
+        assignments = getAssignments(request.user.id)
+        current_assignment = None
+        if len(assignments) == 0:
+            return Response({"No Content": "No Assignments Found"}, status=HTTP_204_NO_CONTENT)
+        for i in range(len(assignments)):
+            current_time = datetime.now()
+            if assignments[i].scheduled_start > current_time:
+                if current_assignment and current_assignment.scheduled_start < assignments[i].scheduled_start:
+                    current_assignment = assignments[i]
+                else:
+                    current_assignment = assignments[i]
+        return Response(self.serializer_class(current_assignment).data, status=HTTP_200_OK)
 
 
 class UserAssignmentView(APIView):
