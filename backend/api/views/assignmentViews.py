@@ -5,7 +5,7 @@ from api.serializers import AssignmentSerializer
 from api.models import Course, Assignment
 from rest_framework.response import Response
 from rest_framework.status import *
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def getAssignments(user_id):
@@ -32,16 +32,21 @@ class CurrentAssignment(APIView):
 
     def get(self, request, format=None):
         assignments = getAssignments(request.user.id)
+        current_time = datetime.now(timezone.utc)
+        # Removes all assignments from array that passed the current time
+        new_assignments = [
+            x for x in assignments if not x.scheduled_start < current_time]
         current_assignment = None
-        if len(assignments) == 0:
+        if len(new_assignments) == 0:
             return Response({"No Content": "No Assignments Found"}, status=HTTP_204_NO_CONTENT)
-        for i in range(len(assignments)):
-            current_time = datetime.now()
-            if assignments[i].scheduled_start > current_time:
-                if current_assignment and current_assignment.scheduled_start < assignments[i].scheduled_start:
-                    current_assignment = assignments[i]
-                else:
-                    current_assignment = assignments[i]
+        for assignment in new_assignments:
+            if current_assignment == None:
+                current_assignment = assignment
+            # Checks which assignment is closest to current time
+            elif assignment.scheduled_start > current_time:
+                if current_assignment.scheduled_start > assignment.scheduled_start:
+                    # Updates assignment to the closest to current time
+                    current_assignment = assignment
         return Response(self.serializer_class(current_assignment).data, status=HTTP_200_OK)
 
 

@@ -17,6 +17,8 @@ import {
   scheduleAssignments,
   selectCurrentAssignment,
   getCurrentAssignment,
+  getCurrentSchedule,
+  selectCurrentSchedule
 } from "../redux/features/assignment/assignmentSlice";
 
 export default function Home() {
@@ -25,10 +27,10 @@ export default function Home() {
   const name = useSelector(selectUserName);
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
   const currentAssignment = useSelector(selectCurrentAssignment);
+  const schedule = useSelector(selectCurrentSchedule)
 
   useEffect(() => {
     dispatch(getUserInfo(token)); // Rerenders user info any time page renders or schoology becomes authenticated
-    dispatch(getCurrentAssignment(token));
   }, [isVerified]);
 
   // useEffect(() => {
@@ -71,6 +73,9 @@ export default function Home() {
           dispatch(scheduleAssignments(token));
         }}
       />
+      <Button title="Get Current Assignment" onPress={()=> {dispatch(getCurrentAssignment(token));}} />
+      <Button title="Get Current Schedule" onPress={()=> {dispatch(getCurrentSchedule(token))}} />
+      <Button title="Log Current Schedule" onPress={()=> console.log(schedule)} />
     </View>
   );
 }
