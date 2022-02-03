@@ -13,22 +13,33 @@ import { getUserInfo } from "../redux/features/user/userSlice";
 import { useState, useEffect } from "react";
 import { selectToken, selectUserName } from "../redux/features/user/userSlice";
 import { selectIsVerified } from "../redux/features/schoology/schoologySlice";
-import { scheduleAssignments } from "../redux/features/assignment/assignmentSlice";
+import { scheduleAssignments, selectCurrentAssignment, getCurrentAssignment } from "../redux/features/assignment/assignmentSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const name = useSelector(selectUserName);
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
+  const currentAssignment = useSelector(selectCurrentAssignment)
 
   useEffect(() => {
     dispatch(getUserInfo(token)); // Rerenders user info any time page renders or schoology becomes authenticated
   }, [isVerified]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {  //assign interval to a variable to clear it.
+      dispatch(getCurrentAssignment(token))
+    }, 5000)
+    console.log("HERE1")
+    return () => clearInterval(intervalId); //This is important
+   
+  }, [dispatch])
+
   const CurrentAssignment = () => {
     return (
       <View style={styles.currentAssignmentView}>
-        <Text style={styles.currentAssignmentText}>Current Assignment</Text>
+        <Text style={styles.currentAssignmentText}>{currentAssignment.name}</Text>
+        <Text style={styles.currentAssignmentText}>{currentAssignment.scheduled_start}</Text>
       </View>
     )
   }

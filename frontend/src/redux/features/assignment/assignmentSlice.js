@@ -51,9 +51,26 @@ export const scheduleAssignments = createAsyncThunk(
   }
 );
 
+export const getCurrentAssignment = createAsyncThunk(
+  "user/getCurrentAssignment",
+  async (token, thunkAPI) => {
+    const response = await axios
+      .get(`https://plannerpeak.herokuapp.com/api/current-assignment/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .catch((error) => {
+        throw thunkAPI.rejectWithValue(error.response.data);
+      });
+    return response;
+  }
+);
+
 const initialState = {
   assignments: [],
   courseSpecficAssignments: [],
+  currentAssignment: {},
 };
 
 export const assignmentsSlice = createSlice({
@@ -95,11 +112,22 @@ export const assignmentsSlice = createSlice({
     [scheduleAssignments.rejected]: (state, action) => {
       state.status = "failed";
     },
+    [getCurrentAssignment.fulfilled]: (state, action) => {
+      state.currentAssignment = action.payload.data
+      state.status = "success";
+    },
+    [getCurrentAssignment.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [getCurrentAssignment.rejected]: (state, action) => {
+      state.status = "failed";
+    },
   },
 });
 
 // Access assignments with useSelector(selectAssignments)
 export const selectAssignments = (state) => state.assignment.assignments;
 export const selectCourseSpecficAssignments = (state) => state.assignment.courseSpecficAssignments;
+export const selectCurrentAssignment = (state) => state.assignment.currentAssignment;
 
 export default assignmentsSlice.reducer;
