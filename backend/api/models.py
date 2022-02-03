@@ -74,7 +74,6 @@ class Assignment(models.Model):
     assignment_type = models.CharField(max_length=20, blank=True)
     is_completed = models.BooleanField(default=False)
     is_schoology = models.BooleanField(default=False)
-    completed = models.BooleanField(default=False)
     scheduled_start = models.DateTimeField(blank=True, null=True)
     scheduled_finish = models.DateTimeField(blank=True, null=True)
 
