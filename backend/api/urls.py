@@ -4,6 +4,8 @@ from .views import *
 
 
 urlpatterns = [
+    path('schedule-assignments/', ScheduleAssignments.as_view(),
+         name='schedule_assignments'),
     path('schoology-assignments/', SchoologyAssignments.as_view(),
          name='schoology_assignments'),
     path('schoology-grades/', SchoologyGrades.as_view(), name='schoology_grades'),

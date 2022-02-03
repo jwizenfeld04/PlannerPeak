@@ -7,7 +7,7 @@ from .models import Course, Assignment, CustomUser, SchoologyToken, CourseMeetin
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import *
-from datetime import datetime
+from datetime import datetime, timedelta
 import schoolopy
 import os
 from os.path import join, dirname
@@ -362,3 +362,45 @@ class SchoologyAssignments(APIView):
 
 class GoogleCalendar(APIView):
     pass
+
+
+class ScheduleAssignments(APIView):
+    serializer_class = AssignmentSerializer
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        course_ids = Course.objects.filter(
+            user_id=request.user.id).values_list('pk', flat=True).order_by('-priority')
+        if len(course_ids) == 0:
+            return Response({"No Content": "No Assignments Found"}, status=HTTP_204_NO_CONTENT)
+        all_assignments = []
+        for id in course_ids:
+            assignments = Assignment.objects.filter(
+                course_id=id)
+            if len(assignments) > 0:
+                all_assignments.append(
+                    self.serializer_class(assignments, many=True).data)
+        addScheduleTimes(all_assignments)
+        return Response({'Success': "Added Assignment Times"}, status=HTTP_200_OK)
+
+
+def addScheduleTimes(assignments):
+    current_time = datetime.now()
+    for assignment in assignments:
+        current_assignment = Assignment.objects.get(id=assignment.id)
+        current_assignment.scheduled_start = current_time
+        current_assignment.scheduled_finish = current_time + \
+            timedelta(minutes=1)
+        current_assignment.save(
+            update_fields=['scheduled_start', 'scheduled_finish'])
+        current_time += timedelta(minutes=1)
+
+
+class UserCurrentAssignmentView(APIView):
+    serializer_class = AssignmentSerializer
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        pass

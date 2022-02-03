@@ -24,9 +24,18 @@ export default function Home() {
     dispatch(getUserInfo(token)); // Rerenders user info any time page renders or schoology becomes authenticated
   }, [isVerified]);
 
+  const CurrentAssignment = () => {
+    return (
+      <View style={styles.currentAssignmentView}>
+        <Text style={styles.currentAssignmentText}>Current Assignment</Text>
+      </View>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <Text>Welcome {name}</Text>
+      <CurrentAssignment />
     </View>
   );
 }
@@ -42,4 +51,12 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 2,
   },
+  currentAssignmentView: {
+    paddingTop: 20,
+  },
+  currentAssignmentText: {
+    borderColor: 'black',
+    borderWidth: 2,
+    fontSize: 20,
+  }
 });
