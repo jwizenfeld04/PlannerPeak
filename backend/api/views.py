@@ -377,7 +377,7 @@ class ScheduleAssignments(APIView):
         all_assignments = []
         for id in course_ids:
             assignments = Assignment.objects.filter(
-                course_id=id).order_by('id')
+                course_id=id).order_by('due_date')
             if len(assignments) > 0:
                 all_assignments.append(
                     assignments)
