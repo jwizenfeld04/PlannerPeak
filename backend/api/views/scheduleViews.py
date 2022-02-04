@@ -6,7 +6,6 @@ from api.models import Course, Assignment
 from rest_framework.response import Response
 from rest_framework.status import *
 from datetime import datetime, timedelta, timezone
-import datetime
 
 
 class ScheduleAssignments(APIView):
