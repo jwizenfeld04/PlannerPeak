@@ -28,6 +28,24 @@ export default function Home() {
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
   const currentAssignment = useSelector(selectCurrentAssignment);
   const schedule = useSelector(selectCurrentSchedule);
+  const [remainingTime, setRemainingTime] = useState(null);
+
+  const getCurrentAssignmentTimeRemaining = (assignment) => {
+    const now = new Date();
+    const today = new Date(now.toUTCString().slice(0, -4));
+    const date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    const time =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const dateTime = date + " " + time;
+    const finishTime = assignment.scheduled_finish;
+    setRemainingTime(finishTime - dateTime);
+    console.log(remainingTime)
+  };
 
   useEffect(() => {
     dispatch(getUserInfo(token)); // Rerenders user info any time page renders or schoology becomes authenticated
@@ -42,6 +60,16 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(intervalId); //This is important
   }, [schedule]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      //assign interval to a variable to clear it.
+      if (schedule.length !== 0) {
+        getCurrentAssignmentTimeRemaining(currentAssignment);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId); //This is important
+  }, [currentAssignment, remainingTime]);
 
   const CurrentAssignment = () => {
     return (
@@ -78,6 +106,12 @@ export default function Home() {
         title="Get Current Schedule"
         onPress={() => {
           dispatch(getCurrentSchedule(token));
+        }}
+      />
+      <Button
+        title="Get Time Remaining"
+        onPress={() => {
+          getCurrentAssignmentTimeRemaining(currentAssignment);
         }}
       />
     </View>
