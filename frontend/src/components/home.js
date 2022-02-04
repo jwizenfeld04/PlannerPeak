@@ -32,9 +32,16 @@ export default function Home() {
 
   const getCurrentAssignmentTimeRemaining = (assignment) => {
     const now = new Date();
-    const currentTime = new Date(now.toUTCString().slice(0, -4));
+    now.setMilliseconds(0);
     const finishTime = assignment.scheduled_finish;
-    setRemainingTime(finishTime - currentTime);
+    const formattedFinish = new Date(finishTime);
+    formattedFinish.setMilliseconds(0)
+    const difference = formattedFinish - now;
+    if (difference < 0) {
+      setRemainingTime(0);
+    } else {
+      setRemainingTime(difference);
+    }
   };
 
   useEffect(() => {
@@ -47,7 +54,7 @@ export default function Home() {
       if (schedule.length !== 0) {
         dispatch(getCurrentSchedule(token));
       }
-    }, 5000);
+    }, 1000);
     return () => clearInterval(intervalId); //This is important
   }, [schedule]);
 
@@ -59,7 +66,7 @@ export default function Home() {
       }
     }, 1000);
     return () => clearInterval(intervalId); //This is important
-  }, [currentAssignment, remainingTime]);
+  }, [currentAssignment]);
 
   const CurrentAssignment = () => {
     return (
@@ -72,6 +79,7 @@ export default function Home() {
             <Text style={styles.currentAssignmentText}>
               {currentAssignment.scheduled_start}
             </Text>
+            <Text>{remainingTime}</Text>
           </View>
         ) : (
           <View>

@@ -23,15 +23,15 @@ def addScheduleTimes(assignments):
     current_time = datetime.now(tz=timezone.utc)
     for assignment in assignments:
         current_assignment = Assignment.objects.get(id=assignment.id)
-        scheduled_start = current_time + timedelta(minutes=.5)
+        scheduled_start = current_time + timedelta(minutes=1)
         current_assignment.scheduled_start = scheduled_start.strftime(
             '%Y-%-m-%-d %-H:%M:%S')
-        scheduled_finish = current_time + timedelta(minutes=1)
+        scheduled_finish = current_time + timedelta(minutes=3)
         current_assignment.scheduled_finish = scheduled_finish.strftime(
             '%Y-%-m-%-d %-H:%M:%S')
         current_assignment.save(
             update_fields=['scheduled_start', 'scheduled_finish'])
-        current_time += timedelta(minutes=.5)
+        current_time += timedelta(minutes=2)
 
 
 def getAssignments(user_id):
@@ -94,6 +94,6 @@ class CurrentSchedule(APIView):
         current_time = datetime.now(timezone.utc)
         # Removes all assignments from array that passed the current time
         new_assignments = [
-            x for x in assignments if not x.scheduled_start < current_time]
+            x for x in assignments if not x.scheduled_finish < current_time]
         ordered_assignments = orderAssignments(new_assignments)
         return Response(self.serializer_class(ordered_assignments, many=True).data, status=HTTP_200_OK)
