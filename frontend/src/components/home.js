@@ -44,7 +44,8 @@ export default function Home() {
     const dateTime = date + " " + time;
     const finishTime = assignment.scheduled_finish;
     setRemainingTime(finishTime - dateTime);
-    console.log(remainingTime)
+    console.log(dateTime)
+    console.log(finishTime)
   };
 
   useEffect(() => {
