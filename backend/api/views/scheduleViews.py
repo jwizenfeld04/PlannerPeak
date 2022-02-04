@@ -22,16 +22,17 @@ class ScheduleAssignments(APIView):
 
 def addScheduleTimes(assignments):
     current_time = datetime.now(tz=timezone.utc)
-    formatted_time = current_time.strftime('%Y-%-m-%-d %-H:%M:%S')
     for assignment in assignments:
         current_assignment = Assignment.objects.get(id=assignment.id)
-        current_assignment.scheduled_start = formatted_time + \
-            timedelta(minutes=.5)
-        current_assignment.scheduled_finish = formatted_time + \
-            timedelta(minutes=1)
+        scheduled_start = current_time + timedelta(minutes=.5)
+        current_assignment.scheduled_start = scheduled_start.strftime(
+            '%Y-%-m-%-d %-H:%M:%S')
+        scheduled_finish = current_time + timedelta(minutes=1)
+        current_assignment.scheduled_finish = scheduled_finish.strftime(
+            '%Y-%-m-%-d %-H:%M:%S')
         current_assignment.save(
             update_fields=['scheduled_start', 'scheduled_finish'])
-        formatted_time += timedelta(minutes=.5)
+        current_time += timedelta(minutes=.5)
 
 
 def getAssignments(user_id):
