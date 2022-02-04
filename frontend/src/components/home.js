@@ -32,20 +32,9 @@ export default function Home() {
 
   const getCurrentAssignmentTimeRemaining = (assignment) => {
     const now = new Date();
-    const today = new Date(now.toUTCString().slice(0, -4));
-    const date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-    const time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const dateTime = date + " " + time;
+    const currentTime = new Date(now.toUTCString().slice(0, -4));
     const finishTime = assignment.scheduled_finish;
-    setRemainingTime(finishTime - dateTime);
-    console.log(dateTime)
-    console.log(finishTime)
+    setRemainingTime(finishTime - currentTime);
   };
 
   useEffect(() => {

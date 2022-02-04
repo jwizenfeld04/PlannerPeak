@@ -68,7 +68,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AUTH_USER_MODEL = "api.CustomUser"
 
 REST_FRAMEWORK = {
-    'DATETIME_FORMAT': '%Y-%-m-%-d %-H:%M:%S',
+    'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S.%fZ',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
