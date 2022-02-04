@@ -18,7 +18,7 @@ import {
   selectCurrentAssignment,
   getCurrentAssignment,
   getCurrentSchedule,
-  selectCurrentSchedule
+  selectCurrentSchedule,
 } from "../redux/features/assignment/assignmentSlice";
 
 export default function Home() {
@@ -27,20 +27,21 @@ export default function Home() {
   const name = useSelector(selectUserName);
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
   const currentAssignment = useSelector(selectCurrentAssignment);
-  const schedule = useSelector(selectCurrentSchedule)
+  const schedule = useSelector(selectCurrentSchedule);
 
   useEffect(() => {
     dispatch(getUserInfo(token)); // Rerenders user info any time page renders or schoology becomes authenticated
   }, [isVerified]);
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     //assign interval to a variable to clear it.
-  //     dispatch(getCurrentAssignment(token));
-  //   }, 5000);
-  //   console.log("HERE1");
-  //   return () => clearInterval(intervalId); //This is important
-  // }, [currentAssignment]);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      //assign interval to a variable to clear it.
+      if (schedule.length !== 0) {
+        dispatch(getCurrentSchedule(token));
+      }
+    }, 5000);
+    return () => clearInterval(intervalId); //This is important
+  }, [schedule]);
 
   const CurrentAssignment = () => {
     return (
@@ -73,9 +74,12 @@ export default function Home() {
           dispatch(scheduleAssignments(token));
         }}
       />
-      <Button title="Get Current Assignment" onPress={()=> {dispatch(getCurrentAssignment(token));}} />
-      <Button title="Get Current Schedule" onPress={()=> {dispatch(getCurrentSchedule(token))}} />
-      <Button title="Log Current Schedule" onPress={()=> console.log(schedule)} />
+      <Button
+        title="Get Current Schedule"
+        onPress={() => {
+          dispatch(getCurrentSchedule(token));
+        }}
+      />
     </View>
   );
 }

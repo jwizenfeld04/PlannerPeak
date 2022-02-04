@@ -143,6 +143,7 @@ export const assignmentsSlice = createSlice({
     },
     [getCurrentSchedule.fulfilled]: (state, action) => {
       state.schedule = action.payload.data
+      state.currentAssignment = action.payload.data[0]
       state.status = "success";
     },
     [getCurrentSchedule.pending]: (state, action) => {
