@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { apiProxy } from "../../../api/httpCommon";
 
 // API Request that returns array of all user assignments
 // Array is further broken down to sub-arrays per class that contain all assignments
@@ -7,7 +8,7 @@ export const getUserAssignments = createAsyncThunk(
   "user/getUserAssignments",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/user-assignments/`, {
+      .get(`${apiProxy}/api/user-assignments/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -23,7 +24,7 @@ export const getCourseSpecificAssignments = createAsyncThunk(
   "user/getCourseSpecificAssignments",
   async (modalData, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/user-assignments/${modalData.id}`, {
+      .get(`${apiProxy}/api/user-assignments/${modalData.id}`, {
         headers: {
           Authorization: `Token ${modalData.token}`,
         },
@@ -39,7 +40,7 @@ export const scheduleAssignments = createAsyncThunk(
   "user/scheduleAssignments",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schedule-assignments/`, {
+      .get(`${apiProxy}/api/schedule-assignments/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -56,7 +57,7 @@ export const getCurrentAssignment = createAsyncThunk(
   "user/getCurrentAssignment",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/current-assignment/`, {
+      .get(`${apiProxy}/api/current-assignment/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -73,7 +74,7 @@ export const getCurrentSchedule = createAsyncThunk(
   "user/getCurrentSchedule",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/current-schedule/`, {
+      .get(`${apiProxy}/api/current-schedule/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -90,7 +91,7 @@ export const getSpecificDateSchedule = createAsyncThunk(
   "user/getSpecificDateSchedule",
   async (scheduleData, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schedule-date/${scheduleData.date}/`, {
+      .get(`${apiProxy}/api/schedule-date/${scheduleData.date}/`, {
         headers: {
           Authorization: `Token ${scheduleData.token}`,
         },

@@ -6,3 +6,5 @@ export default axios.create({
     "Content-type": "application/json",
   },
 });
+
+export const apiProxy = "https://plannerpeak.herokuapp.com";
