@@ -19,7 +19,10 @@ import {
   getCurrentAssignment,
   getCurrentSchedule,
   selectCurrentSchedule,
+  getSpecificDateSchedule,
+  selectDateSchedule,
 } from "../redux/features/assignment/assignmentSlice";
+import ScrollCalendar from "./scrollCalendar";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -29,19 +32,18 @@ export default function Home() {
   const currentAssignment = useSelector(selectCurrentAssignment);
   const schedule = useSelector(selectCurrentSchedule);
   const [remainingTime, setRemainingTime] = useState(null);
+  const dateSchedule = useSelector(selectDateSchedule);
+  const [scheduleData, setScheduleData] = useState(null);
 
   const getCurrentAssignmentTimeRemaining = (assignment) => {
     const now = new Date();
-    now.setMilliseconds(0);
-    const finishTime = assignment.scheduled_finish;
-    const formattedFinish = new Date(finishTime);
-    formattedFinish.setMilliseconds(0)
-    const difference = formattedFinish - now;
-    if (difference < 0) {
-      setRemainingTime(0);
-    } else {
-      setRemainingTime(difference);
-    }
+    const finish = new Date(assignment.scheduled_finish);
+    setRemainingTime(difMinutes(now, finish));
+  };
+
+  const difMinutes = (dt1, dt2) => {
+    const diff = (dt2.getTime() - dt1.getTime()) / 60000;
+    return Math.abs(Math.ceil(diff)); // change so neg time means skip assignment
   };
 
   useEffect(() => {
@@ -68,6 +70,12 @@ export default function Home() {
     return () => clearInterval(intervalId); //This is important
   }, [currentAssignment]);
 
+  useEffect(() => {
+    if (scheduleData !== null) {
+      dispatch(getSpecificDateSchedule(scheduleData));
+    }
+  }, [scheduleData]);
+
   const CurrentAssignment = () => {
     return (
       <View style={styles.currentAssignmentView}>
@@ -76,10 +84,11 @@ export default function Home() {
             <Text style={styles.currentAssignmentText}>
               {currentAssignment.name}
             </Text>
-            <Text style={styles.currentAssignmentText}>
-              {currentAssignment.scheduled_start}
-            </Text>
-            <Text>{remainingTime}</Text>
+            {remainingTime !== 0 ? (
+              <Text>{remainingTime} minutes left</Text>
+            ) : (
+              <Text></Text>
+            )}
           </View>
         ) : (
           <View>
@@ -92,24 +101,26 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
+      <ScrollCalendar />
       <Text>Welcome {name}</Text>
       <CurrentAssignment />
       <Button
         title="Update Schedule"
         onPress={() => {
           dispatch(scheduleAssignments(token));
-        }}
-      />
-      <Button
-        title="Get Current Schedule"
-        onPress={() => {
           dispatch(getCurrentSchedule(token));
         }}
       />
       <Button
-        title="Get Time Remaining"
+        title="Get Date Schedule"
         onPress={() => {
-          getCurrentAssignmentTimeRemaining(currentAssignment);
+          setScheduleData({ token: token, date: "2022-02-21" });
+        }}
+      />
+      <Button
+        title="Log Schedule"
+        onPress={() => {
+          console.log(dateSchedule);
         }}
       />
     </View>

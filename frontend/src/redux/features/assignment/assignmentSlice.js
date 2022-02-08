@@ -51,6 +51,7 @@ export const scheduleAssignments = createAsyncThunk(
   }
 );
 
+// For notification purposes
 export const getCurrentAssignment = createAsyncThunk(
   "user/getCurrentAssignment",
   async (token, thunkAPI) => {
@@ -85,11 +86,29 @@ export const getCurrentSchedule = createAsyncThunk(
   }
 );
 
+export const getSpecificDateSchedule = createAsyncThunk(
+  "user/getSpecificDateSchedule",
+  async (scheduleData, thunkAPI) => {
+    const response = await axios
+      .get(`https://plannerpeak.herokuapp.com/api/schedule-date/${scheduleData.date}/`, {
+        headers: {
+          Authorization: `Token ${scheduleData.token}`,
+        },
+      })
+      .catch((error) => {
+        console.log(error)
+        throw thunkAPI.rejectWithValue(error.response.data);
+      });
+    return response;
+  }
+);
+
 const initialState = {
   assignments: [],
   courseSpecficAssignments: [],
   currentAssignment: null,
   schedule: [],
+  dateSchedule: [],
 };
 
 export const assignmentsSlice = createSlice({
@@ -152,6 +171,16 @@ export const assignmentsSlice = createSlice({
     [getCurrentSchedule.rejected]: (state, action) => {
       state.status = "failed";
     },
+    [getSpecificDateSchedule.fulfilled]: (state, action) => {
+      state.dateSchedule = action.payload.data
+      state.status = "success";
+    },
+    [getSpecificDateSchedule.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [getSpecificDateSchedule.rejected]: (state, action) => {
+      state.status = "failed";
+    },
   },
 });
 
@@ -160,5 +189,6 @@ export const selectAssignments = (state) => state.assignment.assignments;
 export const selectCourseSpecficAssignments = (state) => state.assignment.courseSpecficAssignments;
 export const selectCurrentAssignment = (state) => state.assignment.currentAssignment;
 export const selectCurrentSchedule = (state) => state.assignment.schedule;
+export const selectDateSchedule = (state) => state.assignment.dateSchedule;
 
 export default assignmentsSlice.reducer;

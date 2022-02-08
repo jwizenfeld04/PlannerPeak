@@ -5,7 +5,7 @@ from api.serializers import AssignmentSerializer
 from api.models import Course, Assignment
 from rest_framework.response import Response
 from rest_framework.status import *
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 
 
 class ScheduleAssignments(APIView):
@@ -97,3 +97,33 @@ class CurrentSchedule(APIView):
             x for x in assignments if not x.scheduled_finish < current_time]
         ordered_assignments = orderAssignments(new_assignments)
         return Response(self.serializer_class(ordered_assignments, many=True).data, status=HTTP_200_OK)
+
+
+def getAssignmentsScheduleDate(user_id, date):
+    course_ids = Course.objects.filter(
+        user_id=user_id).values_list('pk', flat=True)
+    if len(course_ids) == 0:
+        return Response({"No Content": "No Assignments Found"}, status=HTTP_204_NO_CONTENT)
+    all_assignments = []
+    start_of_day = datetime.datetime.combine(date, datetime.time.min)
+    end_of_day = datetime.datetime.combine(date, datetime.time.max)
+    for id in course_ids:
+        assignments = Assignment.objects.filter(
+            course_id=id, scheduled_start__range=(start_of_day, end_of_day)).order_by('scheduled_start')
+        if len(assignments) > 0:
+            all_assignments.append(
+                assignments)
+    flatlist_all_assignments = [
+        element for sublist in all_assignments for element in sublist]
+    return flatlist_all_assignments
+
+
+class SpecficDateSchedule(APIView):
+    serializer_class = AssignmentSerializer
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None, *args, **kwargs):
+        assignments = getAssignmentsScheduleDate(
+            request.user.id, self.kwargs['date'])
+        return Response(self.serializer_class(assignments, many=True).data, status=HTTP_200_OK)

@@ -1,13 +1,17 @@
-from django.urls import path
+from django.urls import path, register_converter
 from django.urls.conf import include
 from .views.schoologyViews import *
 from .views.courseViews import *
 from .views.assignmentViews import *
 from .views.scheduleViews import *
 from .views.googleCalendarViews import *
+from .converters import DateConverter
 
+register_converter(DateConverter, 'date')
 
 urlpatterns = [
+    path('schedule-date/<date:date>/',
+         SpecficDateSchedule.as_view(), name='date_schedule'),
     path('current-schedule/', CurrentSchedule.as_view(), name='current_schedule'),
     path('current-assignment/', CurrentAssignment.as_view(),
          name='current_assignment'),
