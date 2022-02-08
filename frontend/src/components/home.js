@@ -53,7 +53,7 @@ export default function Home() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       //assign interval to a variable to clear it.
-      if (schedule.length !== 0) {
+      if (schedule !== null) {
         dispatch(getCurrentSchedule(token));
       }
     }, 1000);
@@ -63,7 +63,7 @@ export default function Home() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       //assign interval to a variable to clear it.
-      if (schedule.length !== 0) {
+      if (schedule.length !== 0 && currentAssignment !== null) {
         getCurrentAssignmentTimeRemaining(currentAssignment);
       }
     }, 1000);

@@ -107,8 +107,8 @@ const initialState = {
   assignments: [],
   courseSpecficAssignments: [],
   currentAssignment: null,
-  schedule: [],
-  dateSchedule: [],
+  schedule: null,
+  dateSchedule: null,
 };
 
 export const assignmentsSlice = createSlice({
