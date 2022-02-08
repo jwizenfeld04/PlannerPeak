@@ -63,7 +63,7 @@ export default function Home() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       //assign interval to a variable to clear it.
-      if (schedule.length !== 0 && currentAssignment !== null) {
+      if (schedule !== null && currentAssignment !== null) {
         getCurrentAssignmentTimeRemaining(currentAssignment);
       }
     }, 1000);
