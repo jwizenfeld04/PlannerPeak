@@ -5,7 +5,7 @@ from api.serializers import AssignmentSerializer
 from api.models import Course, Assignment
 from rest_framework.response import Response
 from rest_framework.status import *
-from datetime import datetime, timedelta, timezone, date
+from datetime import datetime, timedelta, timezone, date, time
 
 
 class ScheduleAssignments(APIView):
@@ -105,8 +105,8 @@ def getAssignmentsScheduleDate(user_id, date):
     if len(course_ids) == 0:
         return Response({"No Content": "No Assignments Found"}, status=HTTP_204_NO_CONTENT)
     all_assignments = []
-    start_of_day = datetime.combine(date, datetime.time.min)
-    end_of_day = datetime.combine(date, datetime.time.max)
+    start_of_day = datetime.combine(date, time.min)
+    end_of_day = datetime.combine(date, time.max)
     for id in course_ids:
         assignments = Assignment.objects.filter(
             course_id=id, scheduled_start__range=(start_of_day, end_of_day)).order_by('scheduled_start')
