@@ -1,4 +1,3 @@
-from re import M, T
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
@@ -81,7 +80,47 @@ class Assignment(models.Model):
         return self.name + " -- " + self.course.user.first_name + " " + self.course.user.last_name
 
 
-# TODO: Make user only allowed to have one SchoologyTokens entry
+class IndividualTimeBlock(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+    color = models.CharField(max_length=20, default="yellow")
+    start_time = models.TimeField(auto_now=False, auto_now_add=False)
+    end_time = models.TimeField(auto_now=False, auto_now_add=False)
+
+    def __str__(self):
+        return self.name + " Time Block"
+
+
+class ActiveTimeBlock(models.Model):
+    time_block = models.ForeignKey(
+        IndividualTimeBlock, on_delete=models.CASCADE)
+    schedule_start = models.DateTimeField()
+    schedule_finish = models.DateTimeField()
+
+    def __str__(self):
+        return self.time_block.name + " Time Block At " + self.schedule_start
+
+
+class RecurringTimeBlock(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+    color = models.CharField(max_length=20, default="yellow")
+    is_time_recurring = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name + " Recurring Time Block"
+
+
+class RecurringTimeBlockSetting(models.Model):
+    time_block = models.ForeignKey(
+        RecurringTimeBlock, on_delete=models.CASCADE)
+    day = models.CharField(max_length=10)
+    schedule_start = models.TimeField(auto_now=False, auto_now_add=False)
+    schedule_finish = models.TimeField(auto_now=False, auto_now_add=False)
+
+    def __str__(self):
+        return self.time_block.name + " Recurring At " + self.schedule_start
+
 
 class SchoologyToken(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -90,8 +129,6 @@ class SchoologyToken(models.Model):
 
     def __str__(self):
         return f"{self.user}'s Schoology Tokens"
-
-# TODO: Make user only allowed to have one GoogleCalednarTokens entry
 
 
 class GoogleCalendarToken(models.Model):
