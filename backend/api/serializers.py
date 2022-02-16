@@ -1,4 +1,4 @@
-from .models import Course, Assignment, CustomUser, CourseMeetingDay
+from .models import *
 from rest_framework import serializers
 from django.db import transaction
 from dj_rest_auth.registration.serializers import RegisterSerializer
@@ -80,3 +80,53 @@ class AssignmentSerializer(serializers.ModelSerializer):
 
 class SchoologyCallbackSerializer(serializers.Serializer):
     callbackUrl = serializers.CharField(max_length=50)
+
+
+class IndividualTimeBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IndividualTimeBlock
+        fields = ['id', 'user', 'name', 'color', 'start_time',
+                  'end_time']
+        extra_kwargs = {
+            'user': {'required': False},
+            'name': {'required': False},
+            'color': {'required': False},
+            'start_time': {'required': False},
+            'end_time': {'required': False},
+        }
+
+
+class ActiveTimeBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ActiveTimeBlock
+        fields = ['id', 'time_block', 'schedule_start', 'schedule_finish']
+        extra_kwargs = {
+            'time_block': {'required': False},
+            'schedule_start': {'required': False},
+            'schedule_finish': {'required': False},
+        }
+
+
+class RecurringTimeBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecurringTimeBlock
+        fields = ['id', 'user', 'name', 'color', 'is_time_recurring']
+        extra_kwargs = {
+            'user': {'required': False},
+            'name': {'required': False},
+            'color': {'required': False},
+            'is_time_recurring': {'required': False},
+        }
+
+
+class RecurringTimeBlockSettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecurringTimeBlockSetting
+        fields = ['id', 'time_block', 'day',
+                  'schedule_start', 'schedule_finish']
+        extra_kwargs = {
+            'time_block': {'required': False},
+            'schedule_start': {'required': False},
+            'schedule_finish': {'required': False},
+            'day': {'required': False},
+        }
