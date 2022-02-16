@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { apiProxy } from "../../../api/httpCommon";
 
 // API Request that creates a Schoology Oauth URL with callback of deep link to app
 export const authorizeSchoology = createAsyncThunk(
@@ -8,7 +9,7 @@ export const authorizeSchoology = createAsyncThunk(
   async (schoologyConfig, thunkAPI) => {
     const response = await axios
       .post(
-        `https://plannerpeak.herokuapp.com/api/schoology-authorize/`,
+        `${apiProxy}/api/schoology-authorize/`,
         {
           callbackUrl: schoologyConfig.callbackUrl, //PUT DEEP LINK CALLBACK URL HERE
         },
@@ -31,7 +32,7 @@ export const verifySchoology = createAsyncThunk(
   "user/verifySchoology",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-authorize/`, {
+      .get(`${apiProxy}/api/schoology-authorize/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -48,7 +49,7 @@ export const getSchoologyCourses = createAsyncThunk(
   "user/getSchoologyCourses",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-courses/`, {
+      .get(`${apiProxy}/api/schoology-courses/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -65,7 +66,7 @@ export const getSchoologyAssignments = createAsyncThunk(
   "user/getSchoologyAssignments",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-assignments/`, {
+      .get(`${apiProxy}/api/schoology-assignments/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -83,7 +84,7 @@ export const getSchoologyGrades = createAsyncThunk(
   "user/getSchoologyGrades",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-grades/`, {
+      .get(`${apiProxy}/api/schoology-grades/`, {
         headers: {
           Authorization: `Token ${token}`,
         },

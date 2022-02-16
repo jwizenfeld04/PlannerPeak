@@ -60,15 +60,15 @@ export default function Home() {
     return () => clearInterval(intervalId); //This is important
   }, [schedule]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      //assign interval to a variable to clear it.
-      if (schedule.length !== 0 && currentAssignment !== null) {
-        getCurrentAssignmentTimeRemaining(currentAssignment);
-      }
-    }, 1000);
-    return () => clearInterval(intervalId); //This is important
-  }, [currentAssignment]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     //assign interval to a variable to clear it.
+  //     if (schedule !== null && currentAssignment !== null) {
+  //       getCurrentAssignmentTimeRemaining(currentAssignment);
+  //     }
+  //   }, 1000);
+  //   return () => clearInterval(intervalId); //This is important
+  // }, [currentAssignment]);
 
   useEffect(() => {
     if (scheduleData !== null) {
@@ -112,15 +112,27 @@ export default function Home() {
         }}
       />
       <Button
+        title="Fetch Schedule"
+        onPress={() => {
+          dispatch(getCurrentSchedule(token));
+        }}
+      />
+      <Button
         title="Get Date Schedule"
         onPress={() => {
           setScheduleData({ token: token, date: "2022-02-21" });
         }}
       />
       <Button
-        title="Log Schedule"
+        title="Log Date Schedule"
         onPress={() => {
           console.log(dateSchedule);
+        }}
+      />
+      <Button
+        title="Log Schedule"
+        onPress={() => {
+          console.log(schedule);
         }}
       />
     </View>

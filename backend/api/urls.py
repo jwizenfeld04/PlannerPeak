@@ -5,6 +5,7 @@ from .views.courseViews import *
 from .views.assignmentViews import *
 from .views.scheduleViews import *
 from .views.googleCalendarViews import *
+from .views.timeBlockViews import *
 from .converters import DateConverter
 
 register_converter(DateConverter, 'date')

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { apiProxy } from "../../../api/httpCommon";
 
 // API Request that allows user to log into the app
 export const loginUser = createAsyncThunk(
@@ -7,7 +8,7 @@ export const loginUser = createAsyncThunk(
   // authData is object that must constain email and password
   async (authData, thunkAPI) => {
     const response = await axios
-      .post(`https://plannerpeak.herokuapp.com/api/dj-rest-auth/login/`, {
+      .post(`${apiProxy}/api/dj-rest-auth/login/`, {
         email: authData.email,
         password: authData.password,
       })
@@ -25,7 +26,7 @@ export const registerUser = createAsyncThunk(
   async (authData, thunkAPI) => {
     const response = await axios
       .post(
-        `https://plannerpeak.herokuapp.com/api/dj-rest-auth/registration/`,
+        `${apiProxy}/api/dj-rest-auth/registration/`,
         {
           email: authData.email,
           first_name: authData.firstName,
@@ -46,7 +47,7 @@ export const getUserInfo = createAsyncThunk(
   "user/getUserInfo",
   async (token, thunkAPI) => {
     const response = await axios.get(
-      `https://plannerpeak.herokuapp.com/api/dj-rest-auth/user/`,
+      `${apiProxy}/api/dj-rest-auth/user/`,
       {
         headers: {
           Authorization: `Token ${token}`,

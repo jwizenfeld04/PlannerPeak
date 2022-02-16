@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { apiProxy } from "../../../api/httpCommon";
 
 // API Request that retreives all courses from DB and returns in array of objects
 export const getUserCourses = createAsyncThunk(
   "user/getUserCourses",
   async (token, thunkAPI) => {
     const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/user-courses/`, {
+      .get(`${apiProxy}/api/user-courses/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -22,7 +23,7 @@ export const updateUserCoursePrefrences = createAsyncThunk(
   "user/updateUserCoursePrefrences",
   async (modalData, thunkAPI) => {
     const response = await axios
-    .put(`https://plannerpeak.herokuapp.com/api/user-courses-update/${modalData.id}`, {
+    .put(`${apiProxy}/api/user-courses-update/${modalData.id}`, {
       color: modalData.color,
       notifications: modalData.notifications,
       priority: modalData.priority,
