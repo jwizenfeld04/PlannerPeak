@@ -11,7 +11,7 @@ const color10 = "#40E0D0"; // teal
 const color11 = "#CCCCFF"; // light purple
 const color12 = "#FA8072"; // salmon
 
-export const radioButtonsData = [
+const RadioButtons = [
   {
     label: "",
     value: color1,
@@ -59,5 +59,7 @@ export const radioButtonsData = [
   {
     label: "",
     value: color12,
-  }
+  },
 ];
+
+export default RadioButtons;
