@@ -13,9 +13,14 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 const CourseModal = (props) => {
+  const [courseNotifications, setCourseNotifications] = useState(
+    props.modalData.notifications
+  );
+  const [checkedColor, setCheckedColor] = useState(props.modalData.color);
+
   const handleAssignmentListEmpty = () => {
     return <Text style={courseScreenStyles.courseTitle}>No Assignments</Text>;
   };
@@ -27,6 +32,11 @@ const CourseModal = (props) => {
       return "black";
     }
   };
+
+  useEffect(() => {
+    setCourseNotifications(props.modalData.notifications);
+    setCheckedColor(props.modalData.color);
+  }, [props.modalData]);
 
   const styles2 = StyleSheet.create({
     courseModalName: {
@@ -66,7 +76,7 @@ const CourseModal = (props) => {
     >
       <SafeAreaView>
         <TouchableOpacity onPress={props.onModalBack}>
-          <Ionicons name="arrow-back-outline" size={40} color={props.color} />
+          <Ionicons name="arrow-back-outline" size={40} color={checkedColor} />
         </TouchableOpacity>
         <Text style={styles2.courseModalName}>{props.modalData.name}</Text>
         <View>
@@ -93,7 +103,7 @@ const CourseModal = (props) => {
         </Text>
 
         <ColorRadioButtons
-          checkedColor={props.color}
+          checkedColor={checkedColor}
           onPress={props.onRadioPress}
         />
         <PriorityBoxes
@@ -101,7 +111,7 @@ const CourseModal = (props) => {
           onPress={props.onPriorityPress}
         />
         <NotificationCheckBox
-          courseNotifications={props.courseNotifications}
+          courseNotifications={courseNotifications}
           onPress={props.onCheckmarkPress}
         />
         {props.modalData.notifications ? (

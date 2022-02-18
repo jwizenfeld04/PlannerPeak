@@ -30,10 +30,6 @@ export default function CourseScreen() {
   const [modalData, setModalData] = useState({});
   const getAllCourses = getCourses(dispatch);
   const getAllAssignments = getAssignments(dispatch);
-  const [checkedColor, setCheckedColor] = useState(modalData.color);
-  const [courseNotifications, setCourseNotifications] = useState(
-    modalData.notifications
-  );
 
   const handleOnCoursePress = (item) => {
     setModalData({
@@ -64,7 +60,6 @@ export default function CourseScreen() {
   };
 
   const onRadioPress = (checkedColor) => {
-    setCheckedColor(checkedColor);
     setModalData((prevState) => ({
       ...prevState,
       color: checkedColor,
@@ -103,14 +98,11 @@ export default function CourseScreen() {
         modalVisible={modalVisible}
         modalData={modalData}
         courseSpecficAssignments={courseSpecficAssignments}
-        checkedColor={checkedColor}
         onRadioPress={onRadioPress}
         onPriorityPress={onPriorityPress}
         onCheckmarkPress={onCheckmarkPress}
         onModalDismiss={onModalDismiss}
         onModalBack={onModalBack}
-        color={checkedColor}
-        courseNotifications={courseNotifications}
       />
       <CourseFlatList
         onRefresh={onRefresh}
