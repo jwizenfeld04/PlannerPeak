@@ -17,7 +17,7 @@ import { selectError } from "../redux/features/user/userSlice";
 import logo from "../assets/images/logo2.png";
 import styles from "../styles/styles";
 
-export default function Login({ navigation }) {
+export default function LoginScreen({ navigation }) {
   const [authData, setAuthData] = useState({}); // Object that must include email and password sent in Login API Request
   const error = useSelector(selectError); // TODO: Fix error messages from invalid Login API Request
 
@@ -76,6 +76,8 @@ export default function Login({ navigation }) {
         >
           <Text style={{ paddingTop: 10, color: "blue" }}>Sign Up?</Text>
         </TouchableOpacity>
+
+        {/* <Text style={styles.errorText}>{error.errorMessage}</Text> */}
       </View>
     </TouchableWithoutFeedback>
   );
