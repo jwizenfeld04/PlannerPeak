@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -14,18 +14,23 @@ import CalendarStrip from "react-native-calendar-strip";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function ScrollCalendar() {
+  const date = new Date();
+
+  useEffect(() => {
+    console.log(date);
+  }, []);
+
   return (
-    <SafeAreaView style={{ minHeight: 1, minWidth: 1 }}>
-      <CalendarStrip
-        scrollable
-        style={{ height: 200, paddingTop: 20, paddingBottom: 10 }}
-        calendarColor={"#3343CE"}
-        calendarHeaderStyle={{ color: "white" }}
-        dateNumberStyle={{ color: "white" }}
-        dateNameStyle={{ color: "white" }}
-        iconContainer={{ flex: 0.1 }}
-      />
-    </SafeAreaView>
+    <CalendarStrip
+      scrollable
+      style={{ height: 100, paddingTop: 20, paddingBottom: 10 }}
+      calendarColor={"#3343CE"}
+      calendarHeaderStyle={{ color: "white" }}
+      dateNumberStyle={{ color: "white" }}
+      dateNameStyle={{ color: "white" }}
+      startingDate={date}
+      minDate={date}
+    />
   );
 }
 

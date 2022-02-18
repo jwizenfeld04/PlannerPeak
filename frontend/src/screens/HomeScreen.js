@@ -78,7 +78,7 @@ export default function HomeScreen() {
   }, [scheduleData]);
 
   return (
-    <View style={styles.container}>
+    <View>
       <ScrollCalendar />
       <Text>Welcome {name}</Text>
       <CurrentAssignment
