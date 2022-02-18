@@ -22,9 +22,10 @@ import {
   getSpecificDateSchedule,
   selectDateSchedule,
 } from "../redux/features/assignment/assignmentSlice";
-import ScrollCalendar from "./scrollCalendar";
+import ScrollCalendar from "../components/home/scrollCalendar";
+import CurrentAssignment from "../components/home/CurrentAssignment";
 
-export default function Home() {
+export default function HomeScreen() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const name = useSelector(selectUserName);
@@ -76,34 +77,14 @@ export default function Home() {
     }
   }, [scheduleData]);
 
-  const CurrentAssignment = () => {
-    return (
-      <View style={styles.currentAssignmentView}>
-        {currentAssignment ? (
-          <View>
-            <Text style={styles.currentAssignmentText}>
-              {currentAssignment.name}
-            </Text>
-            {remainingTime !== 0 ? (
-              <Text>{remainingTime} minutes left</Text>
-            ) : (
-              <Text></Text>
-            )}
-          </View>
-        ) : (
-          <View>
-            <Text>No current assignment </Text>
-          </View>
-        )}
-      </View>
-    );
-  };
-
   return (
     <View style={styles.container}>
       <ScrollCalendar />
       <Text>Welcome {name}</Text>
-      <CurrentAssignment />
+      <CurrentAssignment
+        currentAssignment={currentAssignment}
+        remainingTime={remainingTime}
+      />
       <Button
         title="Update Schedule"
         onPress={() => {

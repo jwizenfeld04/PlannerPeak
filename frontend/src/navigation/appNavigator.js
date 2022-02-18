@@ -3,10 +3,9 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Import mock screens
-import Courses from "../components/courses";
-import Profiles from "../components/profile";
-import Home from "../components/home";
-import Settings from "../components/settings";
+import CourseScreen from "../screens/CourseScreen";
+import HomeScreen from "../screens/HomeScreen";
+import SettingScreen from "../screens/SettingScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -19,7 +18,7 @@ const AppNavigator = () => {
     >
       <Tab.Screen
         name="Courses"
-        component={Courses}
+        component={CourseScreen}
         options={{
           tabBarLabel: "Courses",
           tabBarIcon: ({ color }) => (
@@ -29,7 +28,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeScreen}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
@@ -39,7 +38,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        component={SettingScreen}
         options={{
           tabBarLabel: "Settings",
           tabBarIcon: ({ color }) => (

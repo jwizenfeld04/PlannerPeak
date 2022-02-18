@@ -1,5 +1,5 @@
-import { getSchoologyAssignments } from "../redux/features/schoology/schoologySlice";
-import { getUserAssignments } from "../redux/features/assignment/assignmentSlice";
+import { getSchoologyAssignments } from "../../redux/features/schoology/schoologySlice";
+import { getUserAssignments } from "../../redux/features/assignment/assignmentSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 

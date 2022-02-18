@@ -1,8 +1,8 @@
 import {
   getSchoologyCourses,
   getSchoologyGrades,
-} from "../redux/features/schoology/schoologySlice";
-import { getUserCourses } from "../redux/features/course/courseSlice";
+} from "../../redux/features/schoology/schoologySlice";
+import { getUserCourses } from "../../redux/features/course/courseSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 export const getCourses = (dispatch) => async (token, isSchoologyAuth) => {

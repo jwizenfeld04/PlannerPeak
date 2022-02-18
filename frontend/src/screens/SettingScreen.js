@@ -1,9 +1,8 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
   Text,
-  TouchableOpacity,
   Button,
   Linking,
   Alert,
@@ -18,7 +17,7 @@ import {
 } from "../redux/features/schoology/schoologySlice";
 import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
 
-export default function Settings() {
+export default function SettingScreen() {
   const dispatch = useDispatch();
   const schoologyUrl = useSelector(selectUrl); // Gets Schoology URL from Schoology API Request
   const isSchoologyAuth = useSelector(selectIsSchoologyAuthenticated); // Boolean whether schoology auth or not
@@ -92,3 +91,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+
