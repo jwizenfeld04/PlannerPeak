@@ -7,6 +7,7 @@ import {
   Button,
   Linking,
   TextInput,
+  SafeAreaView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserInfo } from "../redux/features/user/userSlice";
@@ -22,7 +23,7 @@ import {
   getSpecificDateSchedule,
   selectDateSchedule,
 } from "../redux/features/assignment/assignmentSlice";
-import ScrollCalendar from "../components/home/scrollCalendar";
+import ScrollCalendar from "../components/home/ScrollCalendar"
 import CurrentAssignment from "../components/home/CurrentAssignment";
 
 export default function HomeScreen() {
@@ -78,8 +79,8 @@ export default function HomeScreen() {
   }, [scheduleData]);
 
   return (
-    <View>
-      <ScrollCalendar />
+    <SafeAreaView>
+      <ScrollCalendar token={token} />
       <Text>Welcome {name}</Text>
       <CurrentAssignment
         currentAssignment={currentAssignment}
@@ -116,7 +117,7 @@ export default function HomeScreen() {
           console.log(schedule);
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
