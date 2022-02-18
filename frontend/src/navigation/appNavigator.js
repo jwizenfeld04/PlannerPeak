@@ -4,8 +4,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Import mock screens
 import CourseScreen from "../screens/CourseScreen";
-import Home from "../components/home";
-import Settings from "../components/settings";
+import HomeScreen from "../screens/HomeScreen";
+import SettingScreen from "../screens/SettingScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -28,7 +28,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeScreen}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
@@ -38,7 +38,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        component={SettingScreen}
         options={{
           tabBarLabel: "Settings",
           tabBarIcon: ({ color }) => (

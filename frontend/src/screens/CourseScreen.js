@@ -14,8 +14,8 @@ import {
   selectCourseSpecficAssignments,
 } from "../redux/features/assignment/assignmentSlice";
 import courseScreenStyles from "../styles/courseScreenStyles";
-import { getCourses } from "../components/getCourses";
-import { getAssignments } from "../components/getAssignments";
+import { getCourses } from "../components/api/getCourses";
+import { getAssignments } from "../components/api/getAssignments";
 import CourseFlatList from "../components/courses/CourseFlatList";
 import CourseModal from "../components/courses/CourseModal";
 
