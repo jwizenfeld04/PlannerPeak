@@ -1,20 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { apiProxy } from "../../../api/httpCommon";
+import API from "../../../api/config";
 
 // API Request that retreives all courses from DB and returns in array of objects
 export const getUserCourses = createAsyncThunk(
   "user/getUserCourses",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`${apiProxy}/api/user-courses/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`user-courses/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -22,17 +19,19 @@ export const getUserCourses = createAsyncThunk(
 export const updateUserCoursePrefrences = createAsyncThunk(
   "user/updateUserCoursePrefrences",
   async (modalData, thunkAPI) => {
-    const response = await axios
-    .put(`${apiProxy}/api/user-courses-update/${modalData.id}`, {
-      color: modalData.color,
-      notifications: modalData.notifications,
-      priority: modalData.priority,
-    },{
-      headers: {
-        Authorization: `Token ${modalData.token}`,
+    const response = await API.put(
+      `user-courses-update/${modalData.id}`,
+      {
+        color: modalData.color,
+        notifications: modalData.notifications,
+        priority: modalData.priority,
       },
-    })
-    .catch((error) => {
+      {
+        headers: {
+          Authorization: `Token ${modalData.token}`,
+        },
+      }
+    ).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;

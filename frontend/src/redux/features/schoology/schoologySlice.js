@@ -1,27 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { apiProxy } from "../../../api/httpCommon";
+import API from "../../../api/config";
 
 // API Request that creates a Schoology Oauth URL with callback of deep link to app
 export const authorizeSchoology = createAsyncThunk(
   "user/authorizeSchoology",
   // schoologyConfig is an object includes callbackUrl and token
   async (schoologyConfig, thunkAPI) => {
-    const response = await axios
-      .post(
-        `${apiProxy}/api/schoology-authorize/`,
-        {
-          callbackUrl: schoologyConfig.callbackUrl, //PUT DEEP LINK CALLBACK URL HERE
+    const response = await API.post(
+      `schoology-authorize/`,
+      {
+        callbackUrl: schoologyConfig.callbackUrl, //PUT DEEP LINK CALLBACK URL HERE
+      },
+      {
+        headers: {
+          Authorization: `Token ${schoologyConfig.token}`,
         },
-        {
-          headers: {
-            Authorization: `Token ${schoologyConfig.token}`,
-          },
-        }
-      )
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+      }
+    ).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -31,15 +28,13 @@ export const authorizeSchoology = createAsyncThunk(
 export const verifySchoology = createAsyncThunk(
   "user/verifySchoology",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`${apiProxy}/api/schoology-authorize/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-authorize/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -48,15 +43,13 @@ export const verifySchoology = createAsyncThunk(
 export const getSchoologyCourses = createAsyncThunk(
   "user/getSchoologyCourses",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`${apiProxy}/api/schoology-courses/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-courses/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -65,15 +58,13 @@ export const getSchoologyCourses = createAsyncThunk(
 export const getSchoologyAssignments = createAsyncThunk(
   "user/getSchoologyAssignments",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`${apiProxy}/api/schoology-assignments/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-assignments/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -83,15 +74,13 @@ export const getSchoologyAssignments = createAsyncThunk(
 export const getSchoologyGrades = createAsyncThunk(
   "user/getSchoologyGrades",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`${apiProxy}/api/schoology-grades/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-grades/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );

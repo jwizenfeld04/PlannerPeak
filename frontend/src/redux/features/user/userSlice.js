@@ -1,20 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { apiProxy } from "../../../api/httpCommon";
+import API from "../../../api/config";
 
 // API Request that allows user to log into the app
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   // authData is object that must constain email and password
   async (authData, thunkAPI) => {
-    const response = await axios
-      .post(`${apiProxy}/api/dj-rest-auth/login/`, {
-        email: authData.email,
-        password: authData.password,
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.post(`dj-rest-auth/login/`, {
+      email: authData.email,
+      password: authData.password,
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -24,20 +21,15 @@ export const registerUser = createAsyncThunk(
   "user/registerUser",
   // authData is object that must constain first name, last name, email, password1, password2 (confirmation password)
   async (authData, thunkAPI) => {
-    const response = await axios
-      .post(
-        `${apiProxy}/api/dj-rest-auth/registration/`,
-        {
-          email: authData.email,
-          first_name: authData.firstName,
-          last_name: authData.lastName,
-          password1: authData.password1,
-          password2: authData.password2,
-        }
-      )
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.post(`dj-rest-auth/registration/`, {
+      email: authData.email,
+      first_name: authData.firstName,
+      last_name: authData.lastName,
+      password1: authData.password1,
+      password2: authData.password2,
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -46,14 +38,11 @@ export const registerUser = createAsyncThunk(
 export const getUserInfo = createAsyncThunk(
   "user/getUserInfo",
   async (token, thunkAPI) => {
-    const response = await axios.get(
-      `${apiProxy}/api/dj-rest-auth/user/`,
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      }
-    );
+    const response = await API.get(`dj-rest-auth/user/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
     return response;
   }
 );
