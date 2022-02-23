@@ -23,8 +23,9 @@ import {
   getSpecificDateSchedule,
   selectDateSchedule,
 } from "../redux/features/assignment/assignmentSlice";
-import ScrollCalendar from "../components/home/ScrollCalendar"
+import ScrollCalendar from "../components/home/ScrollCalendar";
 import CurrentAssignment from "../components/home/CurrentAssignment";
+import TimeTable from "../components/home/TimeTable";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -85,38 +86,33 @@ export default function HomeScreen() {
       <CurrentAssignment
         currentAssignment={currentAssignment}
         remainingTime={remainingTime}
-      />
+        />
       <Button
         title="Update Schedule"
         onPress={() => {
           dispatch(scheduleAssignments(token));
           dispatch(getCurrentSchedule(token));
         }}
-      />
+        />
       <Button
         title="Fetch Schedule"
         onPress={() => {
           dispatch(getCurrentSchedule(token));
         }}
-      />
-      <Button
-        title="Get Date Schedule"
-        onPress={() => {
-          setScheduleData({ token: token, date: "2022-02-21" });
-        }}
-      />
-      <Button
+        />
+      {/* <Button
         title="Log Date Schedule"
         onPress={() => {
           console.log(dateSchedule);
         }}
-      />
-      <Button
+        />
+        <Button
         title="Log Schedule"
         onPress={() => {
           console.log(schedule);
         }}
-      />
+      /> */}
+      <TimeTable schedule={dateSchedule}/>
     </SafeAreaView>
   );
 }
