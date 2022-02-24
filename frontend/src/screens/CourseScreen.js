@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectToken,
@@ -104,6 +104,7 @@ export default function CourseScreen() {
         onModalDismiss={onModalDismiss}
         onModalBack={onModalBack}
       />
+      <Text style={courseScreenStyles.headerText}>Courses</Text>
       <CourseFlatList
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
