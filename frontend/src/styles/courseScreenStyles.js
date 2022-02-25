@@ -21,10 +21,7 @@ const courseScreenStyles = StyleSheet.create({
   headerText: {
     color: AppColors.primaryAccentColor,
     fontSize: 36,
-    paddingBottom: 10,
     textAlign: "left",
-    margin: 10,
-    marginTop: 30,
   },
   listItem: {
     backgroundColor: AppColors.primaryAccentColor,
