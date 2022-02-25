@@ -21,7 +21,6 @@ const courseScreenStyles = StyleSheet.create({
   headerText: {
     color: AppColors.primaryAccentColor,
     fontSize: 36,
-    textAlign: "left",
   },
   listItem: {
     backgroundColor: AppColors.primaryAccentColor,
@@ -67,13 +66,13 @@ const courseScreenStyles = StyleSheet.create({
     flexDirection: "row",
   },
   courseView: {
-    backgroundColor: "#B7D7EA",
+    backgroundColor: AppColors.primaryAccentColor,
     marginBottom: 20,
     width: 350,
     borderWidth: 0,
     borderRadius: 16,
     shadowOffset: { height: 2, width: -2 },
-    shadowColor: "#B7D7EA",
+    shadowColor: AppColors.primaryAccentColor,
     shadowOpacity: 0.5,
     shadowRadius: 3,
   },
