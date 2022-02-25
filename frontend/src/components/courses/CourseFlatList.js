@@ -14,24 +14,13 @@ import { AppColors } from "../../styles/globalStyles";
 
 const CourseFlatList = (props) => {
   const handleAssignment = (course) => {
-    if (course.number_of_assignments !== 0) {
-      return (
-        <ListItem.Subtitle
-          style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
-        >
-          {" "}
-          {course.number_of_assignments} Assignments
-        </ListItem.Subtitle>
-      );
+    if (course.number_of_assignments === 0) {
+      return "No Assignment";
+    } else if (course.number_of_assignments === 1) {
+      return "1 Assignment";
+    } else {
+      return `${course.number_of_assignments} Assignments`;
     }
-    return (
-      <ListItem.Subtitle
-        style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
-      >
-        {" "}
-        No Assignments
-      </ListItem.Subtitle>
-    );
   };
   return (
     <View style={{ height: 675 }}>
@@ -60,7 +49,11 @@ const CourseFlatList = (props) => {
               />
               <ListItem.Content>
                 <ListItem.Title>{item.name}</ListItem.Title>
-                {handleAssignment(item)}
+                <ListItem.Subtitle
+                  style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
+                >
+                  {handleAssignment(item)}
+                </ListItem.Subtitle>
               </ListItem.Content>
               {item.is_schoology ? (
                 <Avatar source={SchoologyIcon} size={40} />
