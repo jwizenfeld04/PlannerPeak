@@ -33,7 +33,6 @@ export default function CourseScreen() {
   const getAllAssignments = getAssignments(dispatch);
 
   const handleOnCoursePress = (item) => {
-    console.log(item.number_of_assignments)
     setModalData({
       id: item.id,
       token: token,
