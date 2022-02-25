@@ -67,24 +67,24 @@ const courseScreenStyles = StyleSheet.create({
     flexDirection: "row",
   },
   courseView: {
-    backgroundColor: "#E2EFF6",
+    marginBottom: 20,
+    width: 350,
     borderWidth: 0,
     borderRadius: 16,
-    width: 350,
-    height: 45,
-    marginBottom: 12,
-    marginTop: 12,
-    justifyContent: "flex-start",
     shadowOffset: { height: 2, width: -2 },
     shadowColor: "#E2EFF6",
     shadowOpacity: 0.5,
     shadowRadius: 3,
-    flexDirection: "row",
   },
   courseTitle: {
-    fontSize: 20,
+    fontSize: 22,
     color: "black",
-    marginTop: 10,
+    marginTop: 5,
+    marginLeft: 10,
+    marginBottom: 2,
+  },
+  courseSubtitle: {
+    fontSize: 12,
     marginLeft: 10,
   },
   flatList: {
@@ -93,10 +93,9 @@ const courseScreenStyles = StyleSheet.create({
   courseIcon: {
     width: "13%",
     height: "100%",
-
   },
   courseIconView: {
-    width:350,
+    width: 350,
   },
   courseHeaderTitle: {
     fontSize: 40,

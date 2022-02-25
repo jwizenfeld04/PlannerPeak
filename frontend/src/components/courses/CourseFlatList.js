@@ -1,15 +1,14 @@
 import courseScreenStyles from "../../styles/courseScreenStyles";
 import SchoologyIcon from "../../assets/images/schoology_icon.png";
-import PlannerPeakIcon from "../../assets/images/planner_peak_logo.png";
+import PlannerPeakIcon from "../../assets/images/logo2.png";
 import {
   StyleSheet,
   FlatList,
   Text,
   View,
   TouchableOpacity,
-  Image,
 } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem, Icon, Avatar } from "react-native-elements";
 import React from "react";
 
 const CourseFlatList = (props) => {
@@ -19,34 +18,40 @@ const CourseFlatList = (props) => {
         onRefresh={props.onRefresh}
         refreshing={props.isRefreshing}
         data={props.courses}
-        contentContainerStyle={courseScreenStyles.flatList}
         // missing item key - possibly uses db id instead solution would be keyExtractorgit
+        contentContainerStyle={{ alignItems: "center" }}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity
+            <ListItem
+              key={item.id}
               onPress={() => {
                 props.onCoursePress(item);
               }}
+              bottomDivider
+              containerStyle={courseScreenStyles.courseView}
+              underlayColor="#2D82BD"
             >
-              <View style={courseScreenStyles.courseView}>
-                <View style={{ width: 300 }}>
-                  <ListItem.Title style={courseScreenStyles.courseTitle}>
-                    {item.name}
-                  </ListItem.Title>
-                </View>
-                  {item.is_schoology ? (
-                    <Image
-                      source={SchoologyIcon}
-                      style={courseScreenStyles.courseIcon}
-                    />
-                  ) : (
-                    <Image
-                      source={PlannerPeakIcon}
-                      style={courseScreenStyles.courseIcon}
-                    />
-                  )}
-                </View>
-            </TouchableOpacity>
+              <Icon
+                name="circle"
+                type="material-community"
+                color={item.color}
+                size={17}
+              />
+              <ListItem.Content>
+                <ListItem.Title>{item.name}</ListItem.Title>
+                <ListItem.Subtitle
+                  style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
+                >
+                  {" "}
+                  2 Assignments
+                </ListItem.Subtitle>
+              </ListItem.Content>
+              {item.is_schoology ? (
+                <Avatar source={SchoologyIcon} size={40} />
+              ) : (
+                <Avatar source={PlannerPeakIcon} size={40} />
+              )}
+            </ListItem>
           );
         }}
       />
