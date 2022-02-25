@@ -24,7 +24,6 @@ const courseScreenStyles = StyleSheet.create({
     paddingBottom: 10,
     textAlign: "left",
     margin: 10,
-    marginRight: 200,
     marginTop: 30,
   },
   listItem: {
