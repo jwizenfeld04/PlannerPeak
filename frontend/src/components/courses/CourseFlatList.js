@@ -13,6 +13,26 @@ import React from "react";
 import { AppColors } from "../../styles/globalStyles";
 
 const CourseFlatList = (props) => {
+  const handleAssignment = (course) => {
+    if (course.number_of_assignments !== 0) {
+      return (
+        <ListItem.Subtitle
+          style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
+        >
+          {" "}
+          {course.number_of_assignments} Assignments
+        </ListItem.Subtitle>
+      );
+    }
+    return (
+      <ListItem.Subtitle
+        style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
+      >
+        {" "}
+        No Assignments
+      </ListItem.Subtitle>
+    );
+  };
   return (
     <View style={{ height: 675 }}>
       <FlatList
@@ -40,12 +60,7 @@ const CourseFlatList = (props) => {
               />
               <ListItem.Content>
                 <ListItem.Title>{item.name}</ListItem.Title>
-                <ListItem.Subtitle
-                  style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
-                >
-                  {" "}
-                  {item.number_of_assignments} Assignments
-                </ListItem.Subtitle>
+                {handleAssignment(item)}
               </ListItem.Content>
               {item.is_schoology ? (
                 <Avatar source={SchoologyIcon} size={40} />
