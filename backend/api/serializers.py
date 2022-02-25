@@ -57,7 +57,8 @@ class CourseSerializer(serializers.ModelSerializer):
         }
 
     def get_number_of_assignments(self, obj):
-        return Course.objects.annotate(number_of_assignments=Count('assignment'))
+        num = Course.objects.annotate(number_of_assignments=Count('assignment'))
+        return num[0].number_of_assignments
 
 
 

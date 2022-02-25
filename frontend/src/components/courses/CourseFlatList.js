@@ -44,7 +44,7 @@ const CourseFlatList = (props) => {
                   style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
                 >
                   {" "}
-                  2 Assignments
+                  {item.number_of_assignments}
                 </ListItem.Subtitle>
               </ListItem.Content>
               {item.is_schoology ? (
