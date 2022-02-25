@@ -38,7 +38,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    number_of_assignments = serializers.SerializerMethodField('get_number_of_assignments')
+    number_of_assignments = serializers.IntegerField()
     class Meta:
         model = Course
         fields = ['id', 'user', 'name', 'subject', 'grade',
@@ -56,9 +56,6 @@ class CourseSerializer(serializers.ModelSerializer):
             'is_schoology': {'required': False},
         }
 
-    def get_number_of_assignments(self, obj):
-        num = Course.objects.annotate(number_of_assignments=Count('assignment'))
-        return num[0].number_of_assignments
 
 
 

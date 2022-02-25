@@ -5,6 +5,9 @@ from api.serializers import CourseSerializer
 from api.models import Course
 from rest_framework.response import Response
 from rest_framework.status import *
+from django.db.models import Count
+
+from backend.api.models import Assignment
 
 
 class UserSpecificCourseView(APIView):
@@ -16,6 +19,8 @@ class UserSpecificCourseView(APIView):
         courses = Course.objects.filter(
             user_id=request.user.id, is_active=True).order_by('id')
         if len(courses) > 0:
+            for course in courses:
+                course.num_of_assignments = Assignment.objects.filter(course_id=course.id).count()
             data = self.serializer_class(courses, many=True).data
             return Response(data, status=HTTP_200_OK)
         return Response({"No Content": "No Courses Found"}, status=HTTP_204_NO_CONTENT)
