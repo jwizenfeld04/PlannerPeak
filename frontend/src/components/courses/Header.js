@@ -12,7 +12,7 @@ const Header = (props) => {
           name="plus-box"
           type="material-community"
           size={50}
-          style={{ marginTop: 10 }}
+          style={{ marginTop: 30 }}
         />
       </TouchableOpacity>
     </View>

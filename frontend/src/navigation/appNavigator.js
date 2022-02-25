@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import CourseScreen from "../screens/CourseScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SettingScreen from "../screens/SettingScreen";
+import { AppColors } from "../styles/globalStyles";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -14,7 +15,10 @@ const AppNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       activeColor="#fff"
-      barStyle={{ backgroundColor: "blue" }}
+      barStyle={{ 
+        backgroundColor: AppColors.primaryBackgroundColor,
+        borderRadius: 16,
+      }}
     >
       <Tab.Screen
         name="Courses"
@@ -22,7 +26,11 @@ const AppNavigator = () => {
         options={{
           tabBarLabel: "Courses",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="book" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="book"
+              color={AppColors.primaryAccentColor}
+              size={26}
+            />
           ),
         }}
       />
@@ -32,7 +40,11 @@ const AppNavigator = () => {
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="home"
+              color={AppColors.primaryAccentColor}
+              size={26}
+            />
           ),
         }}
       />
@@ -44,7 +56,7 @@ const AppNavigator = () => {
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="account-settings"
-              color={color}
+              color={AppColors.primaryAccentColor}
               size={26}
             />
           ),

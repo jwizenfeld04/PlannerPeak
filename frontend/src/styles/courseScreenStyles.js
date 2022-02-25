@@ -6,11 +6,12 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import { AppColors } from "./globalStyles";
 
 const courseScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#2D82BD",
+    backgroundColor: AppColors.primaryBackgroundColor,
     width: "100%",
   },
   textInput: {
@@ -18,14 +19,16 @@ const courseScreenStyles = StyleSheet.create({
     borderWidth: 2,
   },
   headerText: {
+    color: AppColors.primaryAccentColor,
     fontSize: 36,
     paddingBottom: 10,
     textAlign: "left",
     margin: 10,
-    marginRight: 160,
+    marginRight: 200,
+    marginTop: 30,
   },
   listItem: {
-    backgroundColor: "#ADD8E6",
+    backgroundColor: AppColors.primaryAccentColor,
     borderWidth: 1,
     borderColor: "#333",
     padding: 25,
@@ -68,12 +71,13 @@ const courseScreenStyles = StyleSheet.create({
     flexDirection: "row",
   },
   courseView: {
+    backgroundColor: "#B7D7EA",
     marginBottom: 20,
     width: 350,
     borderWidth: 0,
     borderRadius: 16,
     shadowOffset: { height: 2, width: -2 },
-    shadowColor: "#E2EFF6",
+    shadowColor: "#B7D7EA",
     shadowOpacity: 0.5,
     shadowRadius: 3,
   },

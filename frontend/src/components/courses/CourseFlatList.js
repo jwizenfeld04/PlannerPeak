@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { ListItem, Icon, Avatar } from "react-native-elements";
 import React from "react";
+import { AppColors } from "../../styles/globalStyles";
 
 const CourseFlatList = (props) => {
   return (
@@ -29,7 +30,7 @@ const CourseFlatList = (props) => {
               }}
               bottomDivider
               containerStyle={courseScreenStyles.courseView}
-              underlayColor="#2D82BD"
+              underlayColor={AppColors.primaryBackgroundColor}
             >
               <Icon
                 name="circle"
