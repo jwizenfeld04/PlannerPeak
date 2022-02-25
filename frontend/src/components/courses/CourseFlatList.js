@@ -15,7 +15,7 @@ import { AppColors } from "../../styles/globalStyles";
 const CourseFlatList = (props) => {
   const handleAssignment = (course) => {
     if (course.number_of_assignments === 0) {
-      return "No Assignment";
+      return "No Assignments";
     } else if (course.number_of_assignments === 1) {
       return "1 Assignment";
     } else {
