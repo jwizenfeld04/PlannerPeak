@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.db import transaction
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .choices import SCHOOL_CHOICES, YEAR_CHOICES
+from django.db.models import Count
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -37,6 +38,7 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    number_of_assignments = serializers.SerializerMethodField('get_number_of_assignments')
     class Meta:
         model = Course
         fields = ['id', 'user', 'name', 'subject', 'grade',
@@ -53,6 +55,10 @@ class CourseSerializer(serializers.ModelSerializer):
             'notifications': {'required': False},
             'is_schoology': {'required': False},
         }
+
+    def get_number_of_assignments(self, obj):
+        return Course.objects.annotate(number_of_assignments=Count('assignment'))
+
 
 
 class CourseMeetingDaySerializer(serializers.ModelSerializer):
