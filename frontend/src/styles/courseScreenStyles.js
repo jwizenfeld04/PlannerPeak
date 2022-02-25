@@ -18,10 +18,11 @@ const courseScreenStyles = StyleSheet.create({
     borderWidth: 2,
   },
   headerText: {
-    fontSize: 30,
+    fontSize: 36,
     paddingBottom: 10,
     textAlign: "left",
     margin: 10,
+    marginRight: 160,
   },
   listItem: {
     backgroundColor: "#ADD8E6",

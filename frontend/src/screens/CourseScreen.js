@@ -18,6 +18,7 @@ import { getCourses } from "../components/api/getCourses";
 import { getAssignments } from "../components/api/getAssignments";
 import CourseFlatList from "../components/courses/CourseFlatList";
 import CourseModal from "../components/courses/CourseModal";
+import Header from "../components/courses/Header";
 
 export default function CourseScreen() {
   const dispatch = useDispatch();
@@ -94,6 +95,14 @@ export default function CourseScreen() {
 
   return (
     <SafeAreaView style={courseScreenStyles.container}>
+      <Header />
+      <CourseFlatList
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        courses={courses}
+        onCoursePress={handleOnCoursePress}
+        modalData={modalData}
+      />
       <CourseModal
         modalVisible={modalVisible}
         modalData={modalData}
@@ -103,14 +112,6 @@ export default function CourseScreen() {
         onCheckmarkPress={onCheckmarkPress}
         onModalDismiss={onModalDismiss}
         onModalBack={onModalBack}
-      />
-      <Text style={courseScreenStyles.headerText}>Courses</Text>
-      <CourseFlatList
-        onRefresh={onRefresh}
-        isRefreshing={isRefreshing}
-        courses={courses}
-        onCoursePress={handleOnCoursePress}
-        modalData={modalData}
       />
     </SafeAreaView>
   );
