@@ -39,10 +39,11 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     number_of_assignments = serializers.IntegerField()
+
     class Meta:
         model = Course
         fields = ['id', 'user', 'name', 'subject', 'grade',
-                  'schoology_class_id', 'schoology_section_id', 'is_schoology', 'color', 'priority', 'notifications']
+                  'schoology_class_id', 'schoology_section_id', 'is_schoology', 'color', 'priority', 'notifications', 'number_of_assignments']
         extra_kwargs = {
             'user': {'required': False},
             'grade': {'required': False},
@@ -54,9 +55,8 @@ class CourseSerializer(serializers.ModelSerializer):
             'priority': {'required': False},
             'notifications': {'required': False},
             'is_schoology': {'required': False},
+            'number_of_assignments': {'required': False},
         }
-
-
 
 
 class CourseMeetingDaySerializer(serializers.ModelSerializer):
