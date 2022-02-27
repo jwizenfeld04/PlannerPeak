@@ -14,10 +14,11 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import { createUserCourse } from "../../redux/features/course/courseSlice";
 import styles from "../../styles/styles";
+import { useDispatch } from "react-redux";
 
 const CreateCourseModal = (props) => {
   const dispatch = useDispatch();
-  const [courseData, setCourseData] = useState({});
+  const [courseData, setCourseData] = useState({ token: props.token });
 
   const ref_input2 = useRef();
 
@@ -29,7 +30,7 @@ const CreateCourseModal = (props) => {
       visible={props.modalVisible}
       transparent={false}
     >
-      <SafeAreaView>
+      <SafeAreaView style={{ alignItems: "center" }}>
         <TouchableOpacity onPress={props.onCreateModalBack}>
           <Ionicons name="arrow-back-outline" size={40} color="black" />
         </TouchableOpacity>
@@ -41,7 +42,7 @@ const CreateCourseModal = (props) => {
             onSubmitEditing={() => ref_input2.current.focus()}
             textAlign="center"
             onChangeText={(text) =>
-              setAuthData({
+              setCourseData({
                 ...courseData,
                 name: text,
               })
@@ -54,14 +55,15 @@ const CreateCourseModal = (props) => {
             placeholder="Course Subject"
             textAlign="center"
             ref={ref_input2}
-            onChangeText={(text) =>
-              setAuthData({ ...courseData, subject: text })
-            }
+            onChangeText={(text) => {
+              setCourseData({ ...courseData, subject: text });
+            }}
           />
         </View>
         <TouchableOpacity
-          onPress={async () => {
-            await dispatch(createUserCourse(courseData));
+          style={styles.loginBtn}
+          onPress={() => {
+            dispatch(createUserCourse(courseData));
             props.onCreateModalBack;
           }}
         >

@@ -12,7 +12,7 @@ const Header = (props) => {
           name="plus-box"
           type="material-community"
           size={50}
-          onPress={()=>{props.onCreateModalPress}}
+          onPress={props.onCreateModalPress}
         />
       </TouchableOpacity>
     </View>
