@@ -45,7 +45,7 @@ class Course(models.Model):
     schoology_section_id = models.CharField(max_length=15, blank=True)
     is_schoology = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    color = models.CharField(max_length=20, default="blue")
+    color = models.CharField(max_length=20, default="#B7D7EA")
     priority = models.IntegerField(default=1)
     notifications = models.BooleanField(default=True)
 

@@ -19,6 +19,7 @@ import { getAssignments } from "../components/api/getAssignments";
 import CourseFlatList from "../components/courses/CourseFlatList";
 import CourseModal from "../components/courses/CourseModal";
 import Header from "../components/courses/Header";
+import CreateCourseModal from "../components/courses/CreateCourseModal";
 
 export default function CourseScreen() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function CourseScreen() {
   const courseSpecficAssignments = useSelector(selectCourseSpecficAssignments);
   const [isRefreshing, setIsRefreshing] = useState(false); // Used for pulldown refresh
   const [modalVisible, setModalVisible] = useState(false);
+  const [createModalVisible, setCreateModalVisible] = useState(false);
   const [modalData, setModalData] = useState({});
   const getAllCourses = getCourses(dispatch);
   const getAllAssignments = getAssignments(dispatch);
@@ -76,6 +78,14 @@ export default function CourseScreen() {
     setModalVisible(false);
   };
 
+  const onCreateModalBack = () => {
+    setCreateModalVisible(false);
+  };
+  const onCreateModalPress = () => {
+    setCreateModalVisible(true);
+  };
+
+
   // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
     getAllCourses(token, isSchoologyAuthenticated);
@@ -95,7 +105,7 @@ export default function CourseScreen() {
 
   return (
     <SafeAreaView style={courseScreenStyles.container}>
-      <Header />
+      <Header onCreateModalPress={onCreateModalPress}/>
       <CourseFlatList
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
@@ -112,6 +122,10 @@ export default function CourseScreen() {
         onCheckmarkPress={onCheckmarkPress}
         onModalDismiss={onModalDismiss}
         onModalBack={onModalBack}
+      />
+      <CreateCourseModal
+        modalVisible={createModalVisible}
+        onModalBack={onCreateModalBack}
       />
     </SafeAreaView>
   );

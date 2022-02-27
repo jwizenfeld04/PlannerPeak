@@ -16,6 +16,27 @@ export const getUserCourses = createAsyncThunk(
   }
 );
 
+export const createUserCourse = createAsyncThunk(
+  "user/createUserCourse",
+  async (courseData, thunkAPI) => {
+    const response = await API.post(
+      `user-courses/`,
+      {
+        name: courseData.name,
+        subject: courseData.subject,
+      },
+      {
+        headers: {
+          Authorization: `Token ${courseData.token}`,
+        },
+      }
+    ).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
 export const updateUserCoursePrefrences = createAsyncThunk(
   "user/updateUserCoursePrefrences",
   async (modalData, thunkAPI) => {
@@ -55,6 +76,15 @@ export const courseSlice = createSlice({
       state.status = "loading";
     },
     [getUserCourses.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+    [createUserCourse.fulfilled]: (state, action) => {
+      state.status = "success";
+    },
+    [createUserCourse.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [createUserCourse.rejected]: (state, action) => {
       state.status = "failed";
     },
     [updateUserCoursePrefrences.fulfilled]: (state, action) => {
