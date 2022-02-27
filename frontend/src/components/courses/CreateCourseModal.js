@@ -64,7 +64,7 @@ const CreateCourseModal = (props) => {
           style={styles.loginBtn}
           onPress={() => {
             dispatch(createUserCourse(courseData));
-            props.onCreateModalBack;
+            props.onCreateModalBack();
           }}
         >
           <Text>Create Course</Text>

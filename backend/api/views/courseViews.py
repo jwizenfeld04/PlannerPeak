@@ -32,6 +32,7 @@ class UserSpecificCourseView(APIView):
                             name=name, subject=subject)
             course.save()
             return Response(self.serializer_class(course).data, status=HTTP_201_CREATED)
+        print(serializer.errors)
         return Response({"Error": "Invalid Course Fields"}, status=HTTP_400_BAD_REQUEST)
 
 
