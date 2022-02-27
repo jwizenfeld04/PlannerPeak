@@ -23,7 +23,7 @@ const CourseFlatList = (props) => {
     }
   };
   return (
-    <View style={{ height: 675 }}>
+    <View style={{ height: 630 }}>
       <FlatList
         onRefresh={props.onRefresh}
         refreshing={props.isRefreshing}
