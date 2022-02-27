@@ -85,11 +85,12 @@ export default function CourseScreen() {
     setCreateModalVisible(true);
   };
 
-
   // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
-    getAllCourses(token, isSchoologyAuthenticated);
-  }, [isSchoologyAuthenticated]);
+    if (createModalVisible === false) {
+      getAllCourses(token, isSchoologyAuthenticated);
+    }
+  }, [isSchoologyAuthenticated, createModalVisible]);
 
   useEffect(() => {
     dispatch(getCourseSpecificAssignments(modalData));
@@ -105,7 +106,7 @@ export default function CourseScreen() {
 
   return (
     <SafeAreaView style={courseScreenStyles.container}>
-      <Header onCreateModalPress={onCreateModalPress}/>
+      <Header onCreateModalPress={onCreateModalPress} />
       <CourseFlatList
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
