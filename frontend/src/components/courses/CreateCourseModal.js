@@ -30,7 +30,7 @@ const CreateCourseModal = (props) => {
       transparent={false}
     >
       <SafeAreaView>
-        <TouchableOpacity onPress={props.onCreateModalPress}>
+        <TouchableOpacity onPress={props.onCreateModalBack}>
           <Ionicons name="arrow-back-outline" size={40} color="black" />
         </TouchableOpacity>
         <View style={styles.inputView}>
@@ -60,8 +60,9 @@ const CreateCourseModal = (props) => {
           />
         </View>
         <TouchableOpacity
-          onPress={() => {
-            dispatch(createUserCourse(courseData));
+          onPress={async () => {
+            await dispatch(createUserCourse(courseData));
+            props.onCreateModalBack;
           }}
         >
           <Text>Create Course</Text>

@@ -125,7 +125,7 @@ export default function CourseScreen() {
       />
       <CreateCourseModal
         modalVisible={createModalVisible}
-        onModalBack={onCreateModalBack}
+        onCreateModalBack={onCreateModalBack}
       />
     </SafeAreaView>
   );
