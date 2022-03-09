@@ -51,11 +51,12 @@ const courseScreenStyles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: "coral",
+    borderColor: AppColors.primaryAccentColor,
     backgroundColor: "transparent",
+    marginTop:17
   },
   checkboxChecked: {
-    backgroundColor: "coral",
+    backgroundColor: AppColors.primaryAccentColor,
   },
   coursePreferences: {
     fontSize: 20,

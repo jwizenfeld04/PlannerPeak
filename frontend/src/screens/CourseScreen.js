@@ -47,8 +47,7 @@ export default function CourseScreen() {
     setModalVisible(true);
   };
 
-  const onCheckmarkPress = () => {
-    setCourseNotifications(!courseNotifications);
+  const onCheckmarkPress = (courseNotifications) => {
     setModalData((prevState) => ({
       ...prevState,
       notifications: !courseNotifications,

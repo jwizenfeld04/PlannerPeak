@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+import { AppColors } from "../../styles/globalStyles";
 
 const CourseModal = (props) => {
   const [courseNotifications, setCourseNotifications] = useState(
@@ -74,34 +75,62 @@ const CourseModal = (props) => {
       transparent={false}
       onDismiss={props.onModalDismiss}
     >
-      <SafeAreaView>
-        <TouchableOpacity onPress={props.onModalBack}>
-          <Ionicons name="arrow-back-outline" size={40} color={checkedColor} />
-        </TouchableOpacity>
-        <Text style={styles2.courseModalName}>{props.modalData.name}</Text>
-        <View>
-          <View style={courseScreenStyles.assignmentBorder}>
-            <FlatList
-              ListEmptyComponent={handleAssignmentListEmpty}
-              data={props.courseSpecficAssignments}
-              // Missing item key - possibly use course id instead with keyExtractor
-              renderItem={({ item }) => {
-                return (
-                  <View style={courseScreenStyles.courseBorder}>
-                    <ListItem.Title style={courseScreenStyles.courseTitle}>
-                      {item.name}
-                    </ListItem.Title>
-                  </View>
-                );
-              }}
-            />
-          </View>
+      <SafeAreaView
+        style={{ backgroundColor: AppColors.primaryBackgroundColor, flex: 1 }}
+      >
+        <View style={{ flexDirection: "row", paddingBottom: 50 }}>
+          <TouchableOpacity onPress={props.onModalBack}>
+            <Ionicons name="arrow-back-outline" size={30} />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 20 }}>{props.modalData.name}</Text>
         </View>
-        <Text style={courseScreenStyles.coursePreferences}>Prefrences</Text>
-        <Text style={{ textAlign: "center", marginTop: 20, fontSize: 20 }}>
-          Color
-        </Text>
-
+        <View style={{ height: 350 }}>
+          <FlatList
+            ListEmptyComponent={handleAssignmentListEmpty}
+            data={props.courseSpecficAssignments}
+            // Missing item key - possibly use course id instead with keyExtractor
+            renderItem={({ item }) => {
+              return (
+                <ListItem
+                  key={item.id}
+                  bottomDivider
+                  containerStyle={courseScreenStyles.courseView}
+                  underlayColor={AppColors.primaryBackgroundColor}
+                >
+                  <ListItem.Title>{item.name}</ListItem.Title>
+                </ListItem>
+              );
+            }}
+          />
+        </View>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View
+            style={{
+              flex: 1,
+              height: 3,
+              backgroundColor: AppColors.primaryAccentColor,
+            }}
+          />
+          <View>
+            <Text
+              style={{
+                width: 120,
+                textAlign: "center",
+                color: AppColors.primaryAccentColor,
+                fontSize:20
+              }}
+            >
+              Prefrences
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              height: 3,
+              backgroundColor: AppColors.primaryAccentColor,
+            }}
+          />
+        </View>
         <ColorRadioButtons
           checkedColor={checkedColor}
           onPress={props.onRadioPress}
@@ -114,11 +143,6 @@ const CourseModal = (props) => {
           courseNotifications={courseNotifications}
           onPress={props.onCheckmarkPress}
         />
-        {props.modalData.notifications ? (
-          <Text>Notifications Enabled</Text>
-        ) : (
-          <Text>Notifications Disabled</Text>
-        )}
       </SafeAreaView>
     </Modal>
   );

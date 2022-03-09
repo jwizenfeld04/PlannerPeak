@@ -4,13 +4,14 @@ import RadioForm, {
   RadioButton,
   RadioButtonInput,
 } from "react-native-simple-radio-button";
-import React from 'react';
-import { View, ScrollView } from 'react-native';
-
+import React from "react";
+import { View, ScrollView, Text } from "react-native";
+import { AppColors } from "../../../styles/globalStyles";
 
 const ColorRadioButtons = (props) => {
   return (
-    <View style={courseScreenStyles.radioButton}>
+    <View>
+      <Text style={{ margin: 10, fontSize: 25 }}>Color</Text>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -35,7 +36,9 @@ const ColorRadioButtons = (props) => {
                 borderWidth={2}
                 buttonInnerColor={obj.value}
                 buttonOuterColor={
-                  props.checkedColor === obj.value ? "black" : "white"
+                  props.checkedColor === obj.value
+                    ? AppColors.primaryAccentColor
+                    : AppColors.primaryBackgroundColor
                 }
                 buttonSize={30}
                 buttonOuterSize={39}
