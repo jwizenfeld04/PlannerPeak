@@ -14,8 +14,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/features/user/userSlice";
 import { selectError } from "../redux/features/user/userSlice";
-import logo from "../assets/images/logo2.png";
 import styles from "../styles/styles";
+import { AppColors, AppImages } from "../styles/globalStyles";
 
 export default function LoginScreen({ navigation }) {
   const [authData, setAuthData] = useState({}); // Object that must include email and password sent in Login API Request
@@ -27,7 +27,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
-        <Image style={styles.loginImage} source={logo} />
+        <Image style={styles.loginImage} source={AppImages.plannerPeakIcon} />
         {/* ALL TEXT INPUTS SENT IN API REQUEST TO LOGIN*/}
         <View style={styles.inputView}>
           <TextInput

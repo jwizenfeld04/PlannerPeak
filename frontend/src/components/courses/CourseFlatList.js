@@ -1,6 +1,4 @@
 import courseScreenStyles from "../../styles/courseScreenStyles";
-import SchoologyIcon from "../../assets/images/schoology_icon.png";
-import PlannerPeakIcon from "../../assets/images/logo2.png";
 import {
   StyleSheet,
   FlatList,
@@ -10,7 +8,7 @@ import {
 } from "react-native";
 import { ListItem, Icon, Avatar } from "react-native-elements";
 import React from "react";
-import { AppColors } from "../../styles/globalStyles";
+import { AppColors, AppImages } from "../../styles/globalStyles";
 
 const CourseFlatList = (props) => {
   const handleAssignment = (course) => {
@@ -56,9 +54,9 @@ const CourseFlatList = (props) => {
                 </ListItem.Subtitle>
               </ListItem.Content>
               {item.is_schoology ? (
-                <Avatar source={SchoologyIcon} size={40} />
+                <Avatar source={AppImages.schoologyIcon} size={40} />
               ) : (
-                <Avatar source={PlannerPeakIcon} size={40} />
+                <Avatar source={AppImages.plannerPeakIcon} size={40} />
               )}
             </ListItem>
           );

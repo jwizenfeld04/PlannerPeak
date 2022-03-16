@@ -16,7 +16,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { registerUser } from "../redux/features/user/userSlice";
 import styles from "../styles/styles";
-import logo from "../assets/images/logo2.png";
+import { AppImages, AppColors } from "../styles/globalStyles";
 
 export default function RegisterScreen({ navigation }) {
   // Object that must include first name, last name, email, password, and confirm password sent in Register API Request
@@ -33,7 +33,7 @@ export default function RegisterScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View>
-          <Image style={styles.registerImage} source={logo} />
+          <Image style={styles.registerImage} source={AppImages.plannerPeakIcon} />
         </View>
         {/* ALL TEXT INPUTS SENT IN API REQUEST TO CREATE A NEW ACCOUNT */}
         <View style={styles.inputView}>

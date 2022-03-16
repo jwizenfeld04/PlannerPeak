@@ -9,7 +9,7 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "splash": {
-      "image": "./src/assets/images/logo2.png",
+      "image": "./src/assets/images/plannerPeakIcon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
