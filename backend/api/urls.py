@@ -12,7 +12,7 @@ from .converters import DateConverter
 register_converter(DateConverter, 'date')
 
 urlpatterns = [
-    path('verify_phone/',
+    path('verify-phone/',
          VerifyPhoneView.as_view(), name='verify_phone'),
     path('schedule-date/<date:date>/',
          SpecficDateSchedule.as_view(), name='date_schedule'),

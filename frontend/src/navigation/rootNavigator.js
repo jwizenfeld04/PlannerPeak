@@ -2,7 +2,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "./authNavigator";
 import AppNavigator from "./appNavigator";
-import { selectIsLoggedIn } from "../redux/features/user/userSlice";
+import { selectIsLoggedIn, selectIsPhoneVerified } from "../redux/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ const prefix = Linking.createURL("/");
 const AppRoute = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isPhoneVerified = useSelector(selectIsPhoneVerified)
   const token = useSelector(selectToken);
   const isAuthorized = useSelector(selectIsAuthorized);
 
@@ -49,7 +50,7 @@ const AppRoute = () => {
 
   return (
     <NavigationContainer linking={linking}>
-      {isLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+      {isPhoneVerified ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

@@ -19,5 +19,5 @@ class VerifyPhoneView(APIView):
             if check(request.user.phone, code):
                 request.user.is_phone_verified = True
                 request.user.save()
-            return Response(self.serializer_class(code).data, status=HTTP_201_CREATED)
+            return Response({"Success": "Verified Code"}, status=HTTP_201_CREATED)
         return Response({"Error": "Invalid Verify Code"}, status=HTTP_400_BAD_REQUEST)

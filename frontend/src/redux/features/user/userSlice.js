@@ -23,11 +23,30 @@ export const registerUser = createAsyncThunk(
   async (authData, thunkAPI) => {
     const response = await API.post(`dj-rest-auth/registration/`, {
       email: authData.email,
-      first_name: authData.firstName,
-      last_name: authData.lastName,
+      phone: authData.phone,
       password1: authData.password1,
       password2: authData.password2,
     }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
+export const verifyPhone = createAsyncThunk(
+  "user/verifyPhone",
+  async (authData, thunkAPI) => {
+    const response = await API.post(
+      `verify-phone/`,
+      {
+        code: authData.code,
+      },
+      {
+        headers: {
+          Authorization: `Token ${authData.token}`,
+        },
+      }
+    ).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -61,6 +80,7 @@ const initialState = {
     lastName: "",
     email: "",
     isSchoologyAuthenticated: false,
+    isPhoneVerified: false,
   },
 };
 
@@ -82,11 +102,10 @@ export const userSlice = createSlice({
     },
     [getUserInfo.fulfilled]: (state, action) => {
       state.user.id = action.payload.data.id;
-      state.user.firstName = action.payload.data.first_name;
-      state.user.lastName = action.payload.data.last_name;
       state.user.email = action.payload.data.email;
       state.user.isSchoologyAuthenticated =
         action.payload.data.is_schoology_authenticated;
+      state.user.isPhoneVerified = action.payload.data.is_phone_verified
       state.status = "success";
     },
     [registerUser.fulfilled]: (state, action) => {
@@ -105,7 +124,7 @@ export const userSlice = createSlice({
 });
 
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
-export const selectUserName = (state) => state.user.user.firstName;
+export const selectIsPhoneVerified = (state) => state.user.user.isPhoneVerified;
 export const selectIsSchoologyAuthenticated = (state) =>
   state.user.user.isSchoologyAuthenticated;
 export const selectToken = (state) => state.user.accesstoken;

@@ -9,9 +9,9 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "splash": {
-      "image": "./src/assets/images/plannerPeakIcon.png",
+      "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ADD8E6"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -26,8 +26,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./src/assets/images/splash.png",
+        "backgroundColor": "#ADD8E6"
       },
       "package": "com.plannerpeak.plannerpeak",
       "versionCode": 1
