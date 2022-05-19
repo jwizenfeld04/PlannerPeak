@@ -7,15 +7,15 @@ from .models import *
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     add_form = RegisterForm
-    list_display = ('last_name', 'first_name', 'email',
+    list_display = ('email',
                     'graduation_year', 'school_level')
     list_filter = ('school_level', 'graduation_year',
                    'is_active', 'is_staff', 'is_superuser',)
     fieldsets = (
         ('Account Information', {
             'classes': ('wide',),
-            'fields': ('first_name',
-                       'last_name',
+            'fields': ('phone',
+                       'is_phone_verified',
                        'email',
                        'password',)}),
         ('School Information', {
@@ -24,8 +24,7 @@ class CustomUserAdmin(UserAdmin):
     )
     add_fieldsets = (
         ('Account Information', {
-            'fields': ('first_name',
-                       'last_name',
+            'fields': ('phone',
                        'email',
                        'password1',
                        'password2',)}),
@@ -33,7 +32,7 @@ class CustomUserAdmin(UserAdmin):
          'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
     )
-    search_fields = ('email', 'last_name', 'first_name')
+    search_fields = ('email', 'phone')
     ordering = ('email',)
 
 
@@ -43,7 +42,7 @@ admin.site.register(Course)
 admin.site.register(Assignment)
 admin.site.register(SchoologyToken)
 admin.site.register(CourseMeetingDay)
-admin.site.register(IndividualTimeBlock)
+# admin.site.register(IndividualTimeBlock)
 # admin.site.register(ActiveTimeBlocks)
 # admin.site.register(RecurringTimeBlocks)
 # admin.site.register(RecurringTimeBlockSettings)
