@@ -17,7 +17,7 @@ class SchoologySchools(models.Model):
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
-    phone = models.CharField(max_length=20, blank=False)
+    phone = models.CharField(max_length=20, blank=False, unique=True)
     is_phone_verified = models.BooleanField(default=False)
     # key = models.CharField(max_length=100, unique=True, blank=True)
     school_level = models.CharField(
