@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { registerUser } from "../redux/features/user/userSlice";
 import styles from "../styles/styles";
 import { AppImages, AppColors } from "../styles/globalStyles";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 export default function RegisterScreen({ navigation }) {
   // Object that must include first name, last name, email, password, and confirm password sent in Register API Request
@@ -33,40 +34,25 @@ export default function RegisterScreen({ navigation }) {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
         <View>
-          <Image style={styles.registerImage} source={AppImages.plannerPeakIcon} />
+          <Image
+            style={styles.registerImage}
+            source={AppImages.plannerPeakIcon}
+          />
         </View>
         {/* ALL TEXT INPUTS SENT IN API REQUEST TO CREATE A NEW ACCOUNT */}
         <View style={styles.inputView}>
           <TextInput
             style={styles.textInput}
-            placeholder="First Name"
+            placeholder="Phone Number"
             returnKeyType="next"
-            autoCapitalize="words"
+            textContentType="telephoneNumber"
             onSubmitEditing={() => ref_input2.current.focus()}
             textAlign="center"
-            autoComplete="name"
+            autoComplete="tel"
             onChangeText={(text) =>
               setAuthData({
                 ...authData,
-                firstName: text,
-              })
-            }
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Last Name"
-            autoCapitalize="words"
-            onSubmitEditing={() => ref_input3.current.focus()}
-            ref={ref_input2}
-            returnKeyType="next"
-            textAlign="center"
-            autoComplete="name"
-            onChangeText={(text) =>
-              setAuthData({
-                ...authData,
-                lastName: text,
+                phone: text,
               })
             }
           />
@@ -76,7 +62,7 @@ export default function RegisterScreen({ navigation }) {
             style={styles.textInput}
             placeholder="Email"
             autoCapitalize="none"
-            onSubmitEditing={() => ref_input4.current.focus()}
+            onSubmitEditing={() => ref_input3.current.focus()}
             ref={ref_input3}
             returnKeyType="next"
             textAlign="center"
@@ -95,7 +81,7 @@ export default function RegisterScreen({ navigation }) {
             style={styles.textInput}
             autoCapitalize="none"
             placeholder="Password"
-            onSubmitEditing={() => ref_input5.current.focus()}
+            onSubmitEditing={() => ref_input4.current.focus()}
             ref={ref_input4}
             textContentType="password"
             returnKeyType="next"
@@ -122,8 +108,9 @@ export default function RegisterScreen({ navigation }) {
         </View>
         <TouchableOpacity
           style={styles.loginBtn}
-          onPress={() => {
-            dispatch(registerUser(authData));
+          onPress={async () => {
+            await dispatch(registerUser(authData)).then(unwrapResult);
+            navigation.navigate("Verify");
           }}
         >
           <Text>Sign Up</Text>

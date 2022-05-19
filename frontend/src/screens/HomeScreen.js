@@ -30,7 +30,6 @@ import TimeTable from "../components/home/TimeTable";
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
-  const name = useSelector(selectUserName);
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
   const currentAssignment = useSelector(selectCurrentAssignment);
   const schedule = useSelector(selectCurrentSchedule);
@@ -82,8 +81,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView>
       <ScrollCalendar token={token} />
-      <Text>Welcome {name}</Text>
-      <CurrentAssignment
+      {/* <CurrentAssignment
         currentAssignment={currentAssignment}
         remainingTime={remainingTime}
         />
@@ -99,7 +97,7 @@ export default function HomeScreen() {
         onPress={() => {
           dispatch(getCurrentSchedule(token));
         }}
-        />
+        /> */}
       {/* <Button
         title="Log Date Schedule"
         onPress={() => {

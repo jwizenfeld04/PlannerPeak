@@ -17,6 +17,9 @@ class SchoologySchools(models.Model):
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
+    phone = models.CharField(max_length=20, blank=False, unique=True)
+    is_phone_verified = models.BooleanField(default=False)
+    # key = models.CharField(max_length=100, unique=True, blank=True)
     school_level = models.CharField(
         max_length=1, choices=SCHOOL_CHOICES, blank=True, null=True)
     graduation_year = models.CharField(
@@ -28,12 +31,12 @@ class CustomUser(AbstractUser):
     is_schoology_authenticated = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name']
+    REQUIRED_FIELDS = ['phone']
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.email
 
 
 class Course(models.Model):
@@ -80,46 +83,46 @@ class Assignment(models.Model):
         return self.name + " -- " + self.course.user.first_name + " " + self.course.user.last_name
 
 
-class IndividualTimeBlock(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
-    color = models.CharField(max_length=20, default="yellow")
-    start_time = models.TimeField(auto_now=False, auto_now_add=False)
-    end_time = models.TimeField(auto_now=False, auto_now_add=False)
+# class IndividualTimeBlock(models.Model):
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=30)
+#     color = models.CharField(max_length=20, default="yellow")
+#     start_time = models.TimeField(auto_now=False, auto_now_add=False)
+#     end_time = models.TimeField(auto_now=False, auto_now_add=False)
 
-    def __str__(self):
-        return self.name + " Time Block"
-
-
-class ActiveTimeBlock(models.Model):
-    time_block = models.ForeignKey(
-        IndividualTimeBlock, on_delete=models.CASCADE)
-    schedule_start = models.DateTimeField()
-    schedule_finish = models.DateTimeField()
-
-    def __str__(self):
-        return self.time_block.name + " Time Block At " + self.schedule_start
+#     def __str__(self):
+#         return self.name + " Time Block"
 
 
-class RecurringTimeBlock(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=30)
-    color = models.CharField(max_length=20, default="yellow")
-    is_time_recurring = models.BooleanField(default=True)
+# class ActiveTimeBlock(models.Model):
+#     time_block = models.ForeignKey(
+#         IndividualTimeBlock, on_delete=models.CASCADE)
+#     schedule_start = models.DateTimeField()
+#     schedule_finish = models.DateTimeField()
 
-    def __str__(self):
-        return self.name + " Recurring Time Block"
+#     def __str__(self):
+#         return self.time_block.name + " Time Block At " + self.schedule_start
 
 
-class RecurringTimeBlockSetting(models.Model):
-    time_block = models.ForeignKey(
-        RecurringTimeBlock, on_delete=models.CASCADE)
-    day = models.CharField(max_length=10)
-    schedule_start = models.TimeField(auto_now=False, auto_now_add=False)
-    schedule_finish = models.TimeField(auto_now=False, auto_now_add=False)
+# class RecurringTimeBlock(models.Model):
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=30)
+#     color = models.CharField(max_length=20, default="yellow")
+#     is_time_recurring = models.BooleanField(default=True)
 
-    def __str__(self):
-        return self.time_block.name + " Recurring At " + self.schedule_start
+#     def __str__(self):
+#         return self.name + " Recurring Time Block"
+
+
+# class RecurringTimeBlockSetting(models.Model):
+#     time_block = models.ForeignKey(
+#         RecurringTimeBlock, on_delete=models.CASCADE)
+#     day = models.CharField(max_length=10)
+#     schedule_start = models.TimeField(auto_now=False, auto_now_add=False)
+#     schedule_finish = models.TimeField(auto_now=False, auto_now_add=False)
+
+#     def __str__(self):
+#         return self.time_block.name + " Recurring At " + self.schedule_start
 
 
 class SchoologyToken(models.Model):

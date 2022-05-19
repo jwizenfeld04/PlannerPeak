@@ -3,18 +3,18 @@ from rest_framework import serializers
 from django.db import transaction
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from .choices import SCHOOL_CHOICES, YEAR_CHOICES
+from .verify import send, check
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'first_name', 'last_name', 'email', 'school_level',
-                  'graduation_year', 'schoology_id', 'schoology_school', 'is_schoology_authenticated']
+        fields = ['id', 'email', 'school_level',
+                  'graduation_year', 'schoology_id', 'schoology_school', 'is_schoology_authenticated', 'phone', 'is_phone_verified']
 
 
 class CustomRegisterSerializer(RegisterSerializer):
-    first_name = serializers.CharField(max_length=30)
-    last_name = serializers.CharField(max_length=30)
+    phone = serializers.CharField(max_length=20)
     school_level = serializers.CharField(max_length=30, required=False)
     graduation_year = serializers.CharField(max_length=30, required=False)
     schoology_id = serializers.CharField(max_length=30, required=False)
@@ -25,14 +25,14 @@ class CustomRegisterSerializer(RegisterSerializer):
     @transaction.atomic
     def save(self, request):
         CustomUser = super().save(request)
-        CustomUser.first_name = self.data.get('first_name')
-        CustomUser.last_name = self.data.get('last_name')
+        CustomUser.phone = self.data.get('phone')
         CustomUser.school_level = self.data.get('school_level')
         CustomUser.graduation_year = self.data.get('graduation_year')
         CustomUser.schoology_id = self.data.get('schoology_id')
         CustomUser.is_schoology_authenticated = self.data.get(
             'is_schoology_authenticated')
         CustomUser.save()
+        send(CustomUser.phone)
         return CustomUser
 
 
@@ -85,51 +85,55 @@ class SchoologyCallbackSerializer(serializers.Serializer):
     callbackUrl = serializers.CharField(max_length=50)
 
 
-class IndividualTimeBlockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = IndividualTimeBlock
-        fields = ['id', 'user', 'name', 'color', 'start_time',
-                  'end_time']
-        extra_kwargs = {
-            'user': {'required': False},
-            'name': {'required': False},
-            'color': {'required': False},
-            'start_time': {'required': False},
-            'end_time': {'required': False},
-        }
+class VerifyCodeSerializer(serializers.Serializer):
+    code = serializers.CharField(max_length=8)
 
 
-class ActiveTimeBlockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ActiveTimeBlock
-        fields = ['id', 'time_block', 'schedule_start', 'schedule_finish']
-        extra_kwargs = {
-            'time_block': {'required': False},
-            'schedule_start': {'required': False},
-            'schedule_finish': {'required': False},
-        }
+# class IndividualTimeBlockSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = IndividualTimeBlock
+#         fields = ['id', 'user', 'name', 'color', 'start_time',
+#                   'end_time']
+#         extra_kwargs = {
+#             'user': {'required': False},
+#             'name': {'required': False},
+#             'color': {'required': False},
+#             'start_time': {'required': False},
+#             'end_time': {'required': False},
+#         }
 
 
-class RecurringTimeBlockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RecurringTimeBlock
-        fields = ['id', 'user', 'name', 'color', 'is_time_recurring']
-        extra_kwargs = {
-            'user': {'required': False},
-            'name': {'required': False},
-            'color': {'required': False},
-            'is_time_recurring': {'required': False},
-        }
+# class ActiveTimeBlockSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ActiveTimeBlock
+#         fields = ['id', 'time_block', 'schedule_start', 'schedule_finish']
+#         extra_kwargs = {
+#             'time_block': {'required': False},
+#             'schedule_start': {'required': False},
+#             'schedule_finish': {'required': False},
+#         }
 
 
-class RecurringTimeBlockSettingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RecurringTimeBlockSetting
-        fields = ['id', 'time_block', 'day',
-                  'schedule_start', 'schedule_finish']
-        extra_kwargs = {
-            'time_block': {'required': False},
-            'schedule_start': {'required': False},
-            'schedule_finish': {'required': False},
-            'day': {'required': False},
-        }
+# class RecurringTimeBlockSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = RecurringTimeBlock
+#         fields = ['id', 'user', 'name', 'color', 'is_time_recurring']
+#         extra_kwargs = {
+#             'user': {'required': False},
+#             'name': {'required': False},
+#             'color': {'required': False},
+#             'is_time_recurring': {'required': False},
+#         }
+
+
+# class RecurringTimeBlockSettingSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = RecurringTimeBlockSetting
+#         fields = ['id', 'time_block', 'day',
+#                   'schedule_start', 'schedule_finish']
+#         extra_kwargs = {
+#             'time_block': {'required': False},
+#             'schedule_start': {'required': False},
+#             'schedule_finish': {'required': False},
+#             'day': {'required': False},
+#         }

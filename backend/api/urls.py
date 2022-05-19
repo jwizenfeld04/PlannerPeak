@@ -6,11 +6,14 @@ from .views.assignmentViews import *
 from .views.scheduleViews import *
 from .views.googleCalendarViews import *
 from .views.timeBlockViews import *
+from .views.verifyView import *
 from .converters import DateConverter
 
 register_converter(DateConverter, 'date')
 
 urlpatterns = [
+    path('verify-phone/',
+         VerifyPhoneView.as_view(), name='verify_phone'),
     path('schedule-date/<date:date>/',
          SpecficDateSchedule.as_view(), name='date_schedule'),
     path('current-schedule/', CurrentSchedule.as_view(), name='current_schedule'),
