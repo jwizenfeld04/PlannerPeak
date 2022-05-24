@@ -53,6 +53,18 @@ export const verifyPhone = createAsyncThunk(
   }
 );
 
+export const verifyResend = createAsyncThunk(
+  "user/verifyResend",
+  async (token, thunkAPI) => {
+    const response = await API.get(`verify-resend/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    return response;
+  }
+);
+
 // API Request that retreives user info as an object
 export const getUserInfo = createAsyncThunk(
   "user/getUserInfo",

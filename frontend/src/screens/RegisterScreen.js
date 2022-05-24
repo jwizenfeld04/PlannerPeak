@@ -1,4 +1,4 @@
-import React, { Component, useRef, useState } from "react";
+import React, { Component, useRef, useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -14,22 +14,34 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { registerUser } from "../redux/features/user/userSlice";
+import {
+  registerUser,
+  selectToken,
+  selectIsPhoneVerified,
+} from "../redux/features/user/userSlice";
 import styles from "../styles/styles";
 import { AppImages, AppColors } from "../styles/globalStyles";
 import { unwrapResult } from "@reduxjs/toolkit";
+import RegisterForm from "../components/register/RegisterForm";
 
 export default function RegisterScreen({ navigation }) {
-  // Object that must include first name, last name, email, password, and confirm password sent in Register API Request
-  const [authData, setAuthData] = useState({});
-
-  // Ref used to auto switch to next text input when pressing "return" key on keyboard
-  const ref_input2 = useRef();
-  const ref_input3 = useRef();
-  const ref_input4 = useRef();
-  const ref_input5 = useRef();
-
   const dispatch = useDispatch();
+  const loggedInBeforeVerify = useSelector(selectToken);
+  const isPhoneVerified = useSelector(selectIsPhoneVerified);
+
+  //Not Verify but yes User account
+  useEffect(() => {
+    if (loggedInBeforeVerify && !isPhoneVerified) {
+      navigation.navigate("Verify");
+    }
+  }, []);
+
+  const onPress = async (values) => {
+    console.log(values);
+    await dispatch(registerUser(values)).then(unwrapResult);
+    navigation.navigate("Verify");
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -39,82 +51,9 @@ export default function RegisterScreen({ navigation }) {
             source={AppImages.plannerPeakIcon}
           />
         </View>
-        {/* ALL TEXT INPUTS SENT IN API REQUEST TO CREATE A NEW ACCOUNT */}
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Phone Number"
-            returnKeyType="next"
-            textContentType="telephoneNumber"
-            onSubmitEditing={() => ref_input2.current.focus()}
-            textAlign="center"
-            autoComplete="tel"
-            onChangeText={(text) =>
-              setAuthData({
-                ...authData,
-                phone: text,
-              })
-            }
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Email"
-            autoCapitalize="none"
-            onSubmitEditing={() => ref_input3.current.focus()}
-            ref={ref_input3}
-            returnKeyType="next"
-            textAlign="center"
-            keyboardType="email-address"
-            autoComplete="email"
-            onChangeText={(text) =>
-              setAuthData({
-                ...authData,
-                email: text,
-              })
-            }
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.textInput}
-            autoCapitalize="none"
-            placeholder="Password"
-            onSubmitEditing={() => ref_input4.current.focus()}
-            ref={ref_input4}
-            textContentType="password"
-            returnKeyType="next"
-            textAlign="center"
-            secureTextEntry={true}
-            onChangeText={(text) =>
-              setAuthData({ ...authData, password1: text })
-            }
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.textInput}
-            autoCapitalize="none"
-            placeholder="Confirm Password"
-            textContentType="password"
-            ref={ref_input5}
-            textAlign="center"
-            secureTextEntry={true}
-            onChangeText={(text) =>
-              setAuthData({ ...authData, password2: text })
-            }
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={async () => {
-            await dispatch(registerUser(authData)).then(unwrapResult);
-            navigation.navigate("Verify");
-          }}
-        >
-          <Text>Sign Up</Text>
-        </TouchableOpacity>
+
+        <RegisterForm onPress={onPress} />
+
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Login");

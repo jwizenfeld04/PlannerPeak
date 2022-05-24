@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/features/user/userSlice";
-import { selectError } from "../redux/features/user/userSlice";
+import { selectError, selectIsPhoneVerified, selectToken } from "../redux/features/user/userSlice";
 import styles from "../styles/styles";
 import { AppColors, AppImages } from "../styles/globalStyles";
 
@@ -24,6 +24,17 @@ export default function LoginScreen({ navigation }) {
   const ref_input2 = useRef();
 
   const dispatch = useDispatch();
+
+  const loggedInBeforeVerify = useSelector(selectToken);
+  const isPhoneVerified = useSelector(selectIsPhoneVerified);
+
+  //Not Verify but yes User account
+  useEffect(() => {
+    if (loggedInBeforeVerify && !isPhoneVerified) {
+      navigation.navigate("Verify");
+    }
+  }, []);
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.container}>

@@ -14,6 +14,8 @@ register_converter(DateConverter, 'date')
 urlpatterns = [
     path('verify-phone/',
          VerifyPhoneView.as_view(), name='verify_phone'),
+    path('verify-resend/',
+         ResendVerifyView.as_view(), name='verify_resend'),
     path('schedule-date/<date:date>/',
          SpecficDateSchedule.as_view(), name='date_schedule'),
     path('current-schedule/', CurrentSchedule.as_view(), name='current_schedule'),
