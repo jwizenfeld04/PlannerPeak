@@ -37,7 +37,6 @@ export default function RegisterScreen({ navigation }) {
   }, []);
 
   const onPress = async (values) => {
-    console.log(values);
     await dispatch(registerUser(values)).then(unwrapResult);
     navigation.navigate("Verify");
   };
@@ -51,9 +50,7 @@ export default function RegisterScreen({ navigation }) {
             source={AppImages.plannerPeakIcon}
           />
         </View>
-
         <RegisterForm onPress={onPress} />
-
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Login");

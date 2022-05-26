@@ -31,7 +31,7 @@ class CustomUser(AbstractUser):
     is_schoology_authenticated = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['phone']
+    REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 

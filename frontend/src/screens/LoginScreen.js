@@ -13,7 +13,11 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/features/user/userSlice";
-import { selectError, selectIsPhoneVerified, selectToken } from "../redux/features/user/userSlice";
+import {
+  selectError,
+  selectIsPhoneVerified,
+  selectToken,
+} from "../redux/features/user/userSlice";
 import styles from "../styles/styles";
 import { AppColors, AppImages } from "../styles/globalStyles";
 
@@ -87,6 +91,7 @@ export default function LoginScreen({ navigation }) {
         >
           <Text style={{ paddingTop: 10, color: "blue" }}>Sign Up?</Text>
         </TouchableOpacity>
+        <Button title="Forgot Password?" onPress={() => {}} />
 
         {/* <Text style={styles.errorText}>{error.errorMessage}</Text> */}
       </View>

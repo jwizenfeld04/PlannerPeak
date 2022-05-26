@@ -2,8 +2,10 @@ from .models import *
 from rest_framework import serializers
 from django.db import transaction
 from dj_rest_auth.registration.serializers import RegisterSerializer
+from dj_rest_auth.serializers import PasswordResetSerializer
 from .choices import SCHOOL_CHOICES, YEAR_CHOICES
 from .verify import send, check
+from django.conf import settings
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -14,7 +16,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
 
 class CustomRegisterSerializer(RegisterSerializer):
-    phone = serializers.CharField(max_length=20)
+    phone = serializers.CharField(max_length=20, required=False)
     school_level = serializers.CharField(max_length=30, required=False)
     graduation_year = serializers.CharField(max_length=30, required=False)
     schoology_id = serializers.CharField(max_length=30, required=False)
@@ -34,6 +36,12 @@ class CustomRegisterSerializer(RegisterSerializer):
         CustomUser.save()
         send(CustomUser.phone)
         return CustomUser
+
+# FIX EVENTUALLY
+
+
+class CustomPasswordResetSerializer(PasswordResetSerializer):
+    pass
 
 
 class CourseSerializer(serializers.ModelSerializer):

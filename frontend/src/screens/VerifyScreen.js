@@ -49,7 +49,7 @@ const VerifyNumber = ({ route, navigation }) => {
           setAuthData({ token: token, code: code });
         }}
       />
-      {invalidCode && <Text style={styles.error}>Incorrect Code</Text>}
+      {invalidCode && <Text style={styles.error}>Invalid Code</Text>}
       <Button
         title="Resend Code"
         onPress={() => {
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
 
   error: {
     color: "red",
+    marginBottom: 10,
   },
 });
 
