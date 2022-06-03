@@ -37,11 +37,10 @@ class CustomRegisterSerializer(RegisterSerializer):
         send(CustomUser.phone)
         return CustomUser
 
-# FIX EVENTUALLY
-
 
 class CustomPasswordResetSerializer(PasswordResetSerializer):
     pass
+# FIX EVENTUALLY
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -76,7 +75,7 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = ['id', 'course', 'name', 'description', 'start_date',
-                  'due_date', 'grade', 'schoology_assignment_id', 'is_schoology', 'is_completed', 'max_points', 'scheduled_start', 'scheduled_finish']
+                  'due_date', 'grade', 'schoology_assignment_id', 'is_schoology', 'is_completed', 'max_points']
         extra_kwargs = {
             'grade': {'required': False},
             'schoology_assignment_id': {'required': False},
@@ -87,6 +86,12 @@ class AssignmentSerializer(serializers.ModelSerializer):
             'scheduled_start': {'required': False},
             'scheduled_finish': {'required': False},
         }
+
+
+class AssignmentScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AssignmentSchedule
+        fields = '__all__'
 
 
 class SchoologyCallbackSerializer(serializers.Serializer):

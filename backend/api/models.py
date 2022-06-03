@@ -76,11 +76,18 @@ class Assignment(models.Model):
     assignment_type = models.CharField(max_length=20, blank=True)
     is_completed = models.BooleanField(default=False)
     is_schoology = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name + " -- " + self.course.user.first_name + " " + self.course.user.last_name
+
+
+class AssignmentSchedule(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     scheduled_start = models.DateTimeField(blank=True, null=True)
     scheduled_finish = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.name + " -- " + self.course.user.first_name + " " + self.course.user.last_name
+        return self.assignment.name + " Schedule Interval"
 
 
 # class IndividualTimeBlock(models.Model):

@@ -91,12 +91,28 @@ export const getSpecificDateSchedule = createAsyncThunk(
   }
 );
 
+export const getAssignmentAverageMinutes = createAsyncThunk(
+  "user/getAssignmentAverageMinutes",
+  async (scheduleData, thunkAPI) => {
+    const response = await API.get(`avg-assignment-minutes/${scheduleData.courseId}`, {
+      headers: {
+        Authorization: `Token ${scheduleData.token}`,
+      },
+    }).catch((error) => {
+      console.log(error);
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
 const initialState = {
   assignments: [],
   courseSpecficAssignments: [],
   currentAssignment: null,
   schedule: null,
   dateSchedule: null,
+  avgAssignmentMinutes: 0,
 };
 
 export const assignmentsSlice = createSlice({
@@ -169,6 +185,16 @@ export const assignmentsSlice = createSlice({
     [getSpecificDateSchedule.rejected]: (state, action) => {
       state.status = "failed";
     },
+    [getAssignmentAverageMinutes.fulfilled]: (state, action) => {
+      state.avgAssignmentMinutes = Object.values(action.payload.data)[0];
+      state.status = "success";
+    },
+    [getAssignmentAverageMinutes.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [getAssignmentAverageMinutes.rejected]: (state, action) => {
+      state.status = "failed";
+    },
   },
 });
 
@@ -180,5 +206,6 @@ export const selectCurrentAssignment = (state) =>
   state.assignment.currentAssignment;
 export const selectCurrentSchedule = (state) => state.assignment.schedule;
 export const selectDateSchedule = (state) => state.assignment.dateSchedule;
+export const selectAvgMinutes = (state) => state.assignment.avgAssignmentMinutes;
 
 export default assignmentsSlice.reducer;

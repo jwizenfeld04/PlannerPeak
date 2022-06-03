@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { AppColors } from "../../styles/globalStyles";
+import { Button } from "react-native-elements/dist/buttons/Button";
 
 const CourseModal = (props) => {
   const [courseNotifications, setCourseNotifications] = useState(
@@ -34,9 +35,11 @@ const CourseModal = (props) => {
     }
   };
 
+
   useEffect(() => {
     setCourseNotifications(props.modalData.notifications);
     setCheckedColor(props.modalData.color);
+    props.getAverageMinutes();
   }, [props.modalData]);
 
   const styles2 = StyleSheet.create({
@@ -84,25 +87,7 @@ const CourseModal = (props) => {
           </TouchableOpacity>
           <Text style={{ fontSize: 20 }}>{props.modalData.name}</Text>
         </View>
-        <View style={{ height: 350 }}>
-          <FlatList
-            ListEmptyComponent={handleAssignmentListEmpty}
-            data={props.courseSpecficAssignments}
-            // Missing item key - possibly use course id instead with keyExtractor
-            renderItem={({ item }) => {
-              return (
-                <ListItem
-                  key={item.id}
-                  bottomDivider
-                  containerStyle={courseScreenStyles.courseView}
-                  underlayColor={AppColors.primaryBackgroundColor}
-                >
-                  <ListItem.Title>{item.name}</ListItem.Title>
-                </ListItem>
-              );
-            }}
-          />
-        </View>
+       {props.avgMinutes ? <Text>Average Assignment Minutes: {props.avgMinutes}</Text> : <Text> No Average Assignment Minutes</Text>}
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View
             style={{

@@ -36,10 +36,10 @@ export default function RegisterScreen({ navigation }) {
     }
   }, []);
 
-  const onPress = async (values) => {
-    await dispatch(registerUser(values)).then(unwrapResult);
-    navigation.navigate("Verify");
-  };
+  // const onPress = async (values) => {
+  //   await dispatch(registerUser(values)).then(unwrapResult);
+  //   navigation.navigate("Verify");
+  // };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
