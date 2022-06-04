@@ -2,15 +2,16 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, Group
 from .forms import RegisterForm
 from .models import *
+from django.contrib.admin import SimpleListFilter
 
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     add_form = RegisterForm
-    list_display = ('email',
-                    'graduation_year', 'school_level')
+    list_display = ('email', 'phone', 'is_phone_verified',
+                    'schoology_id', 'is_schoology_authenticated', 'graduation_year', 'school_level')
     list_filter = ('school_level', 'graduation_year',
-                   'is_active', 'is_staff', 'is_superuser',)
+                   'is_active', 'is_phone_verified', 'is_staff', 'is_superuser',)
     fieldsets = (
         ('Account Information', {
             'classes': ('wide',),
@@ -36,13 +37,64 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+class GradeFilter(SimpleListFilter):
+    title = 'grade'
+    parameter_name = 'grade'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('90-100', '90-100'),
+            ('80-89', '80-89'),
+            ('70-79', '70-79'),
+            ('60-69', '60-69'),
+            ('<60', '<60'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == '90-100':
+            return queryset.filter(grade__range=(90, 100))
+        if self.value() == '80-89':
+            return queryset.filter(grade__range=(80, 89))
+        if self.value() == '70-79':
+            return queryset.filter(grade__range=(70, 79))
+        if self.value() == '60-69':
+            return queryset.filter(grade__range=(60, 69))
+        if self.value() == '<60':
+            return queryset.filter(grade__range=(0, 59))
+
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'subject', 'grade', 'priority',
+                    'is_schoology', 'is_active', 'user')
+    list_filter = ('user', 'subject',
+                   'priority', GradeFilter, 'is_schoology', 'is_active')
+    ordering = ('is_active', 'grade', 'priority')
+    search_fields = ('name', 'subject')
+
+
+@admin.register(Assignment)
+class AssignmentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'assignment_type', 'course', 'grade', 'start_date',
+                    'due_date', 'is_completed', 'is_schoology')
+    list_filter = ('assignment_type', GradeFilter,
+                   'start_date', 'due_date', 'is_schoology', 'is_completed')
+    ordering = ('assignment_type', 'grade', 'start_date',
+                'due_date', 'is_completed', 'is_schoology')
+    search_fields = ('name', 'course')
+
+
+@admin.register(AssignmentSchedule)
+class AssignmentScheduleAdmin(admin.ModelAdmin):
+    list_display = ('assignment', 'scheduled_start', 'scheduled_finish')
+    list_filter = ('assignment', 'scheduled_start', 'scheduled_finish')
+    ordering = ('scheduled_start', 'scheduled_finish')
+
+
 admin.site.unregister(Group)
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Course)
-admin.site.register(Assignment)
 admin.site.register(SchoologyToken)
 admin.site.register(CourseMeetingDay)
-admin.site.register(AssignmentSchedule)
 # admin.site.register(IndividualTimeBlock)
 # admin.site.register(ActiveTimeBlocks)
 # admin.site.register(RecurringTimeBlocks)
