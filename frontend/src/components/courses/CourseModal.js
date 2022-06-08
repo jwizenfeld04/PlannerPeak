@@ -16,6 +16,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { AppColors } from "../../styles/globalStyles";
 import { Button } from "react-native-elements/dist/buttons/Button";
+import GradeTimeChart from "./GradeTimeChart";
 
 const CourseModal = (props) => {
   const [courseNotifications, setCourseNotifications] = useState(
@@ -87,6 +88,7 @@ const CourseModal = (props) => {
           </TouchableOpacity>
           <Text style={{ fontSize: 20 }}>{props.modalData.name}</Text>
         </View>
+        <GradeTimeChart />
        {props.avgMinutes ? <Text>Average Assignment Minutes: {props.avgMinutes}</Text> : <Text> No Average Assignment Minutes</Text>}
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View
