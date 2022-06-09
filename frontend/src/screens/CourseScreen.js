@@ -46,37 +46,21 @@ export default function CourseScreen() {
       name: item.name,
       grade: item.grade,
       color: item.color,
-      priority: item.priority,
-      notifications: item.notifications,
     });
     setModalVisible(true);
   };
 
-  const onCheckmarkPress = (courseNotifications) => {
-    setModalData((prevState) => ({
-      ...prevState,
-      notifications: !courseNotifications,
-    }));
+
+  const onModalDismiss = () => {
+    getAllCourses(token, isSchoologyAuthenticated);
   };
 
-  const onPriorityPress = (number) => {
-    setModalData((prevState) => ({
-      ...prevState,
-      priority: number,
-    }));
-  };
-
-  const onRadioPress = (checkedColor) => {
-    setModalData((prevState) => ({
+  const onModalColorChange =  (checkedColor) => {
+     setModalData((prevState) => ({
       ...prevState,
       color: checkedColor,
     }));
-  };
-
-  const onModalDismiss = () => {
-    dispatch(updateUserCoursePrefrences(modalData));
-    getAllCourses(token, isSchoologyAuthenticated);
-  };
+  }
 
   const onModalBack = () => {
     setModalVisible(false);
@@ -101,6 +85,7 @@ export default function CourseScreen() {
   }, [isSchoologyAuthenticated, createModalVisible]);
 
   useEffect(() => {
+    dispatch(updateUserCoursePrefrences(modalData));
     dispatch(getCourseSpecificAssignments(modalData));
   }, [modalData]);
 
@@ -126,13 +111,11 @@ export default function CourseScreen() {
         modalVisible={modalVisible}
         modalData={modalData}
         courseSpecficAssignments={courseSpecficAssignments}
-        onRadioPress={onRadioPress}
-        onPriorityPress={onPriorityPress}
-        onCheckmarkPress={onCheckmarkPress}
         onModalDismiss={onModalDismiss}
         onModalBack={onModalBack}
         getAverageMinutes={getAverageMinutes}
         avgMinutes={avgMinutes}
+        onModalColorChange={onModalColorChange}
       />
       <CreateCourseModal
         modalVisible={createModalVisible}

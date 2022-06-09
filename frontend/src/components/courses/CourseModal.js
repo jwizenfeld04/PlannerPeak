@@ -1,76 +1,29 @@
 import courseScreenStyles from "../../styles/courseScreenStyles";
 import { Ionicons } from "@expo/vector-icons";
-import PriorityBoxes from "./prefrences/PriorityBoxes";
-import ColorRadioButtons from "./prefrences/ColorRadioButtons";
-import NotificationCheckBox from "./prefrences/NotificationCheckBox";
-import { ListItem } from "react-native-elements";
 import {
   StyleSheet,
-  Modal,
   SafeAreaView,
+  Modal,
   View,
   Text,
-  FlatList,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { AppColors } from "../../styles/globalStyles";
-import { Button } from "react-native-elements/dist/buttons/Button";
-import GradeTimeChart from "./GradeTimeChart";
+import Analytics from "./Analytics";
+import Assignments from "./Assignment";
+import ColorModal from "./ColorModal";
 
 const CourseModal = (props) => {
-  const [courseNotifications, setCourseNotifications] = useState(
-    props.modalData.notifications
-  );
-  const [checkedColor, setCheckedColor] = useState(props.modalData.color);
-
-  const handleAssignmentListEmpty = () => {
-    return <Text style={courseScreenStyles.courseTitle}>No Assignments</Text>;
-  };
-
-  const handleModalNameColor = () => {
-    if (props.modalData.color) {
-      return `${props.modalData.color}`;
-    } else {
-      return "black";
-    }
-  };
-
+  const [tab, setTab] = useState("Assignments");
+  const [color, setColor] = useState(props.modalData.color);
+  const [colorSwitch, setColorSwitch] = useState(false);
+  const windowHeight = Dimensions.get("window").height;
 
   useEffect(() => {
-    setCourseNotifications(props.modalData.notifications);
-    setCheckedColor(props.modalData.color);
     props.getAverageMinutes();
   }, [props.modalData]);
-
-  const styles2 = StyleSheet.create({
-    courseModalName: {
-      fontSize: 30,
-      textAlign: "center",
-      justifyContent: "center",
-      color: handleModalNameColor(),
-    },
-    courseTitle: {
-      fontSize: 20,
-      color: "black",
-      justifyContent: "center",
-    },
-    flatList: {
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    courseIcon: {
-      width: "13%",
-      height: "100%",
-      marginRight: 10,
-    },
-    courseHeaderTitle: {
-      fontSize: 40,
-      color: "black",
-      textAlign: "center",
-      marginBottom: 10,
-    },
-  });
 
   return (
     <Modal
@@ -79,60 +32,136 @@ const CourseModal = (props) => {
       transparent={false}
       onDismiss={props.onModalDismiss}
     >
-      <SafeAreaView
-        style={{ backgroundColor: AppColors.primaryBackgroundColor, flex: 1 }}
-      >
-        <View style={{ flexDirection: "row", paddingBottom: 50 }}>
-          <TouchableOpacity onPress={props.onModalBack}>
-            <Ionicons name="arrow-back-outline" size={30} />
-          </TouchableOpacity>
-          <Text style={{ fontSize: 20 }}>{props.modalData.name}</Text>
-        </View>
-        <GradeTimeChart />
-       {props.avgMinutes ? <Text>Average Assignment Minutes: {props.avgMinutes}</Text> : <Text> No Average Assignment Minutes</Text>}
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              flex: 1,
-              height: 3,
-              backgroundColor: AppColors.primaryAccentColor,
+      <SafeAreaView style={courseScreenStyles.container}>
+        <ColorModal
+          color={color}
+          colorSwitch={colorSwitch}
+          windowHeight={windowHeight}
+          setColor={setColor}
+          setColorSwitch={setColorSwitch}
+          onModalColorChange={props.onModalColorChange}
+        />
+        <View
+          style={{
+            height: windowHeight / 12,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            backgroundColor: "#2476B1",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              props.onModalBack();
             }}
-          />
-          <View>
-            <Text
+          >
+            <View
               style={{
-                width: 120,
-                textAlign: "center",
-                color: AppColors.primaryAccentColor,
-                fontSize:20
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
               }}
             >
-              Prefrences
+              <Ionicons name="chevron-back-sharp" size={30} />
+              <Text style={{ fontSize: 14 }}>Courses</Text>
+            </View>
+          </TouchableOpacity>
+          <View
+            style={{
+              flex: 3,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ fontSize: 22, fontWeight: "bold", color: "black" }}>
+              {props.modalData.name}
             </Text>
           </View>
           <View
             style={{
               flex: 1,
-              height: 3,
-              backgroundColor: AppColors.primaryAccentColor,
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          />
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setColorSwitch(true);
+              }}
+            >
+              <Ionicons name="color-palette-outline" size={35} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <ColorRadioButtons
-          checkedColor={checkedColor}
-          onPress={props.onRadioPress}
-        />
-        <PriorityBoxes
-          priority={props.modalData.priority}
-          onPress={props.onPriorityPress}
-        />
-        <NotificationCheckBox
-          courseNotifications={courseNotifications}
-          onPress={props.onCheckmarkPress}
-        />
+        <View
+          style={{
+            height: windowHeight / 20,
+            backgroundColor: "skyblue",
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={[
+              tab === "Assignments"
+                ? styles.selectedBottomColor
+                : styles.tabContainer,
+            ]}
+          >
+            <TouchableOpacity onPress={() => setTab("Assignments")}>
+              <Text>Assignments</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={[
+              tab === "Analytics"
+                ? styles.selectedBottomColor
+                : styles.tabContainer,
+            ]}
+          >
+            <TouchableOpacity onPress={() => setTab("Analytics")}>
+              <Text>Analytics</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingTop: 20,
+          }}
+        >
+          {tab === "Assignments" ? (
+            <Assignments
+              color={color}
+              courseSpecficAssignments={props.courseSpecficAssignments}
+            />
+          ) : (
+            <Analytics avgMinutes={props.avgMinutes} />
+          )}
+        </View>
       </SafeAreaView>
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  tabContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  selectedBottomColor: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomColor: "#2476B1",
+    borderBottomWidth: 3,
+  },
+});
 
 export default CourseModal;
