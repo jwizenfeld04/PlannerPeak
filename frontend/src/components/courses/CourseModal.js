@@ -17,7 +17,6 @@ import ColorModal from "./ColorModal";
 
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
-  const [color, setColor] = useState(props.modalData.color);
   const [colorSwitch, setColorSwitch] = useState(false);
   const windowHeight = Dimensions.get("window").height;
 
@@ -34,10 +33,9 @@ const CourseModal = (props) => {
     >
       <SafeAreaView style={courseScreenStyles.container}>
         <ColorModal
-          color={color}
+          color={props.modalData.color}
           colorSwitch={colorSwitch}
           windowHeight={windowHeight}
-          setColor={setColor}
           setColorSwitch={setColorSwitch}
           onModalColorChange={props.onModalColorChange}
         />
@@ -133,7 +131,7 @@ const CourseModal = (props) => {
         >
           {tab === "Assignments" ? (
             <Assignments
-              color={color}
+              color={props.modalData.color}
               courseSpecficAssignments={props.courseSpecficAssignments}
             />
           ) : (

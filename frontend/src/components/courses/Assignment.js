@@ -2,13 +2,15 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import { ListItem, Icon } from "react-native-elements";
 import { AppColors } from "../../styles/globalStyles";
 import courseScreenStyles from "../../styles/courseScreenStyles";
+import moment from 'moment';
 
 export default function Assignments(props) {
   const handleAssignmentListEmpty = () => {
     return <Text style={courseScreenStyles.courseTitle}>No Assignments</Text>;
   };
   const getDate = (date) => {
-    return date;
+      const newDate = moment(date).format("MMM Do YYYY");
+    return newDate;
   };
   return (
     <View>
@@ -35,7 +37,7 @@ export default function Assignments(props) {
               <ListItem.Content>
                 <ListItem.Title>{item.name}</ListItem.Title>
                 <ListItem.Subtitle
-                  style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
+                  style={{ fontSize: 12, marginTop: 5, fontStyle: "italic", color:'red' }}
                 >
                   <Text>Due: {getDate(item.due_date)}</Text>
                 </ListItem.Subtitle>

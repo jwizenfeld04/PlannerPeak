@@ -24,7 +24,6 @@ export default function ColorModal(props) {
       >
         <ColorPalette
           onChange={(color) => {
-            props.setColor(color);
            props.setColorSwitch(false);
            props.onModalColorChange(color)
           }}
