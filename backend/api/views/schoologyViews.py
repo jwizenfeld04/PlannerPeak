@@ -25,7 +25,8 @@ class SchoologyAuth(APIView):
     serializer_class = SchoologyCallbackSerializer
 
     global auth
-    auth = schoolopy.Auth(CONSUMER_KEY, CONSUMER_SECRET, three_legged=True)
+    auth = schoolopy.Auth(CONSUMER_KEY, CONSUMER_SECRET,
+                          three_legged=True, domain='https://app.schoology.com')
 
     def post(self, request, format=None, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
