@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = 'http://192.168.1.27:8000/api/';
+export const API_URL = 'https://plannerpeak.herokuapp.com/api/';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -14,3 +14,5 @@ const api = axios.create({
 export default api;
 
 // 'https://plannerpeak.herokuapp.com/api/'
+// 'http://192.168.86.44:8000/api/'
+// 'http://192.168.1.27:8000/api/'
