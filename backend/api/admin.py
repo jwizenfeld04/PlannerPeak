@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin, Group
 from .forms import RegisterForm
 from .models import *
 from django.contrib.admin import SimpleListFilter
+import csv
 
 
 class CustomUserAdmin(UserAdmin):
@@ -73,15 +74,30 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ('name', 'subject')
 
 
+def download_assignment_csv(modeladmin, request, queryset):
+    f = open('assignment_data.csv', 'w')
+    writer = csv.writer(f)
+    writer.writerow(["name", "assignment_type", "course",
+                    "grade", 'total_study_minutes', "start_date", "due_date"])
+    for s in queryset:
+        writer.writerow([s.name, s.assignment_type, s.course,
+                        s.grade, s.total_study_minutes, s.start_date, s.due_date])
+
+
 @admin.register(Assignment)
 class AssignmentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'assignment_type', 'course', 'grade', 'start_date',
-                    'due_date', 'is_completed', 'is_schoology')
+    list_display = ('name', 'assignment_type', 'course', 'grade', 'total_study_minutes', 'start_date',
+                    'due_date', 'is_completed', 'is_schoology', )
+    readonly_fields = ('total_study_minutes',)
     list_filter = ('assignment_type', GradeFilter,
                    'start_date', 'due_date', 'is_schoology', 'is_completed')
     ordering = ('assignment_type', 'grade', 'start_date',
                 'due_date', 'is_completed', 'is_schoology')
     search_fields = ('name', 'course')
+    actions = [download_assignment_csv]
+
+    def total_study_minutes(self, obj):
+        return obj.total_study_minutes()
 
 
 @admin.register(AssignmentSchedule)

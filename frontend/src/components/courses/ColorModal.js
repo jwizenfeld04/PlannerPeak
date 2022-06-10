@@ -31,15 +31,15 @@ export default function ColorModal(props) {
           defaultColor={props.color}
           colors={[
             "#C0392B",
-            "#E74C3C",
-            "#9B59B6",
-            "#8E44AD",
+            "#E67E22",
+            "#F1C40F",
+            "#16A085",
             "#2980B9",
-            "green",
-            "skyblue",
-            "yellow",
-            "purple",
-            "grey",
+            "#8E44AD",
+            "#FFC0CB",
+            "#FA8072",
+            "#39FF14",
+            "#808080",
           ]}
         />
       </View>

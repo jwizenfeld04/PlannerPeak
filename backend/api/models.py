@@ -77,6 +77,15 @@ class Assignment(models.Model):
     is_completed = models.BooleanField(default=False)
     is_schoology = models.BooleanField(default=False)
 
+    def total_study_minutes(self):
+        schedules = AssignmentSchedule.objects.filter(assignment_id=self.id)
+        minutes = 0
+        for schedule in schedules:
+            assignment_time = round((schedule.scheduled_finish -
+                                     schedule.scheduled_start).total_seconds() / 60.0)
+            minutes = minutes + assignment_time
+        return minutes
+
     def __str__(self):
         return self.name
 
