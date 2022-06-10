@@ -29,17 +29,17 @@ export default function RegisterScreen({ navigation }) {
   const loggedInBeforeVerify = useSelector(selectToken);
   const isPhoneVerified = useSelector(selectIsPhoneVerified);
 
-  //Not Verify but yes User account
+  // Not Verify but yes User account
   useEffect(() => {
-    if (loggedInBeforeVerify && !isPhoneVerified) {
+    if (!isPhoneVerified && loggedInBeforeVerify) {
       navigation.navigate("Verify");
     }
-  }, []);
+  }, [loggedInBeforeVerify]);
 
-  // const onPress = async (values) => {
-  //   await dispatch(registerUser(values)).then(unwrapResult);
-  //   navigation.navigate("Verify");
-  // };
+  const onPress = async (values) => {
+    await dispatch(registerUser(values)).then(unwrapResult);
+    navigation.navigate("Verify");
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

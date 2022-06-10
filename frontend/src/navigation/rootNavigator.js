@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";
 import { verifySchoology } from "../redux/features/schoology/schoologySlice";
-import { selectToken } from "../redux/features/user/userSlice";
+import { selectToken, getUserInfo } from "../redux/features/user/userSlice";
 import {
   selectUrl,
   selectIsAuthorized,
@@ -42,15 +42,21 @@ const AppRoute = () => {
   };
 
   useEffect(() => {
-    Linking.addEventListener("url", handleDeepLink);
+    const subscription = Linking.addEventListener("url", handleDeepLink);
     return () => {
-      Linking.removeEventListener("url");
+      subscription.remove();
     };
   }, [isAuthorized]);
 
+  useEffect(() => {
+    if(token){
+      dispatch(getUserInfo(token))
+    }
+  }, [token]);
+
   return (
     <NavigationContainer linking={linking}>
-      {isPhoneVerified ? <AppNavigator /> : <AuthNavigator />}
+      {token && isPhoneVerified ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

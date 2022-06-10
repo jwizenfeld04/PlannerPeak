@@ -34,10 +34,10 @@ export default function LoginScreen({ navigation }) {
 
   //Not Verify but yes User account
   useEffect(() => {
-    if (loggedInBeforeVerify && !isPhoneVerified) {
+    if ( !isPhoneVerified && loggedInBeforeVerify) {
       navigation.navigate("Verify");
     }
-  }, []);
+  }, [loggedInBeforeVerify]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

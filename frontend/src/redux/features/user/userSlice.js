@@ -117,7 +117,7 @@ export const userSlice = createSlice({
       state.user.email = action.payload.data.email;
       state.user.isSchoologyAuthenticated =
         action.payload.data.is_schoology_authenticated;
-      state.user.isPhoneVerified = action.payload.data.is_phone_verified
+      state.user.isPhoneVerified = action.payload.data.is_phone_verified;
       state.status = "success";
     },
     [registerUser.fulfilled]: (state, action) => {

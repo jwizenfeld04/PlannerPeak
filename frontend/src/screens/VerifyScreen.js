@@ -17,17 +17,20 @@ const VerifyNumber = ({ route, navigation }) => {
   const [clearInput, setclearInput] = useState(false);
   const [code, setCode] = useState();
 
-  useEffect(async () => {
-    if (authData !== null) {
-      try {
-        await dispatch(verifyPhone(authData)).then(unwrapResult);
-        dispatch(getUserInfo(token));
-      } catch (error) {
-        setInvalidCode(true);
-        setCode("");
-        setclearInput(true);
+  useEffect(() => {
+    const verifyCode = async () => {
+      if (authData !== null) {
+        try {
+          await dispatch(verifyPhone(authData)).then(unwrapResult);
+          dispatch(getUserInfo(token));
+        } catch (error) {
+          setInvalidCode(true);
+          setCode("");
+          setclearInput(true);
+        }
       }
-    }
+    };
+    verifyCode();
   }, [authData]);
 
   return (
