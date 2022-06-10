@@ -81,7 +81,7 @@ def download_assignment_csv(modeladmin, request, queryset):
                     "grade", 'total_study_minutes', "start_date", "due_date"])
     for s in queryset:
         writer.writerow([s.name, s.assignment_type, s.course,
-                        s.grade, s.total_study_minutes, s.start_date, s.due_date])
+                        s.grade, s.total_study_minutes(), s.start_date, s.due_date])
 
 
 @admin.register(Assignment)
