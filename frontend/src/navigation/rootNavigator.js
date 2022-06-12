@@ -2,25 +2,29 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "./authNavigator";
 import AppNavigator from "./appNavigator";
-import { selectIsLoggedIn, selectIsPhoneVerified } from "../redux/features/user/userSlice";
+import {
+  selectIsLoggedIn,
+  selectIsPhoneVerified,
+} from "../redux/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";
 import { verifySchoology } from "../redux/features/schoology/schoologySlice";
-import { selectToken, getUserInfo } from "../redux/features/user/userSlice";
+import { selectToken, getUserInfo, selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
 import {
   selectUrl,
   selectIsAuthorized,
 } from "../redux/features/schoology/schoologySlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 const prefix = Linking.createURL("/");
 
 const AppRoute = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const isPhoneVerified = useSelector(selectIsPhoneVerified)
+  const isPhoneVerified = useSelector(selectIsPhoneVerified);
   const token = useSelector(selectToken);
   const isAuthorized = useSelector(selectIsAuthorized);
+  const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated);
 
   const linking = {
     prefixes: [prefix],
@@ -36,7 +40,7 @@ const AppRoute = () => {
   const handleDeepLink = (ev) => {
     if (isAuthorized === true) {
       setTimeout(() => {
-        dispatch(verifySchoology(token));
+        dispatch(verifySchoology(token))
       }, 500);
     }
   };
@@ -49,10 +53,10 @@ const AppRoute = () => {
   }, [isAuthorized]);
 
   useEffect(() => {
-    if(token){
-      dispatch(getUserInfo(token))
+    if (token) {
+      dispatch(getUserInfo(token));
     }
-  }, [token]);
+  }, [isSchoologyAuthenticated, token]);
 
   return (
     <NavigationContainer linking={linking}>

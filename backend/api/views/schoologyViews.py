@@ -1,3 +1,4 @@
+from django.forms import NullBooleanField
 from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -9,6 +10,7 @@ from rest_framework.status import *
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+import time
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -44,6 +46,8 @@ class SchoologyAuth(APIView):
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         auth.authorize()
+        while auth.access_token == None:
+            time.sleep(50)
         auth.oauth.token = {'oauth_token': auth.access_token,
                             'oauth_token_secret': auth.access_token_secret}
         schoology_tokens = SchoologyToken()
