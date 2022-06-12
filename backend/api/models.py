@@ -58,7 +58,7 @@ class Course(models.Model):
 
 class CourseMeetingDay(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    meeting_day = models.CharField(max_length=10, blank=True)
+    meeting_day = models.CharField(max_length=10, blank=True, null=True)
 
     def __str__(self):
         return self.course.name + " on " + self.meeting_day

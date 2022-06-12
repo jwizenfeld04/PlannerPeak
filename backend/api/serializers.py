@@ -69,6 +69,10 @@ class CourseMeetingDaySerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseMeetingDay
         fields = ['id', 'course', 'meeting_day']
+        extra_kwargs = {
+            'course': {'required': False},
+            'meeting_day': {'required': False}
+        }
 
 
 class AssignmentSerializer(serializers.ModelSerializer):

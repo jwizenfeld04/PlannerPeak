@@ -46,7 +46,7 @@ const AppRoute = () => {
   };
 
   useEffect(() => {
-    const subscription = Linking.addEventListener("url", handleDeepLink);
+    const subscription = Linking.addEventListener("url", (data) => handleDeepLink(data));
     return () => {
       subscription.remove();
     };
