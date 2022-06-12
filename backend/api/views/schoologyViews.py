@@ -46,8 +46,12 @@ class SchoologyAuth(APIView):
         if user.is_schoology_authenticated:
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         auth.authorize()
+        timer = 0
         while auth.access_token == None:
             time.sleep(50)
+            timer = timer + 50
+            if timer > 1000:
+                return Response({'Fail': 'Did not work'}, status=HTTP_401_UNAUTHORIZED)
         auth.oauth.token = {'oauth_token': auth.access_token,
                             'oauth_token_secret': auth.access_token_secret}
         schoology_tokens = SchoologyToken()

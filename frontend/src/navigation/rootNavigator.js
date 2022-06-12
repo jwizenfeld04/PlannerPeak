@@ -41,7 +41,7 @@ const AppRoute = () => {
     if (isAuthorized === true) {
       setTimeout(() => {
         dispatch(verifySchoology(token))
-      }, 500);
+      }, 1500);
     }
   };
 
