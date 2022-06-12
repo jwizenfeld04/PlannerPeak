@@ -39,6 +39,8 @@ class SchoologyAuth(APIView):
             return Response({"Already Authorized With Schoology": "No more Auth"}, status=HTTP_204_NO_CONTENT)
         request_url = auth.request_authorization(
             callback_url=callback)
+        if request_url == None:
+            return Response({'Fail': 'Did not work'}, status=HTTP_401_UNAUTHORIZED)
         return Response({'authUrl': request_url}, status=HTTP_200_OK)
 
     def get(self, request, format=None):
