@@ -102,7 +102,9 @@ class SchoologyCourses(APIView):
                 meeting_days = schoology_courses[i]['meeting_days']
                 course.is_schoology = True
                 course.save()
-                if meeting_days != None:
+                # Prevents DB error when no meeting days, meeting_days can't be null in DB
+                # Meeting days returns an array of integers
+                if len(meeting_days) > 0:
                     addMeetingDays(course.id, meeting_days)
         for id in user_schoology_course_ids:
             course = Course.objects.get(
