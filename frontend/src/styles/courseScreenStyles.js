@@ -5,14 +5,15 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Dimensions
 } from "react-native";
 import { AppColors } from "./globalStyles";
+
+const windowWidth = Dimensions.get("window").width;
 
 const courseScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: AppColors.primaryBackgroundColor,
-    width: "100%",
   },
   textInput: {
     borderColor: "black",
@@ -67,15 +68,14 @@ const courseScreenStyles = StyleSheet.create({
     flexDirection: "row",
   },
   courseView: {
-    backgroundColor: AppColors.primaryAccentColor,
-    marginBottom: 20,
-    width: 350,
+    margin: 10,
+    width: windowWidth/1.05,
     borderWidth: 0,
     borderRadius: 16,
     shadowOffset: { height: 2, width: -2 },
-    shadowColor: AppColors.primaryAccentColor,
     shadowOpacity: 0.5,
     shadowRadius: 3,
+    backgroundColor:'#F1F1F1'
   },
   courseTitle: {
     fontSize: 22,

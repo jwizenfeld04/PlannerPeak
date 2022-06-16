@@ -25,8 +25,8 @@ export default function Assignments(props) {
               key={item.id}
               onPress={() => {}}
               bottomDivider
-              containerStyle={styles.courseView}
-              underlayColor={AppColors.primaryBackgroundColor}
+              containerStyle={courseScreenStyles.courseView}
+              underlayColor='white'
             >
               <Icon
                 name="circle"
@@ -50,16 +50,3 @@ export default function Assignments(props) {
   );
 }
 
-const styles = StyleSheet.create({
-  courseView: {
-    backgroundColor: "#B7D7EA",
-    marginBottom: 20,
-    width: 350,
-    borderWidth: 0,
-    borderRadius: 16,
-    shadowOffset: { height: 2, width: -2 },
-    shadowColor: "#B7D7EA",
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-  },
-});

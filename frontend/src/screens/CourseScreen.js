@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { SafeAreaView, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -38,6 +38,7 @@ export default function CourseScreen() {
   const [modalData, setModalData] = useState({});
   const getAllCourses = getCourses(dispatch);
   const getAllAssignments = getAssignments(dispatch);
+  const [sort, setSort] = useState('number_of_assignments')
 
   const handleOnCoursePress = (item) => {
     setModalData({
@@ -98,13 +99,16 @@ export default function CourseScreen() {
   };
 
   return (
-    <SafeAreaView style={courseScreenStyles.container}>
-      <Header onCreateModalPress={onCreateModalPress} />
+    <Fragment>
+    <SafeAreaView style={{flex:0, backgroundColor:"#2476B1"}}/>
+    <SafeAreaView style={{flex:1, backgroundColor:'#fff'}}>
+      <Header onCreateModalPress={onCreateModalPress} setSort={setSort} />
       <CourseFlatList
         onRefresh={onRefresh}
         isRefreshing={isRefreshing}
         courses={courses}
         onCoursePress={handleOnCoursePress}
+        sort={sort}
         modalData={modalData}
       />
       <CourseModal
@@ -123,5 +127,6 @@ export default function CourseScreen() {
         token={token}
       />
     </SafeAreaView>
+    </Fragment>
   );
 }

@@ -5,12 +5,27 @@ import {
   Text,
   View,
   TouchableOpacity,
+  TextPropTypes,
 } from "react-native";
 import { ListItem, Icon, Avatar } from "react-native-elements";
 import React from "react";
 import { AppColors, AppImages } from "../../styles/globalStyles";
 
 const CourseFlatList = (props) => {
+  let courses = [...props.courses]
+  const sort = props.sort
+  const compare_course = (a, b) => {
+      //Sorts from highest to lowest
+    if (a[sort] > b[sort]) {
+      return -1;
+    }
+    if (a[sort] < b[sort]) {
+      return 1;
+    }
+    return 0;
+  }
+
+
   const handleAssignment = (course) => {
     if (course.number_of_assignments === 0) {
       return "No Assignments";
@@ -23,10 +38,9 @@ const CourseFlatList = (props) => {
   return (
     <View style={{ height: 630 }}>
       <FlatList
+        data={courses.sort(compare_course)}
         onRefresh={props.onRefresh}
         refreshing={props.isRefreshing}
-        data={props.courses}
-        // missing item key - possibly uses db id instead solution would be keyExtractorgit
         contentContainerStyle={{ alignItems: "center" }}
         renderItem={({ item }) => {
           return (
@@ -37,7 +51,7 @@ const CourseFlatList = (props) => {
               }}
               bottomDivider
               containerStyle={courseScreenStyles.courseView}
-              underlayColor={AppColors.primaryBackgroundColor}
+              underlayColor="#fff"
             >
               <Icon
                 name="circle"

@@ -1,6 +1,10 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Ionicons,
+  FontAwesome5,
+} from "@expo/vector-icons";
 
 // Import mock screens
 import CourseScreen from "../screens/CourseScreen";
@@ -15,7 +19,7 @@ const AppNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       activeColor="#fff"
-      barStyle={{ 
+      barStyle={{
         backgroundColor: AppColors.primaryBackgroundColor,
         borderRadius: 16,
       }}
@@ -26,10 +30,10 @@ const AppNavigator = () => {
         options={{
           tabBarLabel: "Courses",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="book"
+            <FontAwesome5
+              name="book-open"
               color={AppColors.primaryAccentColor}
-              size={26}
+              size={22}
             />
           ),
         }}
@@ -54,10 +58,10 @@ const AppNavigator = () => {
         options={{
           tabBarLabel: "Settings",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="account-settings"
+            <Ionicons
+              name="settings"
               color={AppColors.primaryAccentColor}
-              size={26}
+              size={24}
             />
           ),
         }}
