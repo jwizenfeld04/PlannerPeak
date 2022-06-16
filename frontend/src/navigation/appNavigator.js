@@ -4,13 +4,14 @@ import {
   MaterialCommunityIcons,
   Ionicons,
   FontAwesome5,
+  MaterialIcons,
 } from "@expo/vector-icons";
 
 // Import mock screens
 import CourseScreen from "../screens/CourseScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SettingScreen from "../screens/SettingScreen";
-import { AppColors } from "../styles/globalStyles";
+import { AppColors, AppDimensions } from "../styles/globalStyles";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -18,11 +19,14 @@ const AppNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#fff"
+      labeled={true}
+      activeColor={'white'}
       barStyle={{
         backgroundColor: AppColors.primaryBackgroundColor,
         borderRadius: 16,
+        height: AppDimensions.bottomTabHeight
       }}
+      inactiveColor={AppColors.primaryAccentColor}
     >
       <Tab.Screen
         name="Courses"
@@ -30,10 +34,10 @@ const AppNavigator = () => {
         options={{
           tabBarLabel: "Courses",
           tabBarIcon: ({ color }) => (
-            <FontAwesome5
-              name="book-open"
-              color={AppColors.primaryAccentColor}
-              size={22}
+            <MaterialIcons
+              name="menu-book"
+              color={color}
+              size={26}
             />
           ),
         }}
@@ -44,9 +48,9 @@ const AppNavigator = () => {
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
+            <MaterialIcons
               name="home"
-              color={AppColors.primaryAccentColor}
+              color={color}
               size={26}
             />
           ),
@@ -58,10 +62,10 @@ const AppNavigator = () => {
         options={{
           tabBarLabel: "Settings",
           tabBarIcon: ({ color }) => (
-            <Ionicons
+            <MaterialIcons
               name="settings"
-              color={AppColors.primaryAccentColor}
-              size={24}
+              color={color}
+              size={26}
             />
           ),
         }}

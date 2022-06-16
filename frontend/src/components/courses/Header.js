@@ -7,6 +7,7 @@ import {
   ActionSheetIOS,
 } from "react-native";
 import { Ionicons, Entypo } from "@expo/vector-icons";
+import { AppDimensions } from "../../styles/globalStyles";
 
 
 export default function Header(props) {
@@ -53,7 +54,7 @@ export default function Header(props) {
   };
   return (
     <View
-      style={{ flexDirection: "row", height: 70, backgroundColor: "#2476B1", marginBottom:10 }}
+      style={{ flexDirection: "row", height: AppDimensions.headerHeight, backgroundColor: "#2476B1", marginBottom:10 }}
     >
       <View style={{ flex: 1, paddingLeft: 10, justifyContent: "center" }}>
         <Text style={{ fontSize: 36, color: "#B7D7EA" }}>Courses</Text>
@@ -67,10 +68,10 @@ export default function Header(props) {
         }}
       >
         <TouchableOpacity onPress={onSortPress}>
-          <Entypo name="dots-three-horizontal" size={30} color="#B7D7EA" />
+          <Entypo name="dots-three-horizontal" size={28} color="#B7D7EA" />
         </TouchableOpacity>
         <TouchableOpacity style={{ paddingLeft: 10 }} onPress={props.onCreateModalPress}>
-          <Ionicons name="add-circle-outline" size={30} color="#B7D7EA" />
+          <Ionicons name="add-circle-outline" size={28} color="#B7D7EA" />
         </TouchableOpacity>
       </View>
     </View>
