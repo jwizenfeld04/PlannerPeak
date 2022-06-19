@@ -21,7 +21,7 @@ export const BaseAppDimensions = {
 
 export const AppDimensions = {
     bottomTabHeight: BaseAppDimensions.screenHeight/12,
-    headerHeight: BaseAppDimensions.screenHeight/14,
-
+    headerHeight: BaseAppDimensions.screenHeight/12,
+    mainViewHeight: BaseAppDimensions.screenHeight/1.25,
 }
 

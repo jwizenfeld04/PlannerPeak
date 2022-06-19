@@ -14,6 +14,7 @@ import { AppColors } from "../../styles/globalStyles";
 import Analytics from "./Analytics";
 import Assignments from "./Assignment";
 import ColorModal from "./ColorModal";
+import Header from "../base/Header";
 
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
@@ -35,6 +36,22 @@ const CourseModal = (props) => {
         <SafeAreaView
           style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
         />
+        <Header
+          backgroundColor={AppColors.primaryBackgroundColor}
+          borderBottomColor={props.modalData.color}
+          title={props.modalData.name} //required
+          titleAlign={"center"} //required
+          titleColor={AppColors.primaryAccentColor}
+          backButton={true} // required
+          onBackButtonPress={()=>{props.onModalBack()}}
+          icons={true}
+          iconColor={AppColors.primaryAccentColor}
+          iconName1={"color-palette-outline"}
+          iconType1={"ionicon"}
+          onIconPress1={() => {
+            setColorSwitch(true);
+          }}
+        />
         <SafeAreaView style={courseScreenStyles.container}>
           <ColorModal
             color={props.modalData.color}
@@ -43,60 +60,6 @@ const CourseModal = (props) => {
             setColorSwitch={setColorSwitch}
             onModalColorChange={props.onModalColorChange}
           />
-          <View
-            style={{
-              height: windowHeight / 12,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              backgroundColor: "#2476B1",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                props.onModalBack();
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                }}
-              >
-                <Ionicons name="chevron-back-sharp" size={30} />
-                <Text style={{ fontSize: 14 }}>Courses</Text>
-              </View>
-            </TouchableOpacity>
-            <View
-              style={{
-                flex: 3,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{ fontSize: 22, fontWeight: "bold", color: "black" }}
-              >
-                {props.modalData.name}
-              </Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  setColorSwitch(true);
-                }}
-              >
-                <Ionicons name="color-palette-outline" size={35} />
-              </TouchableOpacity>
-            </View>
-          </View>
           <View
             style={{
               height: windowHeight / 20,

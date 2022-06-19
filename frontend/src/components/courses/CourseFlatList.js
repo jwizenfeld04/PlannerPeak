@@ -9,13 +9,19 @@ import {
 } from "react-native";
 import { ListItem, Icon, Avatar } from "react-native-elements";
 import React from "react";
-import { AppColors, AppImages } from "../../styles/globalStyles";
+import {
+  AppColors,
+  AppImages,
+  AppDimensions,
+  BaseAppDimensions,
+} from "../../styles/globalStyles";
+
 
 const CourseFlatList = (props) => {
-  let courses = [...props.courses]
-  const sort = props.sort
+  let courses = [...props.courses];
+  const sort = props.sort;
   const compare_course = (a, b) => {
-      //Sorts from highest to lowest
+    //Sorts from highest to lowest
     if (a[sort] > b[sort]) {
       return -1;
     }
@@ -23,8 +29,7 @@ const CourseFlatList = (props) => {
       return 1;
     }
     return 0;
-  }
-
+  };
 
   const handleAssignment = (course) => {
     if (course.number_of_assignments === 0) {
@@ -36,7 +41,7 @@ const CourseFlatList = (props) => {
     }
   };
   return (
-    <View style={{ height: 630 }}>
+    <View style={{ height: AppDimensions.mainViewHeight }}>
       <FlatList
         data={courses.sort(compare_course)}
         onRefresh={props.onRefresh}
@@ -59,14 +64,27 @@ const CourseFlatList = (props) => {
                 color={item.color}
                 size={17}
               />
+
               <ListItem.Content>
-                <ListItem.Title>{item.name}</ListItem.Title>
+                <ListItem.Title
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{ width: BaseAppDimensions.screenWidth / 1.9 }}
+                >
+                  {item.name}
+                </ListItem.Title>
                 <ListItem.Subtitle
                   style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
                 >
                   {handleAssignment(item)}
                 </ListItem.Subtitle>
               </ListItem.Content>
+              {item.grade ? (
+                <Text style={{ color: item.color }}>{item.grade}%</Text>
+              ) : (
+                <Text style={{ color: item.color }}>N/A</Text>
+              )}
+
               {item.is_schoology ? (
                 <Avatar source={AppImages.schoologyIcon} size={40} />
               ) : (

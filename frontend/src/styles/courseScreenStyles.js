@@ -68,7 +68,7 @@ const courseScreenStyles = StyleSheet.create({
     flexDirection: "row",
   },
   courseView: {
-    margin: 10,
+    marginTop: 20,
     width: windowWidth/1.05,
     borderWidth: 0,
     borderRadius: 16,
