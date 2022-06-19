@@ -5,9 +5,7 @@ import styles from "./styles";
 
 export default function SaveButton(props) {
   return (
-    <View
-      style={styles.iconContainer}
-    >
+    <View style={{ ...styles.iconContainer, paddingRight: 15 }}>
       <TouchableOpacity onPress={() => props.onPress(false)}>
         <Text style={{ fontSize: 18, color: AppColors.primaryAccentColor }}>
           Save

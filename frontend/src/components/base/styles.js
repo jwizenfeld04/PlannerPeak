@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "flex-end",
     alignItems: "center",
-    paddingRight: 15,
   },
+  textInputContainer: {},
 });
 
 export default styles;
