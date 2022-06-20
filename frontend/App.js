@@ -6,32 +6,36 @@ import { persistStore } from "redux-persist";
 import store from "./src/redux/store";
 import AppRoute from "./src/navigation/rootNavigator";
 import fetchFonts from "./src/hooks/fetchFonts";
+import fetchImages from "./src/hooks/fetchImages";
 import * as SplashScreen from "expo-splash-screen";
+import { AppImages } from "./src/styles/globalStyles";
 
 export default function App() {
   let persistor = persistStore(store);
-  const [isFontsReady, setIsFontsReady] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     async function prepare() {
       // Keep the splash screen visible
       await SplashScreen.preventAutoHideAsync();
-      // Do what you need before the splash screen gets hidden
-      fetchFonts();
+      // AppImages is an object with key/value pairs for images in assets folder
+      const imageAssets = fetchImages(AppImages);
+      const fontAssets = fetchFonts();
+      await Promise.all([imageAssets, fontAssets]);
       // Then tell the application to render
-      setIsFontsReady(true);
+      setIsReady(true);
     }
     prepare();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (isFontsReady) {
+    if (isReady) {
       // Hide the splash screen
       await SplashScreen.hideAsync();
     }
-  }, [isFontsReady]);
+  }, [isReady]);
 
-  if (!isFontsReady) {
+  if (!isReady) {
     return null;
   }
 
