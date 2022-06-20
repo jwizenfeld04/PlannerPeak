@@ -42,6 +42,7 @@ const CourseModal = (props) => {
           title={props.modalData.name} //required
           titleAlign={"center"} //required
           titleColor={AppColors.primaryAccentColor}
+          titleSize={24} //default 36
           backButton={true} // required
           onBackButtonPress={()=>{props.onModalBack()}}
           icons={true}

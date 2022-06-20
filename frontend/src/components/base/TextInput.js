@@ -4,5 +4,9 @@ import { AppColors } from "../../styles/globalStyles";
 import styles from "./styles";
 
 export default function TextInput(props) {
-  return <View></View>;
+  return (
+    <View>
+      <TextInput></TextInput>
+    </View>
+  );
 }

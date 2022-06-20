@@ -115,8 +115,9 @@ export default function Header(props) {
       >
         <Text
           style={{
-            fontSize: 36,
+            fontSize: props.titleSize ? props.titleSize : 36,
             color: props.titleColor,
+            fontFamily: 'MontserratBold'
           }}
           numberOfLines={1}
           ellipsizeMode="tail"

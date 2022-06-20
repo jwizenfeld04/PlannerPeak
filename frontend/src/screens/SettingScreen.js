@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   Button,
   Linking,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import store from "../redux/store";
 import { selectToken } from "../redux/features/user/userSlice";
@@ -16,6 +17,8 @@ import {
   resetLink,
 } from "../redux/features/schoology/schoologySlice";
 import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
+import Header from "../components/base/Header";
+import { AppColors, AppDimensions } from "../styles/globalStyles";
 
 export default function SettingScreen() {
   const dispatch = useDispatch();
@@ -69,17 +72,32 @@ export default function SettingScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="Logout"
-        onPress={() => {
-          store.dispatch({
-            type: "user/logoutUser",
-          });
-        }}
+    <Fragment>
+      <SafeAreaView
+        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
       />
-      {schoologyLoginButton()}
-    </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Header
+          backgroundColor={AppColors.primaryBackgroundColor}
+          borderBottomColor={AppColors.primaryAccentColor}
+          title={"Settings"} //required
+          titleAlign={"center"} //required
+          titleColor={AppColors.primaryAccentColor}
+          titleSize={36} //default 36
+        />
+        <View style={styles.container}>
+          <Button
+            title="Logout"
+            onPress={() => {
+              store.dispatch({
+                type: "user/logoutUser",
+              });
+            }}
+          />
+          {schoologyLoginButton()}
+        </View>
+      </SafeAreaView>
+    </Fragment>
   );
 }
 
@@ -91,5 +109,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-

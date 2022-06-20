@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   View,
   StyleSheet,
@@ -26,6 +26,8 @@ import {
 import ScrollCalendar from "../components/home/ScrollCalendar";
 import CurrentAssignment from "../components/home/CurrentAssignment";
 import TimeTable from "../components/home/TimeTable";
+import Header from "../components/base/Header";
+import { AppColors, AppDimensions } from "../styles/globalStyles";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -79,26 +81,38 @@ export default function HomeScreen() {
   }, [scheduleData]);
 
   return (
-    <SafeAreaView>
-      <ScrollCalendar token={token} />
-      {/* <CurrentAssignment
+    <Fragment>
+      <SafeAreaView
+        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
+      />
+      <SafeAreaView>
+        <Header
+          backgroundColor={AppColors.primaryBackgroundColor}
+          borderBottomColor={AppColors.primaryAccentColor}
+          title={"Home"} //required
+          titleAlign={"center"} //required
+          titleColor={AppColors.primaryAccentColor}
+          titleSize={36} //default 36
+        />
+        <ScrollCalendar token={token} />
+        {/* <CurrentAssignment
         currentAssignment={currentAssignment}
         remainingTime={remainingTime}
         />
-      <Button
+        <Button
         title="Update Schedule"
         onPress={() => {
           dispatch(scheduleAssignments(token));
           dispatch(getCurrentSchedule(token));
         }}
         />
-      <Button
+        <Button
         title="Fetch Schedule"
         onPress={() => {
           dispatch(getCurrentSchedule(token));
         }}
-        /> */}
-      {/* <Button
+      /> */}
+        {/* <Button
         title="Log Date Schedule"
         onPress={() => {
           console.log(dateSchedule);
@@ -110,8 +124,9 @@ export default function HomeScreen() {
           console.log(schedule);
         }}
       /> */}
-      <TimeTable schedule={dateSchedule}/>
-    </SafeAreaView>
+        <TimeTable schedule={dateSchedule} />
+      </SafeAreaView>
+    </Fragment>
   );
 }
 

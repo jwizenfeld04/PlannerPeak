@@ -6,16 +6,17 @@ import {
   View,
   TouchableOpacity,
   TextPropTypes,
+  Platform
 } from "react-native";
 import { ListItem, Icon, Avatar } from "react-native-elements";
-import React from "react";
+import React, { useState } from "react";
 import {
   AppColors,
   AppImages,
   AppDimensions,
   BaseAppDimensions,
 } from "../../styles/globalStyles";
-
+import { Button ,Menu, Divider, Provider } from "react-native-paper";
 
 const CourseFlatList = (props) => {
   let courses = [...props.courses];
@@ -40,6 +41,9 @@ const CourseFlatList = (props) => {
       return `${course.number_of_assignments} Assignments`;
     }
   };
+
+  
+
   return (
     <View style={{ height: AppDimensions.mainViewHeight }}>
       <FlatList
@@ -53,6 +57,9 @@ const CourseFlatList = (props) => {
               key={item.id}
               onPress={() => {
                 props.onCoursePress(item);
+              }}
+              onLongPress={() => {
+                console.log('edit')
               }}
               bottomDivider
               containerStyle={courseScreenStyles.courseView}
