@@ -1,4 +1,3 @@
-import courseScreenStyles from "../../styles/courseScreenStyles";
 import {
   StyleSheet,
   FlatList,
@@ -6,7 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextPropTypes,
-  Platform
+  Platform,
 } from "react-native";
 import { ListItem, Icon, Avatar } from "react-native-elements";
 import React, { useState } from "react";
@@ -16,7 +15,7 @@ import {
   AppDimensions,
   BaseAppDimensions,
 } from "../../styles/globalStyles";
-import { Button ,Menu, Divider, Provider } from "react-native-paper";
+import CustomListItem from "../base/ListItem";
 
 const CourseFlatList = (props) => {
   let courses = [...props.courses];
@@ -42,8 +41,6 @@ const CourseFlatList = (props) => {
     }
   };
 
-  
-
   return (
     <View style={{ height: AppDimensions.mainViewHeight }}>
       <FlatList
@@ -53,51 +50,22 @@ const CourseFlatList = (props) => {
         contentContainerStyle={{ alignItems: "center" }}
         renderItem={({ item }) => {
           return (
-            <ListItem
-              key={item.id}
+            <CustomListItem
+              id={item.id}
               onPress={() => {
                 props.onCoursePress(item);
               }}
-              onLongPress={() => {
-                console.log('edit')
-              }}
-              bottomDivider
-              containerStyle={courseScreenStyles.courseView}
-              underlayColor="#fff"
-            >
-              <Icon
-                name="circle"
-                type="material-community"
-                color={item.color}
-                size={17}
-              />
-
-              <ListItem.Content>
-                <ListItem.Title
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={{ width: BaseAppDimensions.screenWidth / 1.9 }}
-                >
-                  {item.name}
-                </ListItem.Title>
-                <ListItem.Subtitle
-                  style={{ fontSize: 12, marginTop: 5, fontStyle: "italic" }}
-                >
-                  {handleAssignment(item)}
-                </ListItem.Subtitle>
-              </ListItem.Content>
-              {item.grade ? (
-                <Text style={{ color: item.color }}>{item.grade}%</Text>
-              ) : (
-                <Text style={{ color: item.color }}>N/A</Text>
-              )}
-
-              {item.is_schoology ? (
-                <Avatar source={AppImages.schoologyIcon} size={40} />
-              ) : (
-                <Avatar source={AppImages.plannerPeakIcon} size={40} />
-              )}
-            </ListItem>
+              leadingIcon={true}
+              leadingIconName={"circle"}
+              leadingIconType={"material-community"}
+              leadingIconColor={item.color}
+              title={item.name}
+              subtitle={handleAssignment(item)}
+              showGrade={true}
+              grade={item.grade}
+              trailingIcon={true}
+              trailingIconAvatar={item.is_schoology}
+            />
           );
         }}
       />

@@ -8,12 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Formik } from "formik";
-import RegisterFormStyles from "../../styles/RegisterFormStyles";
-import styles from "../../styles/styles";
+import styles from "./styles"
 
 export default function RegisterForm(props) {
   return (
-    <View style={RegisterFormStyles.entireForm}>
+    <View style={styles.entireForm}>
       <Formik
         initialValues={{
           phone: "",
@@ -28,7 +27,7 @@ export default function RegisterForm(props) {
         {(props) => (
           <View>
             <TextInput
-              style={RegisterFormStyles.input}
+              style={styles.input}
               placeholder="Phone Number"
               placeholderTextColor='grey'
               e
@@ -39,7 +38,7 @@ export default function RegisterForm(props) {
             />
 
             <TextInput
-              style={RegisterFormStyles.input}
+              style={styles.input}
               placeholder="Email"
               placeholderTextColor='grey'
               textAlign="center"
@@ -48,7 +47,7 @@ export default function RegisterForm(props) {
               value={props.values.email}
             />
             <TextInput
-              style={RegisterFormStyles.input}
+              style={styles.input}
               placeholder="Password"
               placeholderTextColor='grey'
               textAlign="center"
@@ -57,7 +56,7 @@ export default function RegisterForm(props) {
               value={props.values.password1}
             />
             <TextInput
-              style={RegisterFormStyles.input}
+              style={styles.input}
               placeholder="Confirm Password"
               placeholderTextColor='grey'
               textAlign="center"

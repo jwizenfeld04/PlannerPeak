@@ -5,6 +5,7 @@ import {
   AppColors,
   AppDimensions,
   BaseAppDimensions,
+  AppFonts
 } from "../../styles/globalStyles";
 import CustomIcon from "../base/Icon";
 import SaveButton from "./SaveButton";
@@ -117,7 +118,7 @@ export default function Header(props) {
           style={{
             fontSize: props.titleSize ? props.titleSize : 36,
             color: props.titleColor,
-            fontFamily: "MontserratBold",
+            fontFamily: AppFonts.primaryTextBold,
           }}
           numberOfLines={1}
           ellipsizeMode="tail"

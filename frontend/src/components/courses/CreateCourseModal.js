@@ -1,4 +1,3 @@
-import courseScreenStyles from "../../styles/courseScreenStyles";
 import { Ionicons } from "@expo/vector-icons";
 import { ListItem } from "react-native-elements";
 import {
@@ -13,7 +12,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { createUserCourse } from "../../redux/features/course/courseSlice";
-import styles from "../../styles/styles";
+import styles from "./styles";
 import { useDispatch } from "react-redux";
 import Header from "../base/Header";
 import { AppColors } from "../../styles/globalStyles";

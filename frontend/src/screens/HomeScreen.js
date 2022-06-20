@@ -90,7 +90,7 @@ export default function HomeScreen() {
           backgroundColor={AppColors.primaryBackgroundColor}
           borderBottomColor={AppColors.primaryAccentColor}
           title={"Home"} //required
-          titleAlign={"center"} //required
+          titleAlign={"flex-start"} //required
           titleColor={AppColors.primaryAccentColor}
           titleSize={36} //default 36
         />

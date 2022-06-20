@@ -1,17 +1,23 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { ListItem, Icon } from "react-native-elements";
 import { AppColors } from "../../styles/globalStyles";
-import courseScreenStyles from "../../styles/courseScreenStyles";
-import moment from 'moment';
+import styles from "./styles";
+import moment from "moment";
+import CustomListItem from "../base/ListItem";
 
 export default function Assignments(props) {
   const handleAssignmentListEmpty = () => {
-    return <Text style={courseScreenStyles.courseTitle}>No Assignments</Text>;
+    return <Text style={styles.courseTitle}>No Assignments</Text>;
   };
   const getDate = (date) => {
-      const newDate = moment(date).format("MMM Do YYYY");
+    const newDate = moment(date).format("MMM Do YYYY");
     return newDate;
   };
+
+  const formatSubtitle = (item) => {
+    return <Text>Due: {getDate(item.due_date)}</Text>;
+  };
+
   return (
     <View>
       <FlatList
@@ -21,32 +27,21 @@ export default function Assignments(props) {
         ListEmptyComponent={handleAssignmentListEmpty}
         renderItem={({ item }) => {
           return (
-            <ListItem
-              key={item.id}
+            <CustomListItem
+              id={item.id}
               onPress={() => {}}
-              bottomDivider
-              containerStyle={courseScreenStyles.courseView}
-              underlayColor='white'
-            >
-              <Icon
-                name="circle"
-                type="material-community"
-                color={props.color}
-                size={17}
-              />
-              <ListItem.Content>
-                <ListItem.Title>{item.name}</ListItem.Title>
-                <ListItem.Subtitle
-                  style={{ fontSize: 12, marginTop: 5, fontStyle: "italic", color:'red' }}
-                >
-                  <Text>Due: {getDate(item.due_date)}</Text>
-                </ListItem.Subtitle>
-              </ListItem.Content>
-            </ListItem>
+              leadingIcon={true}
+              leadingIconName={"circle"}
+              leadingIconType={"material-community"}
+              leadingIconColor={props.color}
+              title={item.name}
+              subtitle={formatSubtitle(item)}
+              subtitleColor={"red"}
+              showGrade={false}
+            />
           );
         }}
       />
     </View>
   );
 }
-

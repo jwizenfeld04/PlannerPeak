@@ -6,12 +6,13 @@ import {
   FontAwesome5,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { Text } from "react-native";
 
 // Import mock screens
 import CourseScreen from "../screens/CourseScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SettingScreen from "../screens/SettingScreen";
-import { AppColors, AppDimensions } from "../styles/globalStyles";
+import { AppColors, AppDimensions, AppFonts } from "../styles/globalStyles";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -20,12 +21,12 @@ const AppNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       labeled={true}
-      activeColor={'white'}
+      activeColor={"white"}
       barStyle={{
         backgroundColor: AppColors.primaryBackgroundColor,
         height: AppDimensions.bottomTabHeight,
         borderTopColor: AppColors.primaryAccentColor,
-        borderTopWidth:1.5
+        borderTopWidth: 1.5,
       }}
       inactiveColor={AppColors.primaryAccentColor}
     >
@@ -33,13 +34,11 @@ const AppNavigator = () => {
         name="Courses"
         component={CourseScreen}
         options={{
-          tabBarLabel: "Courses",
+          tabBarLabel: (
+            <Text style={{ fontFamily: AppFonts.primaryText }}>Courses</Text>
+          ),
           tabBarIcon: ({ color }) => (
-            <MaterialIcons
-              name="menu-book"
-              color={color}
-              size={26}
-            />
+            <MaterialIcons name="menu-book" color={color} size={26} />
           ),
         }}
       />
@@ -47,13 +46,11 @@ const AppNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: (
+            <Text style={{ fontFamily: AppFonts.primaryText }}>Home</Text>
+          ),
           tabBarIcon: ({ color }) => (
-            <MaterialIcons
-              name="home"
-              color={color}
-              size={26}
-            />
+            <MaterialIcons name="home" color={color} size={26} />
           ),
         }}
       />
@@ -61,13 +58,11 @@ const AppNavigator = () => {
         name="Settings"
         component={SettingScreen}
         options={{
-          tabBarLabel: "Settings",
+          tabBarLabel: (
+            <Text style={{ fontFamily: AppFonts.primaryText }}>Settings</Text>
+          ),
           tabBarIcon: ({ color }) => (
-            <MaterialIcons
-              name="settings"
-              color={color}
-              size={26}
-            />
+            <MaterialIcons name="settings" color={color} size={26} />
           ),
         }}
       />

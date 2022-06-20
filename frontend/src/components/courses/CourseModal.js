@@ -1,4 +1,3 @@
-import courseScreenStyles from "../../styles/courseScreenStyles";
 import { Ionicons } from "@expo/vector-icons";
 import {
   StyleSheet,
@@ -15,6 +14,7 @@ import Analytics from "./Analytics";
 import Assignments from "./Assignment";
 import ColorModal from "./ColorModal";
 import Header from "../base/Header";
+import styles from "./styles";
 
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
@@ -44,7 +44,9 @@ const CourseModal = (props) => {
           titleColor={AppColors.primaryAccentColor}
           titleSize={24} //default 36
           backButton={true} // required
-          onBackButtonPress={()=>{props.onModalBack()}}
+          onBackButtonPress={() => {
+            props.onModalBack();
+          }}
           icons={true}
           iconColor={AppColors.primaryAccentColor}
           iconName1={"color-palette-outline"}
@@ -53,7 +55,7 @@ const CourseModal = (props) => {
             setColorSwitch(true);
           }}
         />
-        <SafeAreaView style={courseScreenStyles.container}>
+        <SafeAreaView style={{ flex: 1 }}>
           <ColorModal
             color={props.modalData.color}
             colorSwitch={colorSwitch}
@@ -71,7 +73,7 @@ const CourseModal = (props) => {
             <View
               style={[
                 tab === "Assignments"
-                  ? styles.selectedBottomColor
+                  ? [styles.tabContainer, styles.selectedBottomColor]
                   : styles.tabContainer,
               ]}
             >
@@ -82,7 +84,7 @@ const CourseModal = (props) => {
             <View
               style={[
                 tab === "Analytics"
-                  ? styles.selectedBottomColor
+                  ? [styles.tabContainer, styles.selectedBottomColor]
                   : styles.tabContainer,
               ]}
             >
@@ -113,24 +115,5 @@ const CourseModal = (props) => {
     </Fragment>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  tabContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  selectedBottomColor: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderBottomColor: "#2476B1",
-    borderBottomWidth: 3,
-  },
-});
 
 export default CourseModal;

@@ -1,19 +1,26 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+import {
+  AppColors,
+  AppDimensions,
+  BaseAppDimensions,
+} from "../../styles/globalStyles";
 
 const styles = StyleSheet.create({
-  container: {
+  noAssignmentText:{
+    fontSize: 22,
+    color: "black",
+    marginTop: 5,
+    marginLeft: 10,
+    marginBottom: 2,
+  },
+  tabContainer: {
     flex: 1,
-    backgroundColor: "#fff",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "flex-start",
   },
-  registerImage: {
-    marginTop: 50,
-    marginBottom: 20,
-  },
-  loginImage: {
-    marginTop: 50,
-    marginBottom: 100,    
+  selectedBottomColor: {
+    borderBottomColor: "#2476B1",
+    borderBottomWidth: 3,
   },
   inputView: {
     backgroundColor: "#ADD8E6",
@@ -38,9 +45,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 40,
     backgroundColor: "#4169e1",
-  },
-  errorText: {
-    color: "red",
   },
 });
 

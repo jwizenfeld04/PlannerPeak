@@ -7,6 +7,13 @@ export const AppColors = {
   dockColor: "#003A70",
 };
 
+export const AppFonts = {
+  primaryText: 'MontserratRegular',
+  primaryTextBold: 'MontserratBold',
+  primaryTextItalic: 'MontserratItalic',
+  primaryTextBoldItalic: 'MontserratBoldItalic',
+}
+
 const IMAGE_SOURCE = "../assets/images";
 
 export const AppImages = {
