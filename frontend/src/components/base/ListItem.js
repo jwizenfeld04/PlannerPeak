@@ -5,7 +5,7 @@ import {
   AppDimensions,
   BaseAppDimensions,
   AppImages,
-  AppFonts
+  AppFonts,
 } from "../../styles/globalStyles";
 import styles from "./styles";
 import { ListItem, Icon, Avatar } from "react-native-elements";
@@ -21,10 +21,26 @@ export default function CustomListItem(props) {
   const grade = () => {
     if (props.grade) {
       return (
-        <Text style={{ color: props.leadingIconColor }}>{props.grade}%</Text>
+        <Text
+          style={{
+            color: props.leadingIconColor,
+            fontFamily: AppFonts.primaryText,
+          }}
+        >
+          {props.grade}%
+        </Text>
       );
     } else {
-      return <Text style={{ color: props.leadingIconColor }}>N/A</Text>;
+      return (
+        <Text
+          style={{
+            color: props.leadingIconColor,
+            fontFamily: AppFonts.primaryText,
+          }}
+        >
+          N/A
+        </Text>
+      );
     }
   };
 

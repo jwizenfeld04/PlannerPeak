@@ -18,7 +18,8 @@ import {
 } from "../redux/features/schoology/schoologySlice";
 import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
 import Header from "../components/base/Header";
-import { AppColors, AppDimensions } from "../styles/globalStyles";
+import { AppColors, AppDimensions, AppImages } from "../styles/globalStyles";
+import IntegrationIcon from "../components/base/IntegrationIcon";
 
 export default function SettingScreen() {
   const dispatch = useDispatch();
@@ -57,17 +58,8 @@ export default function SettingScreen() {
 
   // Button tied to Schoology alert: initiate Oauth process
   const schoologyLoginButton = () => {
-    if (isSchoologyAuth) {
-      return <Text>Schoology Authenticated</Text>;
-    } else {
-      return (
-        <Button
-          title="Connect Schoology"
-          onPress={() => {
-            schoologyAlert();
-          }}
-        />
-      );
+    if (!isSchoologyAuth) {
+      schoologyAlert();
     }
   };
 
@@ -76,7 +68,7 @@ export default function SettingScreen() {
       <SafeAreaView
         style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
       />
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <Header
           backgroundColor={AppColors.primaryBackgroundColor}
           borderBottomColor={AppColors.primaryAccentColor}
@@ -85,7 +77,15 @@ export default function SettingScreen() {
           titleColor={AppColors.primaryAccentColor}
           titleSize={36} //default 36
         />
-        <View style={styles.container}>
+
+        <View
+          style={{
+            justifyContent: "flex-start",
+            alignItems: "center",
+            flex: 1,
+            paddingTop: 10,
+          }}
+        >
           <Button
             title="Logout"
             onPress={() => {
@@ -94,7 +94,26 @@ export default function SettingScreen() {
               });
             }}
           />
-          {schoologyLoginButton()}
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            flex: 1,
+            flexWrap: "wrap",
+          }}
+        >
+          <IntegrationIcon
+            isAuth={isSchoologyAuth}
+            icon={AppImages.schoologyIcon}
+            onPress={schoologyLoginButton}
+          />
+          <IntegrationIcon
+            isAuth={false}
+            icon={AppImages.googleClassroomIcon}
+            onPress={schoologyLoginButton}
+          />
         </View>
       </SafeAreaView>
     </Fragment>
@@ -105,7 +124,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
