@@ -74,7 +74,7 @@ class Assignment(SafeDeleteModel):
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
-    description = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
     start_date = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField()
     grade = models.CharField(max_length=10, blank=True)

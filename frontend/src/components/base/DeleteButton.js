@@ -8,13 +8,10 @@ export default function DeleteButton(props) {
     <View
       style={{
         paddingTop: 15,
-        paddingLeft:15,
+        paddingLeft: 15,
       }}
     >
-      <TouchableOpacity
-        onPress={props.onPress}
-        disabled={props.selectedCount === 0 ? true : false}
-      >
+      <TouchableOpacity onPress={props.onPress} disabled={props.selectedCount === 0 ? true : false}>
         <Text
           style={{
             fontSize: 14,

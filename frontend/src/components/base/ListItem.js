@@ -53,33 +53,34 @@ export default function CustomListItem(props) {
       containerStyle={styles.listItemContainer}
       underlayColor="white"
     >
-      {props.leadingIcon ? (
-        <Icon
-          name={props.leadingIconName}
-          type={props.leadingIconType}
-          color={props.leadingIconColor ? props.leadingIconColor : "black"}
-          size={props.leadingIconSize ? props.leadingIconSize : 17}
-        />
-      ) : null}
-
       <ListItem.Content>
         <ListItem.Title
           numberOfLines={1}
           ellipsizeMode="tail"
           style={{
-            width: BaseAppDimensions.screenWidth / 1.9,
+            width: BaseAppDimensions.screenWidth / 1.7,
             fontFamily: AppFonts.primaryText,
           }}
         >
+          {props.leadingIcon ? (
+            <Icon
+              name={props.leadingIconName}
+              type={props.leadingIconType}
+              color={props.leadingIconColor ? props.leadingIconColor : "black"}
+              size={props.leadingIconSize ? props.leadingIconSize : 17}
+              style={{ paddingRight: 8 }}
+            />
+          ) : null}
           {props.title}
+  
         </ListItem.Title>
         <ListItem.Subtitle
           style={{
             fontSize: 12,
-            marginTop: 5,
             fontStyle: "italic",
             color: props.subtitleColor,
             fontFamily: AppFonts.primaryTextItalic,
+            paddingTop:5,
           }}
         >
           {props.subtitle}

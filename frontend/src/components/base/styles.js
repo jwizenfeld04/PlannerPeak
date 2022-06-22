@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   listItemContainer: {
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom:10,
     width: BaseAppDimensions.screenWidth / 1.05,
-    borderWidth: 0,
     borderRadius: 16,
     shadowOffset: { height: 2, width: -2 },
     shadowOpacity: 0.5,

@@ -91,11 +91,7 @@ export default function SettingScreen() {
             icon={AppImages.schoologyIcon}
             onPress={schoologyLoginButton}
           />
-          <IntegrationIcon
-            isAuth={false}
-            icon={AppImages.googleClassroomIcon}
-            onPress={schoologyLoginButton}
-          />
+          <IntegrationIcon isAuth={false} icon={AppImages.googleClassroomIcon} />
         </View>
       </SafeAreaView>
     </Fragment>

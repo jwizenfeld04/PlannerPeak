@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { ListItem, Icon } from "react-native-elements";
-import { AppColors } from "../../styles/globalStyles";
+import { AppColors, BaseAppDimensions } from "../../styles/globalStyles";
 import styles from "./styles";
 import moment from "moment";
-import CustomListItem from "../base/ListItem";
+import ExpandableListItem from "../base/ExpandableListItem";
 
 export default function Assignments(props) {
   const handleAssignmentListEmpty = () => {
@@ -19,29 +19,26 @@ export default function Assignments(props) {
   };
 
   return (
-    <View>
-      <FlatList
-        data={props.courseSpecficAssignments}
-        // missing item key - possibly uses db id instead solution would be keyExtractorgit
-        contentContainerStyle={{ alignItems: "center" }}
-        ListEmptyComponent={handleAssignmentListEmpty}
-        renderItem={({ item }) => {
-          return (
-            <CustomListItem
-              id={item.id}
-              onPress={() => {}}
-              leadingIcon={true}
-              leadingIconName={"circle"}
-              leadingIconType={"material-community"}
-              leadingIconColor={props.color}
-              title={item.name}
-              subtitle={formatSubtitle(item)}
-              subtitleColor={"red"}
-              showGrade={false}
-            />
-          );
-        }}
-      />
-    </View>
+    <FlatList
+      data={props.courseSpecficAssignments}
+      ListEmptyComponent={handleAssignmentListEmpty}
+      contentContainerStyle={{ alignItems: "center" }}
+      renderItem={({ item }) => {
+        return (
+          <ExpandableListItem
+            id={item.id}
+            leadingIcon={true}
+            leadingIconName={"circle"}
+            leadingIconType={"material-community"}
+            leadingIconColor={props.color}
+            title={item.name}
+            description={item.description}
+            subtitle={formatSubtitle(item)}
+            subtitleColor={"red"}
+            maxPoints={item.max_points}
+          />
+        );
+      }}
+    />
   );
 }

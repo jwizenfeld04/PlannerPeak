@@ -1,25 +1,30 @@
-import { Ionicons } from "@expo/vector-icons";
-import {
-  StyleSheet,
-  SafeAreaView,
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
 import React, { useState, useEffect, Fragment } from "react";
-import { AppColors } from "../../styles/globalStyles";
+import { SafeAreaView, Modal, View, Text, TouchableOpacity } from "react-native";
+
 import Analytics from "./Analytics";
 import Assignments from "./Assignment";
 import ColorModal from "./ColorModal";
 import Header from "../base/Header";
+
+import { AppColors, BaseAppDimensions } from "../../styles/globalStyles";
 import styles from "./styles";
 
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
   const [colorSwitch, setColorSwitch] = useState(false);
-  const windowHeight = Dimensions.get("window").height;
+
+  const handleMainViewDiplay = () => {
+    if (tab === "Assignments") {
+      return (
+        <Assignments
+          color={props.modalData.color}
+          courseSpecficAssignments={props.courseSpecficAssignments}
+        />
+      );
+    } else {
+      return <Analytics avgMinutes={props.avgMinutes} />;
+    }
+  };
 
   useEffect(() => {
     props.getAverageMinutes();
@@ -34,31 +39,24 @@ const CourseModal = (props) => {
         onDismiss={props.onModalDismiss}
       >
         <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
-        <Header
-          title={props.modalData.name} //required
-          titleSize={24} //default 36
-          backButton={true} // required
-          onBackButtonPress={() => {
-            props.onModalBack();
-          }}
-          iconColor={AppColors.primaryAccentColor}
-          iconName2={"color-palette-outline"}
-          iconType2={"ionicon"}
-          onIconPress2={() => {
-            setColorSwitch(true);
-          }}
-        />
         <SafeAreaView style={{ flex: 1 }}>
-          <ColorModal
-            color={props.modalData.color}
-            colorSwitch={colorSwitch}
-            windowHeight={windowHeight}
-            setColorSwitch={setColorSwitch}
-            onModalColorChange={props.onModalColorChange}
+          <Header
+            title={props.modalData.name} //required
+            titleSize={24} //default 36
+            backButton={true} // required
+            onBackButtonPress={() => {
+              props.onModalBack();
+            }}
+            iconColor={AppColors.primaryAccentColor}
+            iconName2={"color-palette-outline"}
+            iconType2={"ionicon"}
+            onIconPress2={() => {
+              setColorSwitch(true);
+            }}
           />
           <View
             style={{
-              height: windowHeight / 20,
+              height: BaseAppDimensions.screenHeight / 20,
               backgroundColor: "skyblue",
               flexDirection: "row",
             }}
@@ -89,20 +87,17 @@ const CourseModal = (props) => {
           <View
             style={{
               flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              paddingTop: 10,
             }}
           >
-            {tab === "Assignments" ? (
-              <Assignments
-                color={props.modalData.color}
-                courseSpecficAssignments={props.courseSpecficAssignments}
-              />
-            ) : (
-              <Analytics avgMinutes={props.avgMinutes} />
-            )}
+            {handleMainViewDiplay()}
           </View>
+          <ColorModal
+            color={props.modalData.color}
+            colorSwitch={colorSwitch}
+            windowHeight={BaseAppDimensions.screenHeight}
+            setColorSwitch={setColorSwitch}
+            onModalColorChange={props.onModalColorChange}
+          />
         </SafeAreaView>
       </Modal>
     </Fragment>
