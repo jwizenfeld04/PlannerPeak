@@ -5,6 +5,7 @@ import {
   ActionSheetIOS,
   View,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -14,6 +15,7 @@ import {
 import {
   selectCourses,
   updateUserCoursePrefrences,
+  deleteUserCourse,
 } from "../redux/features/course/courseSlice";
 import {
   getCourseSpecificAssignments,
@@ -29,6 +31,7 @@ import Header from "../components/base/Header";
 import CreateCourseModal from "../components/courses/CreateCourseModal";
 import { AppColors } from "../styles/globalStyles";
 import SaveButton from "../components/base/SaveButton";
+import DeleteModeFlatList from "../components/courses/DeleteModeFlatlist";
 
 export default function CourseScreen() {
   const dispatch = useDispatch();
@@ -45,6 +48,7 @@ export default function CourseScreen() {
   const getAllAssignments = getAssignments(dispatch);
   const [sort, setSort] = useState("number_of_assignments");
   const [editPriority, setEditPriority] = useState(false);
+  const [deleteMode, setDeleteMode] = useState(false);
 
   const handleOnCoursePress = (item) => {
     setModalData({
@@ -108,17 +112,24 @@ export default function CourseScreen() {
   const onActionSheetPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ["Sort Courses", "Edit Course Priority", "Cancel"],
+        options: [
+          "Sort Courses",
+          "Edit Course Priority",
+          "Delete Courses",
+          "Cancel",
+        ],
         title: "Courses",
-        cancelButtonIndex: 2,
+        cancelButtonIndex: 3,
         userInterfaceStyle: "light",
-        destructiveButtonIndex: 2,
+        destructiveButtonIndex: 3,
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
           onSortPress();
         } else if (buttonIndex === 1) {
           setEditPriority(true);
+        } else if (buttonIndex === 2) {
+          setDeleteMode(true);
         } else if (buttonIndex === 2) {
           // cancel action
         }
@@ -148,6 +159,67 @@ export default function CourseScreen() {
     );
   };
 
+  const handleHeaderTitle = () => {
+    if (deleteMode) {
+      return "Delete Mode";
+    } else if (editPriority) {
+      return "Edit Priority";
+    } else {
+      return "Courses";
+    }
+  };
+
+  const onDeletePress = (selected) => {
+    const ids = selected;
+    Alert.alert("Delete Courses", `Press Confirm to delete selected courses`, [
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Confirm",
+        style: "destructive",
+        onPress: () => {
+          handleDelete(ids);
+        },
+      },
+    ]);
+  };
+
+  const handleDelete = (ids) => {
+    ids.forEach(function (id) {
+      dispatch(deleteUserCourse({ token: token, id: id }));
+    });
+    setDeleteMode(false);
+  };
+
+  const handleFlatListDisplay = () => {
+    if (deleteMode) {
+      return (
+        <DeleteModeFlatList
+          courses={courses}
+          onCoursePress={handleOnCoursePress}
+          sort={sort}
+          modalData={modalData}
+          onDeletePress={onDeletePress}
+          onCancelPress={() => setDeleteMode(false)}
+        />
+      );
+    } else {
+      return (
+        <CourseFlatList
+          onRefresh={onRefresh}
+          isRefreshing={isRefreshing}
+          courses={courses}
+          onCoursePress={handleOnCoursePress}
+          sort={sort}
+          modalData={modalData}
+        />
+      );
+    }
+  };
+
   return (
     <Fragment>
       <SafeAreaView
@@ -157,12 +229,12 @@ export default function CourseScreen() {
         <Header
           backgroundColor={AppColors.primaryBackgroundColor}
           borderBottomColor={AppColors.primaryAccentColor}
-          title={editPriority ? "Edit Priority" : "Courses"} //required
+          title={handleHeaderTitle()} //required
           titleAlign={"flex-start"} //required
           titleColor={AppColors.primaryAccentColor}
           backButton={false} // required
           onBackButtonPress={null}
-          icons={!editPriority}
+          icons={!editPriority && !deleteMode}
           iconColor={AppColors.primaryAccentColor}
           iconName1={"dots-three-horizontal"}
           iconType1={"entypo"}
@@ -173,14 +245,7 @@ export default function CourseScreen() {
           saveButton={editPriority}
           onSavePress={setEditPriority}
         />
-        <CourseFlatList
-          onRefresh={onRefresh}
-          isRefreshing={isRefreshing}
-          courses={courses}
-          onCoursePress={handleOnCoursePress}
-          sort={sort}
-          modalData={modalData}
-        />
+        {handleFlatListDisplay()}
         <CourseModal
           modalVisible={modalVisible}
           modalData={modalData}

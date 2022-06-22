@@ -59,6 +59,23 @@ export const updateUserCoursePrefrences = createAsyncThunk(
   }
 );
 
+export const deleteUserCourse = createAsyncThunk(
+  "user/deleteUserCourse",
+  async (courseData, thunkAPI) => {
+    const response = await API.delete(
+      `user-courses-update/${courseData.id}`,
+      {
+        headers: {
+          Authorization: `Token ${courseData.token}`,
+        },
+      }
+    ).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
 const initialState = {
   courses: [],
 };
@@ -94,6 +111,16 @@ export const courseSlice = createSlice({
       state.status = "loading";
     },
     [updateUserCoursePrefrences.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+    [deleteUserCourse.fulfilled]: (state, action) => {
+      state.status = "success";
+      state.courses = state.courses.filter(element => element.id !== action.payload.data.id)
+    },
+    [deleteUserCourse.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [deleteUserCourse.rejected]: (state, action) => {
       state.status = "failed";
     },
   },

@@ -14,7 +14,7 @@ class UserSpecificCourseView(APIView):
 
     def get(self, request, format=None):
         courses = Course.objects.filter(
-            user_id=request.user.id, is_active=True).order_by('id')
+            user_id=request.user.id, deleted=None).order_by('id')
         if len(courses) > 0:
             for course in courses:
                 course.number_of_assignments = Assignment.objects.filter(
@@ -70,5 +70,14 @@ class UserSpecificCourseUpdateView(APIView):
         course = self.verify_course(user_id, course_id)
         if course:
             course.delete()
-            return Response({"Successful": "Course Deleted"}, status=HTTP_204_NO_CONTENT)
+            return Response(self.serializer_class(course).data, status=HTTP_202_ACCEPTED)
         return Response({"Error": "Invalid Course Id or Permissions "}, status=HTTP_403_FORBIDDEN)
+
+    #RESTORE COURSE
+    # def post(self, request, format=None, *args, **kwargs):
+    #     user_id = request.user.id
+    #     course_id = self.kwargs['course_id']
+    #     course = self.verify_course(user_id, course_id)
+    #     course.undelete()
+    #     return Response(self.serializer_class(course).data, status=HTTP_202_ACCEPTED)
+        

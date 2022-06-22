@@ -25,6 +25,7 @@ django-mirage-field==1.1.8
 django-multiselectfield==0.1.12
 django-phone-field==1.8.1
 django-rest-auth==0.9.5
+django-safedelete==1.2.2
 djangorestframework==3.12.4
 djangorestframework-filters==0.11.1
 djangorestframework-simplejwt==4.7.1

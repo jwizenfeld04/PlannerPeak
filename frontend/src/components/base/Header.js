@@ -9,6 +9,7 @@ import {
 } from "../../styles/globalStyles";
 import CustomIcon from "../base/Icon";
 import SaveButton from "./SaveButton";
+import DeleteButton from "./DeleteButton";
 import styles from "./styles";
 
 export default function Header(props) {
@@ -128,6 +129,7 @@ export default function Header(props) {
       </View>
       {props.icons ? icons() : null}
       {props.saveButton ? <SaveButton onPress={props.onSavePress} /> : null}
+      {props.deleteButton ? <DeleteButton onPress={props.onDeletePress} /> : null}
     </View>
   );
 }

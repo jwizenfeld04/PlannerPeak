@@ -8,7 +8,7 @@ import {
   Platform,
 } from "react-native";
 import { ListItem, Icon, Avatar } from "react-native-elements";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppColors,
   AppImages,
@@ -16,9 +16,13 @@ import {
   BaseAppDimensions,
 } from "../../styles/globalStyles";
 import CustomListItem from "../base/ListItem";
+import DeleteButton from "../base/DeleteButton";
+import CancelDeleteButton from "../base/CancelDeleteButton";
 
-const CourseFlatList = (props) => {
+const DeleteModeFlatList = (props) => {
   let courses = [...props.courses];
+  let [selected, setSelected] = useState([]);
+  let [selectedCount, setSelectedCount] = useState(0);
   const sort = props.sort;
   const compare_course = (a, b) => {
     //Sorts from highest to lowest
@@ -41,8 +45,31 @@ const CourseFlatList = (props) => {
     }
   };
 
+  const onDeletePress = (item) => {
+    if (selected.includes(item.id)) {
+      selected = setSelected(selected.filter((id) => id !== item.id));
+    } else {
+      selected = setSelected([...selected, item.id]);
+    }
+  };
+
+  useEffect(() => {
+    if (selected.length !== 0) {
+      setSelectedCount(selected.length);
+    } else {
+      setSelectedCount(0);
+    }
+  }, [selected]);
+
   return (
     <View style={{ height: AppDimensions.mainViewHeight }}>
+      <View style={{ flexDirection: "row", justifyContent:'space-between' }}>
+        <DeleteButton
+          onPress={()=>props.onDeletePress(selected)}
+          selectedCount={selectedCount}
+        />
+        <CancelDeleteButton onPress={props.onCancelPress} />
+      </View>
       <FlatList
         data={courses.sort(compare_course)}
         onRefresh={props.onRefresh}
@@ -53,19 +80,19 @@ const CourseFlatList = (props) => {
             <CustomListItem
               id={item.id}
               onPress={() => {
-                props.onCoursePress(item);
-              }}
-              onLongPress={() => {
-                props.onCourseLongPress(item);
+                onDeletePress(item);
               }}
               leadingIcon={true}
-              leadingIconName={"circle"}
-              leadingIconType={"material-community"}
-              leadingIconColor={item.color}
+              leadingIconName={
+                selected.includes(item.id) ? "circle-with-cross" : "circle"
+              }
+              leadingIconType={"entypo"}
+              leadingIconColor={
+                selected.includes(item.id) ? AppColors.errorColor : "grey"
+              }
+              leadingIconSize={24}
               title={item.name}
               subtitle={handleAssignment(item)}
-              showGrade={true}
-              grade={item.grade}
               trailingIcon={true}
               trailingIconAvatar={item.is_schoology}
             />
@@ -76,4 +103,4 @@ const CourseFlatList = (props) => {
   );
 };
 
-export default CourseFlatList;
+export default DeleteModeFlatList;

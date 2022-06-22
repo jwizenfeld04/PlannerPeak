@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from .managers import CustomUserManager
 from .choices import SCHOOL_CHOICES, YEAR_CHOICES
+from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
+
 
 
 class SchoologySchools(models.Model):
@@ -13,7 +15,7 @@ class SchoologySchools(models.Model):
 
     def __str__(self):
         return self.name
-
+   
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
@@ -39,7 +41,9 @@ class CustomUser(AbstractUser):
         return self.email
 
 
-class Course(models.Model):
+class Course(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE_CASCADE
+
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     subject = models.CharField(max_length=30)
@@ -47,7 +51,6 @@ class Course(models.Model):
     grade = models.CharField(max_length=10, blank=True)
     schoology_section_id = models.CharField(max_length=15, blank=True)
     is_schoology = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
     color = models.CharField(max_length=20, default="#808080")
     priority = models.IntegerField(default=1)
     notifications = models.BooleanField(default=True)
@@ -56,7 +59,9 @@ class Course(models.Model):
         return self.name
 
 
-class CourseMeetingDay(models.Model):
+class CourseMeetingDay(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE_CASCADE
+
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     meeting_day = models.CharField(max_length=10, blank=True, null=True)
 
@@ -64,7 +69,9 @@ class CourseMeetingDay(models.Model):
         return self.course.name + " on " + self.meeting_day
 
 
-class Assignment(models.Model):
+class Assignment(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE_CASCADE
+
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=100, blank=True)
@@ -90,7 +97,9 @@ class Assignment(models.Model):
         return self.name
 
 
-class AssignmentSchedule(models.Model):
+class AssignmentSchedule(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE_CASCADE
+
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     scheduled_start = models.DateTimeField(blank=True, null=True)
     scheduled_finish = models.DateTimeField(blank=True, null=True)
