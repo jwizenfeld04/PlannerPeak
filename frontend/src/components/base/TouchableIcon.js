@@ -8,9 +8,9 @@ import {
 } from "../../styles/globalStyles";
 import { Icon } from "react-native-elements";
 
-export default function CustomIcon(props) {
+export default function TouchableIcon(props) {
   return (
-    <TouchableOpacity style={{paddingRight:15}} onPress={props.onPress}>
+    <TouchableOpacity onPress={props.onPress}>
       <Icon
         name={props.name}
         type={props.type}

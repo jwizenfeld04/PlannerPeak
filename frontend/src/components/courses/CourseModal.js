@@ -33,25 +33,18 @@ const CourseModal = (props) => {
         transparent={false}
         onDismiss={props.onModalDismiss}
       >
-        <SafeAreaView
-          style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
-        />
+        <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
         <Header
-          backgroundColor={AppColors.primaryBackgroundColor}
-          borderBottomColor={props.modalData.color}
           title={props.modalData.name} //required
-          titleAlign={"center"} //required
-          titleColor={AppColors.primaryAccentColor}
           titleSize={24} //default 36
           backButton={true} // required
           onBackButtonPress={() => {
             props.onModalBack();
           }}
-          icons={true}
           iconColor={AppColors.primaryAccentColor}
-          iconName1={"color-palette-outline"}
-          iconType1={"ionicon"}
-          onIconPress1={() => {
+          iconName2={"color-palette-outline"}
+          iconType2={"ionicon"}
+          onIconPress2={() => {
             setColorSwitch(true);
           }}
         />

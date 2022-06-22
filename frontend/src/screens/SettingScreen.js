@@ -1,13 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Button,
-  Linking,
-  Alert,
-  SafeAreaView,
-} from "react-native";
+import { View, StyleSheet, Text, Button, Linking, Alert, SafeAreaView } from "react-native";
 import store from "../redux/store";
 import { selectToken } from "../redux/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -65,19 +57,9 @@ export default function SettingScreen() {
 
   return (
     <Fragment>
-      <SafeAreaView
-        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
-      />
+      <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <Header
-          backgroundColor={AppColors.primaryBackgroundColor}
-          borderBottomColor={AppColors.primaryAccentColor}
-          title={"Settings"} //required
-          titleAlign={"flex-start"} //required
-          titleColor={AppColors.primaryAccentColor}
-          titleSize={36} //default 36
-        />
-
+        <Header title={"Settings"} />
         <View
           style={{
             justifyContent: "flex-start",

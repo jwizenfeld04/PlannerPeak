@@ -55,9 +55,7 @@ const CourseFlatList = (props) => {
               onPress={() => {
                 props.onCoursePress(item);
               }}
-              onLongPress={() => {
-                props.onCourseLongPress(item);
-              }}
+              onLongPress={() => {}}
               leadingIcon={true}
               leadingIconName={"circle"}
               leadingIconType={"material-community"}

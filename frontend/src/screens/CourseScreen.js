@@ -1,17 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
-import {
-  SafeAreaView,
-  Text,
-  ActionSheetIOS,
-  View,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { SafeAreaView, Text, ActionSheetIOS, View, TouchableOpacity, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectToken,
-  selectIsSchoologyAuthenticated,
-} from "../redux/features/user/userSlice";
+import { selectToken, selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
 import {
   selectCourses,
   updateUserCoursePrefrences,
@@ -84,9 +74,7 @@ export default function CourseScreen() {
   };
 
   const getAverageMinutes = () => {
-    dispatch(
-      getAssignmentAverageMinutes({ token: token, courseId: modalData.id })
-    );
+    dispatch(getAssignmentAverageMinutes({ token: token, courseId: modalData.id }));
   };
 
   // Retrieves all courses any time the tab renders or user signs in with Schoology
@@ -112,12 +100,7 @@ export default function CourseScreen() {
   const onActionSheetPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: [
-          "Sort Courses",
-          "Edit Course Priority",
-          "Delete Courses",
-          "Cancel",
-        ],
+        options: ["Sort Courses", "Edit Course Priority", "Delete Courses", "Cancel"],
         title: "Courses",
         cancelButtonIndex: 3,
         userInterfaceStyle: "light",
@@ -171,7 +154,7 @@ export default function CourseScreen() {
 
   const onDeletePress = (selected) => {
     const ids = selected;
-    Alert.alert("Delete Courses", `Press Confirm to delete selected courses`, [
+    Alert.alert("Delete Courses", `Press "Confirm" to delete selected courses`, [
       {
         text: "Cancel",
         onPress: () => {},
@@ -222,19 +205,10 @@ export default function CourseScreen() {
 
   return (
     <Fragment>
-      <SafeAreaView
-        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
-      />
+      <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
         <Header
-          backgroundColor={AppColors.primaryBackgroundColor}
-          borderBottomColor={AppColors.primaryAccentColor}
-          title={handleHeaderTitle()} //required
-          titleAlign={"flex-start"} //required
-          titleColor={AppColors.primaryAccentColor}
-          backButton={false} // required
-          onBackButtonPress={null}
-          icons={!editPriority && !deleteMode}
+          title={handleHeaderTitle()} //required 
           iconColor={AppColors.primaryAccentColor}
           iconName1={"dots-three-horizontal"}
           iconType1={"entypo"}
@@ -244,6 +218,7 @@ export default function CourseScreen() {
           onIconPress2={onCreateModalPress}
           saveButton={editPriority}
           onSavePress={setEditPriority}
+          deleteMode={deleteMode}
         />
         {handleFlatListDisplay()}
         <CourseModal

@@ -1,22 +1,29 @@
 import { StyleSheet, Dimensions } from "react-native";
-import {
-  AppColors,
-  AppDimensions,
-  BaseAppDimensions,
-} from "../../styles/globalStyles";
+import { AppColors, AppDimensions, BaseAppDimensions } from "../../styles/globalStyles";
 
 const styles = StyleSheet.create({
   iconContainer: {
-    flexDirection: "row",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: "flex-end",
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
+    zIndex: 1,
+    flexDirection:'row'
   },
-  textInputContainer: {},
+  headerContainer: {
+    height: AppDimensions.headerHeight,
+    backgroundColor: AppColors.primaryBackgroundColor,
+    borderBottomColor: AppColors.primaryAccentColor,
+    borderBottomWidth: 1.5,
+    width: BaseAppDimensions.screenWidth,
+    flexDirection: "row",
+  },
+  headerTitleContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
   listItemContainer: {
     marginTop: 20,
     width: BaseAppDimensions.screenWidth / 1.05,

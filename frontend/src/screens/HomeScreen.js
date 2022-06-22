@@ -82,18 +82,9 @@ export default function HomeScreen() {
 
   return (
     <Fragment>
-      <SafeAreaView
-        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
-      />
+      <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
       <SafeAreaView>
-        <Header
-          backgroundColor={AppColors.primaryBackgroundColor}
-          borderBottomColor={AppColors.primaryAccentColor}
-          title={"Home"} //required
-          titleAlign={"flex-start"} //required
-          titleColor={AppColors.primaryAccentColor}
-          titleSize={36} //default 36
-        />
+        <Header title={"Home"} />
         <ScrollCalendar token={token} />
         {/* <CurrentAssignment
         currentAssignment={currentAssignment}

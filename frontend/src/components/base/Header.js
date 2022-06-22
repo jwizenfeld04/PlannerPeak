@@ -1,124 +1,39 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Ionicons, Entypo } from "@expo/vector-icons";
-import {
-  AppColors,
-  AppDimensions,
-  BaseAppDimensions,
-  AppFonts
-} from "../../styles/globalStyles";
-import CustomIcon from "../base/Icon";
+import React from "react";
+import { Text, View } from "react-native";
+
+import TouchableIcon from "./TouchableIcon";
 import SaveButton from "./SaveButton";
 import DeleteButton from "./DeleteButton";
+
+import { AppColors, AppFonts } from "../../styles/globalStyles";
 import styles from "./styles";
 
 export default function Header(props) {
-  const backButton = () => {
-    return (
-      <TouchableOpacity
-        onPress={props.onBackButtonPress}
-        style={{
-          justifyContent: "center",
-          zIndex: 1, // zIndex is needed to render the button above the text due to absolute position
-        }}
-      >
-        <Ionicons name="chevron-back-sharp" size={28} color={props.iconColor} />
-      </TouchableOpacity>
-    );
-  };
-
-  const icons = () => {
-    if (props.iconName1 && props.iconName2) {
-      return (
-        <View style={styles.iconContainer}>
-          <CustomIcon
-            name={props.iconName1}
-            type={props.iconType1}
-            onPress={props.onIconPress1}
-            color={props.iconColor}
-          />
-          <CustomIcon
-            name={props.iconName2}
-            type={props.iconType2}
-            onPress={props.onIconPress2}
-            color={props.iconColor}
-          />
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.iconContainer}>
-          <CustomIcon
-            name={props.iconName1}
-            type={props.iconType1}
-            onPress={props.onIconPress1}
-            color={props.iconColor}
-          />
-        </View>
-      );
-    }
-  };
-
-  const leftPaddingHeader = () => {
-    if (props.titleAlign === "flex-start" && props.backButton) {
-      return 35;
-    } else if (props.titleAlign === "flex-start") {
-      return 15;
-    } else {
-      return 0;
-    }
-  };
-
-  const rightPaddingHeader = () => {
-    if (props.titleAlign === "flex-end" && props.iconName1 && props.iconName2) {
-      return 78;
-    } else if (props.titleAlign === "flex-end" && props.iconName1) {
-      return 50;
-    } else if (props.titleAlign === "flex-end") {
-      return 15;
-    } else {
-      return 0;
-    }
-  };
-
   return (
-    <View
-      style={{
-        height: AppDimensions.headerHeight,
-        backgroundColor: props.backgroundColor,
-        borderBottomColor: props.borderBottomColor,
-        borderBottomWidth: 1.5,
-        width: BaseAppDimensions.screenWidth,
-        flexDirection: "row",
-      }}
-    >
-      {props.backButton ? backButton() : null}
-
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: props.titleAlign,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          paddingLeft: leftPaddingHeader(),
-          paddingRight: rightPaddingHeader(),
-          marginLeft:
-            props.titleAlign === "center"
-              ? BaseAppDimensions.screenWidth / 6
-              : 0,
-          marginRight:
-            props.titleAlign === "center"
-              ? BaseAppDimensions.screenWidth / 6
-              : 0,
-        }}
-      >
+    <View style={styles.headerContainer}>
+      <View style={{ ...styles.iconContainer, paddingLeft: 15 }}>
+        {props.backButton ? (
+          <TouchableIcon
+            name={"chevron-back-sharp"}
+            type={"ionicon"}
+            onPress={props.onBackButtonPress}
+            color={props.iconColor}
+          />
+        ) : null}
+        {props.iconName1 && !props.deleteMode && !props.saveButton ? (
+          <TouchableIcon
+            name={props.iconName1}
+            type={props.iconType1}
+            onPress={props.onIconPress1}
+            color={props.iconColor}
+          />
+        ) : null}
+      </View>
+      <View style={styles.headerTitleContainer}>
         <Text
           style={{
             fontSize: props.titleSize ? props.titleSize : 36,
-            color: props.titleColor,
+            color: AppColors.primaryAccentColor,
             fontFamily: AppFonts.primaryTextBold,
           }}
           numberOfLines={1}
@@ -127,9 +42,18 @@ export default function Header(props) {
           {props.title}
         </Text>
       </View>
-      {props.icons ? icons() : null}
-      {props.saveButton ? <SaveButton onPress={props.onSavePress} /> : null}
-      {props.deleteButton ? <DeleteButton onPress={props.onDeletePress} /> : null}
+      <View style={{ ...styles.iconContainer, paddingRight: 15 }}>
+        {props.iconName2 && !props.deleteMode && !props.saveButton ? (
+          <TouchableIcon
+            name={props.iconName2}
+            type={props.iconType2}
+            onPress={props.onIconPress2}
+            color={props.iconColor}
+          />
+        ) : null}
+        {props.saveButton ? <SaveButton onPress={props.onSavePress} /> : null}
+        {props.deleteButton ? <DeleteButton onPress={props.onDeletePress} /> : null}
+      </View>
     </View>
   );
 }

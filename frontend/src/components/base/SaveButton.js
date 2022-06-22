@@ -5,11 +5,11 @@ import styles from "./styles";
 
 export default function SaveButton(props) {
   return (
-    <View style={{ ...styles.iconContainer, paddingRight: 15 }}>
+    <View>
       <TouchableOpacity onPress={() => props.onPress(false)}>
         <Text
           style={{
-            fontSize: 18,
+            fontSize: 13,
             color: AppColors.primaryAccentColor,
             fontFamily: AppFonts.primaryText,
           }}

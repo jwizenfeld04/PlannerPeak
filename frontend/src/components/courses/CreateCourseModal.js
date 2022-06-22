@@ -36,11 +36,7 @@ const CreateCourseModal = (props) => {
       />
       <SafeAreaView style={{ alignItems: "center" }}>
       <Header
-          backgroundColor={AppColors.primaryBackgroundColor} 
-          borderBottomColor={AppColors.primaryAccentColor} 
-          title={'Add Course'} 
-          titleAlign={"center"} 
-          titleColor={AppColors.primaryAccentColor} 
+          title={'Add Course'}  
           backButton={true}
           onBackButtonPress={props.onCreateModalBack}
           iconColor={AppColors.primaryAccentColor}
