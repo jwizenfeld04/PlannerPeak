@@ -2,7 +2,7 @@ from rest_framework import authentication
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from api.serializers import CourseSerializer
-from api.models import Course, Assignment
+from api.models import Course
 from rest_framework.response import Response
 from rest_framework.status import *
 
@@ -16,11 +16,7 @@ class UserSpecificCourseView(APIView):
         courses = Course.objects.filter(
             user_id=request.user.id, deleted=None).order_by('id')
         if len(courses) > 0:
-            for course in courses:
-                course.number_of_assignments = Assignment.objects.filter(
-                    course_id=course.id).count()
-            data = self.serializer_class(courses, many=True).data
-            return Response(data, status=HTTP_200_OK)
+            return Response(self.serializer_class(courses, many=True).data, status=HTTP_200_OK)
         return Response({"No Content": "No Courses Found"}, status=HTTP_204_NO_CONTENT)
 
     def post(self, request, format=None):
@@ -32,7 +28,6 @@ class UserSpecificCourseView(APIView):
                             name=name, subject=subject)
             course.save()
             return Response(self.serializer_class(course).data, status=HTTP_201_CREATED)
-        print(serializer.errors)
         return Response({"Error": "Invalid Course Fields"}, status=HTTP_400_BAD_REQUEST)
 
 

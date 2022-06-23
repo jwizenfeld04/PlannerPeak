@@ -19,7 +19,7 @@ export default function Assignments(props) {
     return <Text>Due: {getDate(item.due_date)}</Text>;
   };
 
-  const RenderRight = (progress, dragx) => {
+  const RenderRight = (progress, dragx, id, name) => {
     const scale = dragx.interpolate({
       inputRange: [-100, 0],
       outputRange: [0.7, 0],
@@ -28,7 +28,7 @@ export default function Assignments(props) {
 
     return (
       <>
-        <TouchableOpacity onPress={() => alert("Delete Pressed")}>
+        <TouchableOpacity onPress={() => props.onDeletePress(id, name)}>
           <View style={{ ...styles.swipeableIconContainer, backgroundColor: "red" }}>
             <Animated.View
               style={{
@@ -46,7 +46,7 @@ export default function Assignments(props) {
     );
   };
 
-  const RenderLeft = (progress, dragx) => {
+  const RenderLeft = (progress, dragx, id) => {
     const scale = dragx.interpolate({
       inputRange: [0, 100],
       outputRange: [0, 1],
@@ -54,7 +54,7 @@ export default function Assignments(props) {
     });
     return (
       <>
-        <TouchableOpacity onPress={() => alert("Complete Pressed")}>
+        <TouchableOpacity onPress={() => props.onCompletePress(id)}>
           <View style={{ ...styles.swipeableIconContainer, backgroundColor: "green" }}>
             <Animated.View
               style={{
@@ -95,8 +95,10 @@ export default function Assignments(props) {
         return (
           <GestureHandlerRootView>
             <Swipeable
-              renderRightActions={RenderRight}
-              renderLeftActions={RenderLeft}
+              renderRightActions={(progress, dragx) =>
+                RenderRight(progress, dragx, item.id, item.name)
+              }
+              renderLeftActions={(progress, dragx) => RenderLeft(progress, dragx, item.id)}
               overshootRight={false}
               overshootLeft={false}
               friction={2}

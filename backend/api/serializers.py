@@ -79,12 +79,18 @@ class AssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = ['id', 'course', 'name', 'description', 'start_date',
-                  'due_date', 'grade', 'schoology_assignment_id', 'is_schoology', 'is_completed', 'max_points']
+                  'due_date', 'grade', 'schoology_assignment_id', 'is_schoology', 'is_completed', 'completed_date', 'max_points']
         extra_kwargs = {
+            'course': {'required': False},
+            'name': {'required': False},
             'grade': {'required': False},
             'schoology_assignment_id': {'required': False},
+            'is_schoology': {'required': False},
+            'is_completed': {'required': False},
             'course': {'required': False},
+            'completed_date': {'required': False},
             'start_date': {'required': False},
+            'due_date': {'required': False},
             'description': {'required': False},
             'max_points': {'required': False},
             'scheduled_start': {'required': False},

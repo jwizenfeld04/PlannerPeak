@@ -1,10 +1,12 @@
+from datetime import datetime
+from turtle import update
 from django.db import models
+from django.db.models import Sum, Avg, F
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from .managers import CustomUserManager
 from .choices import SCHOOL_CHOICES, YEAR_CHOICES
 from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
-
 
 
 class SchoologySchools(models.Model):
@@ -15,7 +17,7 @@ class SchoologySchools(models.Model):
 
     def __str__(self):
         return self.name
-   
+
 
 class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
@@ -55,6 +57,9 @@ class Course(SafeDeleteModel):
     priority = models.IntegerField(default=1)
     notifications = models.BooleanField(default=True)
 
+    def number_of_assignments(self):
+        return Assignment.objects.filter(course_id=self.id).count()
+
     def __str__(self):
         return self.name
 
@@ -82,8 +87,10 @@ class Assignment(SafeDeleteModel):
     schoology_assignment_id = models.CharField(max_length=15, blank=True)
     assignment_type = models.CharField(max_length=20, blank=True)
     is_completed = models.BooleanField(default=False)
+    completed_date = models.DateTimeField(blank=True, null=True)
     is_schoology = models.BooleanField(default=False)
 
+    # TODO: Query the sum of total_time() method from AssignmentSchedule Model
     def total_study_minutes(self):
         schedules = AssignmentSchedule.objects.filter(assignment_id=self.id)
         minutes = 0
@@ -92,6 +99,11 @@ class Assignment(SafeDeleteModel):
                                      schedule.scheduled_start).total_seconds() / 60.0)
             minutes = minutes + assignment_time
         return minutes
+
+    def update_completed_date(self):
+        current_datetime = datetime.now()
+        self.completed_date = current_datetime
+        self.save(update_fields=['completed_date'])
 
     def __str__(self):
         return self.name
@@ -106,6 +118,10 @@ class AssignmentSchedule(SafeDeleteModel):
 
     def __str__(self):
         return self.assignment.name + " Schedule Interval"
+
+    def total_time(self):
+        total_time = round((self.scheduled_finish - self.scheduled_start).total_seconds() / 60.0)
+        return total_time
 
 
 # class IndividualTimeBlock(models.Model):
@@ -154,6 +170,7 @@ class SchoologyToken(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     access_token = models.CharField(max_length=100)
     access_secret = models.CharField(max_length=100)
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.user}'s Schoology Tokens"

@@ -6,6 +6,7 @@ from api.models import Course, Assignment, AssignmentSchedule
 from rest_framework.response import Response
 from rest_framework.status import *
 from datetime import datetime, timezone
+from django.db.models import Case, When
 
 
 def getAssignments(user_id):
@@ -76,7 +77,7 @@ class UserSpecificAssignmentView(APIView):
 
     def get(self, request, format=None, *args, **kwargs):
         assignments = Assignment.objects.filter(
-            course_id=self.kwargs['course_id'])
+            course_id=self.kwargs['course_id'], is_completed=False)
         if len(assignments) > 0:
             data = self.serializer_class(assignments, many=True).data
             return Response(data, status=HTTP_200_OK)
@@ -122,7 +123,9 @@ class UserSpecificAssignmentUpdateView(APIView):
         serializer = self.serializer_class(assignment, request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=HTTP_204_NO_CONTENT)
+            if 'is_completed' in request.data and request.data['is_completed'] == True:
+                assignment.update_completed_date()
+            return Response(serializer.data, status=HTTP_200_OK)
         return Response({"Error": "Invalid Update Fields"}, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, format=None, *args, **kwargs):
@@ -133,7 +136,7 @@ class UserSpecificAssignmentUpdateView(APIView):
         except:
             return Response({"Error": "Invalid Assignment Id"}, status=HTTP_400_BAD_REQUEST)
         assignment.delete()
-        return Response({"Successful": "Assignment Deleted"}, status=HTTP_204_NO_CONTENT)
+        return Response(self.serializer_class(assignment).data, status=HTTP_202_ACCEPTED)
 
 
 class AssignmentTotalTime(APIView):

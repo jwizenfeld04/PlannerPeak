@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { SafeAreaView, Modal, View, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView, Modal, View, Text, TouchableOpacity, Alert } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { selectToken } from "../../redux/features/user/userSlice";
 
 import Analytics from "./Analytics";
 import Assignments from "./Assignment";
@@ -8,10 +10,16 @@ import Header from "../base/Header";
 
 import { AppColors, BaseAppDimensions } from "../../styles/globalStyles";
 import styles from "./styles";
+import {
+  completeAssignment,
+  deleteAssignment,
+} from "../../redux/features/assignment/assignmentSlice";
 
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
   const [colorSwitch, setColorSwitch] = useState(false);
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken); // Gets string of user token from DB
 
   const handleMainViewDiplay = () => {
     if (tab === "Assignments") {
@@ -19,11 +27,34 @@ const CourseModal = (props) => {
         <Assignments
           color={props.modalData.color}
           courseSpecficAssignments={props.courseSpecficAssignments}
+          onDeletePress={handleAssignmentDelete}
+          onCompletePress={handleAssignmentComplete}
         />
       );
     } else {
       return <Analytics avgMinutes={props.avgMinutes} />;
     }
+  };
+
+  const handleAssignmentDelete = (id, name) => {
+    Alert.alert("Delete Assignment", `Press "Confirm" to delete ${name}`, [
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: "cancel",
+      },
+      {
+        text: "Confirm",
+        style: "destructive",
+        onPress: () => {
+          dispatch(deleteAssignment({ id: id, token: token }));
+        },
+      },
+    ]);
+  };
+
+  const handleAssignmentComplete = (id) => {
+    dispatch(completeAssignment({ id: id, token: token }));
   };
 
   useEffect(() => {

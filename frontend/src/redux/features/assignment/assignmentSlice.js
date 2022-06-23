@@ -31,6 +31,40 @@ export const getCourseSpecificAssignments = createAsyncThunk(
   }
 );
 
+export const deleteAssignment = createAsyncThunk(
+  "user/deleteAssignment",
+  async (assignmentData, thunkAPI) => {
+    const response = await API.delete(`user-assignments-update/${assignmentData.id}`, {
+      headers: {
+        Authorization: `Token ${assignmentData.token}`,
+      },
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
+export const completeAssignment = createAsyncThunk(
+  "user/deleteAssignment",
+  async (assignmentData, thunkAPI) => {
+    const response = await API.put(
+      `user-assignments-update/${assignmentData.id}`,
+      {
+        is_completed: true,
+      },
+      {
+        headers: {
+          Authorization: `Token ${assignmentData.token}`,
+        },
+      }
+    ).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
 export const scheduleAssignments = createAsyncThunk(
   "user/scheduleAssignments",
   async (token, thunkAPI) => {
@@ -120,9 +154,7 @@ export const assignmentsSlice = createSlice({
   initialState: initialState,
   extraReducers: {
     [getUserAssignments.fulfilled]: (state, action) => {
-      const assingmentArray = Object.values(action.payload.data).map(
-        (key) => key
-      );
+      const assingmentArray = Object.values(action.payload.data).map((key) => key);
       state.assignments = assingmentArray;
       state.status = "success";
     },
@@ -133,9 +165,7 @@ export const assignmentsSlice = createSlice({
       state.status = "failed";
     },
     [getCourseSpecificAssignments.fulfilled]: (state, action) => {
-      const assingmentArray = Object.values(action.payload.data).map(
-        (key) => key
-      );
+      const assingmentArray = Object.values(action.payload.data).map((key) => key);
       state.courseSpecficAssignments = assingmentArray;
       state.status = "success";
     },
@@ -195,15 +225,37 @@ export const assignmentsSlice = createSlice({
     [getAssignmentAverageMinutes.rejected]: (state, action) => {
       state.status = "failed";
     },
+    [deleteAssignment.fulfilled]: (state, action) => {
+      state.courseSpecficAssignments = state.courseSpecficAssignments.filter(
+        (element) => element.id !== action.payload.data.id
+      );
+      state.status = "success";
+    },
+    [deleteAssignment.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [deleteAssignment.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+    [completeAssignment.fulfilled]: (state, action) => {
+      state.courseSpecficAssignments = state.courseSpecficAssignments.filter(
+        (element) => element.id !== action.payload.data.id
+      );
+      state.status = "success";
+    },
+    [completeAssignment.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [completeAssignment.rejected]: (state, action) => {
+      state.status = "failed";
+    },
   },
 });
 
 // Access assignments with useSelector(selectAssignments)
 export const selectAssignments = (state) => state.assignment.assignments;
-export const selectCourseSpecficAssignments = (state) =>
-  state.assignment.courseSpecficAssignments;
-export const selectCurrentAssignment = (state) =>
-  state.assignment.currentAssignment;
+export const selectCourseSpecficAssignments = (state) => state.assignment.courseSpecficAssignments;
+export const selectCurrentAssignment = (state) => state.assignment.currentAssignment;
 export const selectCurrentSchedule = (state) => state.assignment.schedule;
 export const selectDateSchedule = (state) => state.assignment.dateSchedule;
 export const selectAvgMinutes = (state) => state.assignment.avgAssignmentMinutes;

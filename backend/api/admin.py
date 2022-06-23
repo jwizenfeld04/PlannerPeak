@@ -91,18 +91,24 @@ def download_assignment_csv(modeladmin, request, queryset):
         writer.writerow([s.name, s.assignment_type, s.course,
                         s.grade, s.total_study_minutes(), s.start_date, s.due_date])
 
+def incomplete(modeladmin, request, queryset):
+    for s in queryset:
+        s.is_completed = False
+        s.completed_date = None
+        s.save(update_fields=['is_completed','completed_date'])
+
 
 @admin.register(Assignment)
 class AssignmentAdmin(SafeDeleteAdmin):
     list_display = ('name', 'assignment_type', 'course', 'grade', 'total_study_minutes', 'start_date',
-                    'due_date', 'is_completed', 'is_schoology','deleted','deleted_by_cascade') 
+                    'due_date', 'is_completed', 'completed_date', 'is_schoology','deleted','deleted_by_cascade') 
     readonly_fields = ('total_study_minutes',)
     list_filter = ('assignment_type', GradeFilter,
                    'start_date', 'due_date', 'is_schoology', 'is_completed', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     ordering = ('assignment_type', 'grade', 'start_date',
                 'due_date', 'is_completed', 'is_schoology')
     search_fields = ('name', 'course')
-    actions = [download_assignment_csv, restore]
+    actions = [download_assignment_csv, restore, incomplete]
 
     def total_study_minutes(self, obj):
         return obj.total_study_minutes()
@@ -110,7 +116,7 @@ class AssignmentAdmin(SafeDeleteAdmin):
 
 @admin.register(AssignmentSchedule)
 class AssignmentScheduleAdmin(SafeDeleteAdmin):
-    list_display = ('assignment', 'scheduled_start', 'scheduled_finish', 'deleted','deleted_by_cascade')  
+    list_display = ('assignment', 'scheduled_start', 'scheduled_finish','total_time', 'deleted','deleted_by_cascade')  
     list_filter = ('assignment', 'scheduled_start', 'scheduled_finish', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     ordering = ('scheduled_start', 'scheduled_finish')
     actions = [restore]
@@ -121,9 +127,13 @@ class CourseMeetingDayAdmin(SafeDeleteAdmin):
     list_filter = ('course','meeting_day', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     actions = [restore]
 
+@admin.register(SchoologyToken)
+class SchoologyTokenAdmin(admin.ModelAdmin):
+    list_display = ('user','access_token', 'access_secret','created_date')  
+
+
 admin.site.unregister(Group)
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(SchoologyToken)
 # admin.site.register(IndividualTimeBlock)
 # admin.site.register(ActiveTimeBlocks)
 # admin.site.register(RecurringTimeBlocks)
