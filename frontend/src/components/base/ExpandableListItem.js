@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, TouchableHighlight } from "react-native";
 import {
   AppColors,
   AppDimensions,
@@ -9,13 +9,28 @@ import {
 } from "../../styles/globalStyles";
 import styles from "./styles";
 import { ListItem, Icon } from "react-native-elements";
+import TouchableIcon from "./TouchableIcon";
 
 export default function ExpandableListItem(props) {
   const handleExpandableIcon = () => {
     if (expandable) {
-      return <Icon name="chevron-with-circle-down" type="entypo" size={24} />;
+      return (
+        <TouchableIcon
+          name="chevron-with-circle-down"
+          type="entypo"
+          size={20}
+          onPress={() => setExpandable(!expandable)}
+        />
+      );
     } else {
-      return <Icon name="chevron-with-circle-up" type="entypo" size={24} />;
+      return (
+        <TouchableIcon
+          name="chevron-with-circle-up"
+          type="entypo"
+          size={20}
+          onPress={() => setExpandable(!expandable)}
+        />
+      );
     }
   };
 
@@ -24,8 +39,6 @@ export default function ExpandableListItem(props) {
   return (
     <ListItem
       key={props.id}
-      onPress={() => setExpandable(!expandable)}
-      onLongPress={props.onLongPress}
       bottomDivider
       containerStyle={styles.listItemContainer}
       underlayColor="white"
@@ -63,7 +76,7 @@ export default function ExpandableListItem(props) {
             </View>
             <View
               style={{
-                flex: 1,
+                flex: 2,
                 alignItems: "flex-end",
                 justifyContent: "center",
               }}
