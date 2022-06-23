@@ -40,7 +40,4 @@ urlpatterns = [
          name="user_assignments_update"),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('avg-assignment-minutes/<int:course_id>', AssignmentTotalTime.as_view(),
-         name='avg_assignment_minutes'),
-
 ]

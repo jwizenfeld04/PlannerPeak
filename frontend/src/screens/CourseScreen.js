@@ -10,7 +10,6 @@ import {
 import {
   getCourseSpecificAssignments,
   selectCourseSpecficAssignments,
-  getAssignmentAverageMinutes,
   selectAvgMinutes,
 } from "../redux/features/assignment/assignmentSlice";
 import { getCourses } from "../components/api/getCourses";
@@ -27,7 +26,6 @@ export default function CourseScreen() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken); // Gets string of user token from DB
   const courses = useSelector(selectCourses); // Gets array of objects for all user courses
-  const avgMinutes = useSelector(selectAvgMinutes);
   const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated); // Gets boolean of whether their Schoology account is authenticated or not
   const courseSpecficAssignments = useSelector(selectCourseSpecficAssignments);
   const [isRefreshing, setIsRefreshing] = useState(false); // Used for pulldown refresh
@@ -47,6 +45,7 @@ export default function CourseScreen() {
       name: item.name,
       grade: item.grade,
       color: item.color,
+      avgAssignmentMinutes: item.avg_assignment_minutes,
     });
     setModalVisible(true);
   };
@@ -73,9 +72,6 @@ export default function CourseScreen() {
     setCreateModalVisible(true);
   };
 
-  const getAverageMinutes = () => {
-    dispatch(getAssignmentAverageMinutes({ token: token, courseId: modalData.id }));
-  };
 
   // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
@@ -227,8 +223,6 @@ export default function CourseScreen() {
           courseSpecficAssignments={courseSpecficAssignments}
           onModalDismiss={onModalDismiss}
           onModalBack={onModalBack}
-          getAverageMinutes={getAverageMinutes}
-          avgMinutes={avgMinutes}
           onModalColorChange={onModalColorChange}
         />
         <CreateCourseModal

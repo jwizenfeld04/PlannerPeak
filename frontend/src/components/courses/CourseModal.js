@@ -32,7 +32,7 @@ const CourseModal = (props) => {
         />
       );
     } else {
-      return <Analytics avgMinutes={props.avgMinutes} />;
+      return <Analytics avgMinutes={props.modalData.avgAssignmentMinutes} />;
     }
   };
 
@@ -56,10 +56,6 @@ const CourseModal = (props) => {
   const handleAssignmentComplete = (id) => {
     dispatch(completeAssignment({ id: id, token: token }));
   };
-
-  useEffect(() => {
-    props.getAverageMinutes();
-  }, [props.modalData]);
 
   return (
     <Fragment>

@@ -1,7 +1,5 @@
 from datetime import datetime
-from turtle import update
 from django.db import models
-from django.db.models import Sum, Avg, F
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from .managers import CustomUserManager
@@ -59,6 +57,15 @@ class Course(SafeDeleteModel):
 
     def number_of_assignments(self):
         return Assignment.objects.filter(course_id=self.id).count()
+
+    def avg_assignment_minutes(self):
+        assignments = Assignment.objects.filter(course_id=self.id)
+        if len(assignments) == 0:
+            return 0
+        total_minutes = 0
+        for assignment in assignments:
+            total_minutes = total_minutes + assignment.total_study_minutes()
+        return total_minutes / len(assignments)
 
     def __str__(self):
         return self.name

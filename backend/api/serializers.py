@@ -44,12 +44,10 @@ class CustomPasswordResetSerializer(PasswordResetSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    number_of_assignments = serializers.IntegerField(required=False)
-
     class Meta:
         model = Course
         fields = ['id', 'user', 'name', 'subject', 'grade',
-                  'schoology_class_id', 'schoology_section_id', 'is_schoology', 'color', 'priority', 'notifications', 'number_of_assignments']
+                  'schoology_class_id', 'schoology_section_id', 'is_schoology', 'color', 'priority', 'notifications', 'number_of_assignments', 'avg_assignment_minutes']
         extra_kwargs = {
             'user': {'required': False},
             'grade': {'required': False},
@@ -62,6 +60,7 @@ class CourseSerializer(serializers.ModelSerializer):
             'notifications': {'required': False},
             'is_schoology': {'required': False},
             'number_of_assignments': {'required': False, "allow_null": True},
+            'avg_assignment_minutes': {'required': False, "allow_null": True},
         }
 
 

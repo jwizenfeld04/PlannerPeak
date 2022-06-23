@@ -138,30 +138,3 @@ class UserSpecificAssignmentUpdateView(APIView):
         assignment.delete()
         return Response(self.serializer_class(assignment).data, status=HTTP_202_ACCEPTED)
 
-
-class AssignmentTotalTime(APIView):
-    serializer_class = AssignmentSerializer
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, format=None, *args, **kwargs):
-        assignments = Assignment.objects.filter(
-            course_id=self.kwargs['course_id'])
-        if len(assignments) == 0:
-            return Response({"no assignments": None}, status=HTTP_200_OK)
-        minutes = 0
-        num_assignments = 0
-        for assignment in assignments:
-            schedules = AssignmentSchedule.objects.filter(
-                assignment_id=assignment.id)
-            if len(schedules) == 0:
-                continue
-            num_assignments = num_assignments+1
-            for schedule in schedules:
-                assignment_time = round((schedule.scheduled_finish -
-                                         schedule.scheduled_start).total_seconds() / 60.0)
-                minutes = minutes + assignment_time
-        if num_assignments == 0:
-            return Response({"no schedules": None}, status=HTTP_200_OK)
-        avg_minutes = minutes / num_assignments
-        return Response({"avg_minutes": avg_minutes}, status=HTTP_200_OK)

@@ -71,7 +71,8 @@ def restore(modeladmin, request, queryset):
 @admin.register(Course)
 class CourseAdmin(SafeDeleteAdmin):
     list_display = ('name', 'subject', 'grade', 'priority',
-                    'is_schoology', 'user') + SafeDeleteAdmin.list_display
+                    'is_schoology', 'user','avg_assignment_minutes',) + SafeDeleteAdmin.list_display
+    readonly_fields = ('avg_assignment_minutes',)
     list_filter = ('user', 'subject',
                    'priority', GradeFilter, 'is_schoology', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     ordering = ('grade', 'priority')
