@@ -8,8 +8,8 @@ import { unwrapResult } from "@reduxjs/toolkit";
 export const getCourses = (dispatch) => async (token, isSchoologyAuth) => {
   if (isSchoologyAuth === true) {
     try {
-      await dispatch(getSchoologyCourses(token)).then(unwrapResult);;
-      dispatch(getSchoologyGrades(token));
+      await dispatch(getSchoologyCourses(token)).then(unwrapResult);
+      await dispatch(getSchoologyGrades(token)).then(unwrapResult);
       dispatch(getUserCourses(token)); 
     } catch (error) {
       console.log(error);

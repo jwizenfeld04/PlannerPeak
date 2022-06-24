@@ -78,11 +78,17 @@ export const deleteUserCourse = createAsyncThunk(
 
 const initialState = {
   courses: [],
+  sortMethod: 'grade', // Initial sort method of assignments
 };
 
 export const courseSlice = createSlice({
   name: "course",
   initialState: initialState,
+  reducers: {
+    updateSortMethod: (state, action) => {
+      state.sortMethod = action.payload;
+    },
+  },
   extraReducers: {
     [getUserCourses.fulfilled]: (state, action) => {
       const coursesArray = Object.values(action.payload.data).map((key) => key);
@@ -128,5 +134,6 @@ export const courseSlice = createSlice({
 
 // Access courses with useSelector(selectCourses)
 export const selectCourses = (state) => state.course.courses;
+export const selectCourseSortMethod = (state) => state.course.sortMethod;
 
 export default courseSlice.reducer;

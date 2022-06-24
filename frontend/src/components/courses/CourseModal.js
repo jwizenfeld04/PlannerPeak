@@ -63,7 +63,6 @@ const CourseModal = (props) => {
         animationType="slide"
         visible={props.modalVisible}
         transparent={false}
-        onDismiss={props.onModalDismiss}
       >
         <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
         <SafeAreaView style={{ flex: 1 }}>
@@ -72,7 +71,7 @@ const CourseModal = (props) => {
             titleSize={24} //default 36
             backButton={true} // required
             onBackButtonPress={() => {
-              props.onModalBack();
+              props.onModalDismiss();
             }}
             iconColor={AppColors.primaryAccentColor}
             iconName2={"color-palette-outline"}

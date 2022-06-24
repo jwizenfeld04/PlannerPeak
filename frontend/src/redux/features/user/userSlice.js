@@ -88,8 +88,6 @@ const initialState = {
   accesstoken: null,
   user: {
     id: "",
-    firstName: "",
-    lastName: "",
     email: "",
     isSchoologyAuthenticated: false,
     isPhoneVerified: false,

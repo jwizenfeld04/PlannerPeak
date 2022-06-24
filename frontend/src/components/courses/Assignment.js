@@ -1,14 +1,17 @@
-import { StyleSheet, Text, View, FlatList, Animated, TouchableOpacity } from "react-native";
+import { Text, View, FlatList, Animated, TouchableOpacity } from "react-native";
 import { ListItem, Icon } from "react-native-elements";
-import { AppColors, BaseAppDimensions } from "../../styles/globalStyles";
-import styles from "./styles";
+import { Swipeable, GestureHandlerRootView } from "react-native-gesture-handler";
 import moment from "moment";
 import ExpandableListItem from "../base/ExpandableListItem";
-import { Swipeable, GestureHandlerRootView } from "react-native-gesture-handler";
+import styles from "./styles";
 
 export default function Assignments(props) {
   const handleAssignmentListEmpty = () => {
-    return <Text style={styles.courseTitle}>No Assignments</Text>;
+    return (
+      <View>
+        <Text>No Assignments</Text>
+      </View>
+    );
   };
   const getDate = (date) => {
     const newDate = moment(date).format("MMM Do YYYY");
@@ -90,7 +93,7 @@ export default function Assignments(props) {
     <FlatList
       data={props.courseSpecficAssignments}
       ListEmptyComponent={handleAssignmentListEmpty}
-      contentContainerStyle={{ alignItems: "center" }}
+      contentContainerStyle={{ alignItems: "center", flexGrow: 1 }}
       renderItem={({ item }) => {
         return (
           <GestureHandlerRootView>

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 export default function Analytics(props) {
   return (
-    <View>
+    <View style={{ justifyContent: "center", alignItems: "center", flex:1 }}>
       {props.avgMinutes ? (
           <Text>Average Assignment Minutes: {props.avgMinutes}</Text>
         ) : (

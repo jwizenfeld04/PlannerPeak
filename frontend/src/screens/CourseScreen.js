@@ -1,26 +1,42 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { SafeAreaView, Text, ActionSheetIOS, View, TouchableOpacity, Alert } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  ActionSheetIOS,
+  View,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { selectToken, selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
+
+import {
+  selectToken,
+  selectIsSchoologyAuthenticated,
+} from "../redux/features/user/userSlice";
 import {
   selectCourses,
-  updateUserCoursePrefrences,
   deleteUserCourse,
+  getUserCourses,
+  updateUserCoursePrefrences,
+  selectCourseSortMethod,
+  courseSlice
 } from "../redux/features/course/courseSlice";
+import store from "../redux/store";
 import {
   getCourseSpecificAssignments,
   selectCourseSpecficAssignments,
-  selectAvgMinutes,
 } from "../redux/features/assignment/assignmentSlice";
-import { getCourses } from "../components/api/getCourses";
-import { getAssignments } from "../components/api/getAssignments";
-import CourseFlatList from "../components/courses/CourseFlatList";
-import CourseModal from "../components/courses/CourseModal";
+import { getSchoologyAssignments } from "../redux/features/schoology/schoologySlice";
+
 import Header from "../components/base/Header";
-import CreateCourseModal from "../components/courses/CreateCourseModal";
-import { AppColors } from "../styles/globalStyles";
 import SaveButton from "../components/base/SaveButton";
+import CourseFlatList from "../components/courses/CourseFlatList";
+import CreateCourseModal from "../components/courses/CreateCourseModal";
+import CourseModal from "../components/courses/CourseModal";
 import DeleteModeFlatList from "../components/courses/DeleteModeFlatlist";
+import { getCourses } from "../components/api/getCourses";
+
+import { AppColors } from "../styles/globalStyles";
 
 export default function CourseScreen() {
   const dispatch = useDispatch();
@@ -33,8 +49,7 @@ export default function CourseScreen() {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [modalData, setModalData] = useState({});
   const getAllCourses = getCourses(dispatch);
-  const getAllAssignments = getAssignments(dispatch);
-  const [sort, setSort] = useState("number_of_assignments");
+  const sort = useSelector(selectCourseSortMethod)
   const [editPriority, setEditPriority] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
 
@@ -51,27 +66,24 @@ export default function CourseScreen() {
   };
 
   const onModalDismiss = () => {
-    getAllCourses(token, isSchoologyAuthenticated);
+    setModalData({});
+    setModalVisible(false);
+    dispatch(getUserCourses(token));
   };
 
   const onModalColorChange = (checkedColor) => {
+    dispatch(
+      updateUserCoursePrefrences({
+        id: modalData.id,
+        token: modalData.token,
+        color: checkedColor,
+      })
+    );
     setModalData((prevState) => ({
       ...prevState,
       color: checkedColor,
     }));
   };
-
-  const onModalBack = () => {
-    setModalVisible(false);
-  };
-
-  const onCreateModalBack = () => {
-    setCreateModalVisible(false);
-  };
-  const onCreateModalPress = () => {
-    setCreateModalVisible(true);
-  };
-
 
   // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
@@ -81,15 +93,16 @@ export default function CourseScreen() {
   }, [isSchoologyAuthenticated, createModalVisible]);
 
   useEffect(() => {
-    dispatch(updateUserCoursePrefrences(modalData));
-    dispatch(getCourseSpecificAssignments(modalData));
+    if (Object.keys(modalData).length !== 0) {
+      dispatch(getCourseSpecificAssignments(modalData));
+    }
   }, [modalData]);
 
   // Retreives all courses on pull-down refresh; this function is passed into the flatlist
   const onRefresh = () => {
     setIsRefreshing(true); // Must set to true to initate refresh
     getAllCourses(token, isSchoologyAuthenticated);
-    getAllAssignments(token, isSchoologyAuthenticated);
+    dispatch(getSchoologyAssignments(token));
     setIsRefreshing(false); // Must set to false to end refresh
   };
 
@@ -126,11 +139,11 @@ export default function CourseScreen() {
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
-          setSort("priority");
+          store.dispatch(courseSlice.actions.updateSortMethod('priority'))
         } else if (buttonIndex === 1) {
-          setSort("grade");
+          store.dispatch(courseSlice.actions.updateSortMethod('grade'))
         } else if (buttonIndex === 2) {
-          setSort("number_of_assignments");
+          store.dispatch(courseSlice.actions.updateSortMethod('number_of_assignments'))
         } else if (buttonIndex === 3) {
           // cancel action
         }
@@ -201,17 +214,19 @@ export default function CourseScreen() {
 
   return (
     <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
+      <SafeAreaView
+        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
+      />
       <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
         <Header
-          title={handleHeaderTitle()} //required 
+          title={handleHeaderTitle()} //required
           iconColor={AppColors.primaryAccentColor}
           iconName1={"dots-three-horizontal"}
           iconType1={"entypo"}
           onIconPress1={onActionSheetPress}
           iconName2={"add-circle-outline"}
           iconType2={"ionicon"}
-          onIconPress2={onCreateModalPress}
+          onIconPress2={() => setCreateModalVisible(true)}
           saveButton={editPriority}
           onSavePress={setEditPriority}
           deleteMode={deleteMode}
@@ -222,12 +237,11 @@ export default function CourseScreen() {
           modalData={modalData}
           courseSpecficAssignments={courseSpecficAssignments}
           onModalDismiss={onModalDismiss}
-          onModalBack={onModalBack}
           onModalColorChange={onModalColorChange}
         />
         <CreateCourseModal
           modalVisible={createModalVisible}
-          onCreateModalBack={onCreateModalBack}
+          onCreateModalBack={() => setCreateModalVisible(false)}
           token={token}
         />
       </SafeAreaView>
