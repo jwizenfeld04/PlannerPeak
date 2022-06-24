@@ -3,8 +3,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from .managers import CustomSafeDeleteManager, CustomUserManager
-from .choices import SCHOOL_CHOICES, YEAR_CHOICES
+from .choices import SCHOOL_CHOICES, YEAR_CHOICES, COLOR_CHOICES
 from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
+import random
 
 
 class SchoologySchools(models.Model):
@@ -41,6 +42,10 @@ class CustomUser(AbstractUser):
         return self.email
 
 
+
+def assign_course_color():
+    return random.choice(COLOR_CHOICES)
+
 class Course(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
@@ -51,7 +56,7 @@ class Course(SafeDeleteModel):
     grade = models.CharField(max_length=10, blank=True)
     schoology_section_id = models.CharField(max_length=15, blank=True)
     is_schoology = models.BooleanField(default=False)
-    color = models.CharField(max_length=20, default="#808080")
+    color = models.CharField(max_length=20, default=assign_course_color)
     priority = models.IntegerField(default=1)
     notifications = models.BooleanField(default=True)
 
@@ -69,6 +74,8 @@ class Course(SafeDeleteModel):
         for assignment in assignments:
             total_minutes = total_minutes + assignment.total_study_minutes()
         return total_minutes / len(assignments)
+
+        
 
     def __str__(self):
         return self.name
