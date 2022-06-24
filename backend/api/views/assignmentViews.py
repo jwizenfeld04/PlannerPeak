@@ -77,7 +77,7 @@ class UserSpecificAssignmentView(APIView):
 
     def get(self, request, format=None, *args, **kwargs):
         assignments = Assignment.objects.filter(
-            course_id=self.kwargs['course_id'], is_completed=False)
+            course_id=self.kwargs['course_id'], is_completed=False, deleted=None)
         if len(assignments) > 0:
             data = self.serializer_class(assignments, many=True).data
             return Response(data, status=HTTP_200_OK)

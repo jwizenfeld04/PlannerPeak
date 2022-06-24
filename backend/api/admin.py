@@ -5,7 +5,7 @@ from .models import *
 from django.contrib.admin import SimpleListFilter
 import csv
 from safedelete.admin import SafeDeleteAdmin, SafeDeleteAdminFilter
-
+from safedelete.models import HARD_DELETE
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
@@ -68,16 +68,21 @@ def restore(modeladmin, request, queryset):
     for s in queryset:
         s.undelete()
 
+def hard_delete(modeladmin, request, queryset):
+    for s in queryset:
+        s.delete(force_policy=HARD_DELETE)
+
+
 @admin.register(Course)
 class CourseAdmin(SafeDeleteAdmin):
     list_display = ('name', 'subject', 'grade', 'priority',
-                    'is_schoology', 'user','avg_assignment_minutes',) + SafeDeleteAdmin.list_display
+                    'is_schoology', 'user','avg_assignment_minutes', 'number_of_assignments') + SafeDeleteAdmin.list_display
     readonly_fields = ('avg_assignment_minutes',)
     list_filter = ('user', 'subject',
                    'priority', GradeFilter, 'is_schoology', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     ordering = ('grade', 'priority')
     search_fields = ('name', 'subject')
-    actions = [restore]
+    actions = [restore, hard_delete]
 
 
 
@@ -109,7 +114,7 @@ class AssignmentAdmin(SafeDeleteAdmin):
     ordering = ('assignment_type', 'grade', 'start_date',
                 'due_date', 'is_completed', 'is_schoology')
     search_fields = ('name', 'course')
-    actions = [download_assignment_csv, restore, incomplete]
+    actions = [download_assignment_csv, restore, incomplete, hard_delete]
 
     def total_study_minutes(self, obj):
         return obj.total_study_minutes()

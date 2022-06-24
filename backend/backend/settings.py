@@ -131,7 +131,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'backend/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -219,3 +219,5 @@ STATICFILES_DIRS = (
 
 
 django_heroku.settings(locals())
+
+# SAFE_DELETE_FIELD_NAME='deleted_date'

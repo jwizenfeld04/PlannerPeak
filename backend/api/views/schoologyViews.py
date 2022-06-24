@@ -116,11 +116,7 @@ class SchoologyCourses(APIView):
             course = Course.objects.get(
                 user_id=user.id, schoology_section_id=id)
             if id not in schoology_ids:
-                course.is_active = False
-                course.save(update_fields=['is_active'])
-            if id in schoology_ids:
-                course.is_active = True
-                course.save(update_fields=['is_active'])
+                course.delete()
         return Response({'Success': "New Courses Added"}, status=HTTP_200_OK)
 
 
@@ -178,7 +174,7 @@ class SchoologyGrades(APIView):
         user = CustomUser.objects.get(id=request.user.id)
         sc = getSchoologyTokens(user.id)
         schoology_courses_ids = list(Course.objects.filter(
-            user_id=user.id, is_schoology=True, is_active=True).values_list('schoology_section_id', flat=True))
+            user_id=user.id, is_schoology=True).values_list('schoology_section_id', flat=True))
         for i in range(len(schoology_courses_ids)):
             section_id = sc.get_user_grades(user.schoology_id)[
                 i]['section_id']

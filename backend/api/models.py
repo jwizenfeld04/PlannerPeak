@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
-from .managers import CustomUserManager
+from .managers import CustomSafeDeleteManager, CustomUserManager
 from .choices import SCHOOL_CHOICES, YEAR_CHOICES
 from safedelete.models import SafeDeleteModel, SOFT_DELETE_CASCADE
 
@@ -55,8 +55,11 @@ class Course(SafeDeleteModel):
     priority = models.IntegerField(default=1)
     notifications = models.BooleanField(default=True)
 
+    #Queries soft deleted objects in filter queries
+    objects = CustomSafeDeleteManager()
+
     def number_of_assignments(self):
-        return Assignment.objects.filter(course_id=self.id).count()
+        return Assignment.objects.filter(course_id=self.id, is_completed=False, deleted=None).count()
 
     def avg_assignment_minutes(self):
         assignments = Assignment.objects.filter(course_id=self.id)
@@ -96,6 +99,8 @@ class Assignment(SafeDeleteModel):
     is_completed = models.BooleanField(default=False)
     completed_date = models.DateTimeField(blank=True, null=True)
     is_schoology = models.BooleanField(default=False)
+
+    objects = CustomSafeDeleteManager()
 
     # TODO: Query the sum of total_time() method from AssignmentSchedule Model
     def total_study_minutes(self):
