@@ -4,11 +4,7 @@ import API from "../../../api/config";
 export const getCourseSpecificAssignments = createAsyncThunk(
   "user/getCourseSpecificAssignments",
   async (modalData, thunkAPI) => {
-    const response = await API.get(`user-assignments/${modalData.id}`, {
-      headers: {
-        Authorization: `Token ${modalData.token}`,
-      },
-    }).catch((error) => {
+    const response = await API.get(`user-assignments/${modalData.id}`).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -18,11 +14,9 @@ export const getCourseSpecificAssignments = createAsyncThunk(
 export const deleteAssignment = createAsyncThunk(
   "user/deleteAssignment",
   async (assignmentData, thunkAPI) => {
-    const response = await API.delete(`user-assignments-update/${assignmentData.id}`, {
-      headers: {
-        Authorization: `Token ${assignmentData.token}`,
-      },
-    }).catch((error) => {
+    const response = await API.delete(
+      `user-assignments-update/${assignmentData.id}`
+    ).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -32,17 +26,9 @@ export const deleteAssignment = createAsyncThunk(
 export const completeAssignment = createAsyncThunk(
   "user/deleteAssignment",
   async (assignmentData, thunkAPI) => {
-    const response = await API.put(
-      `user-assignments-update/${assignmentData.id}`,
-      {
-        is_completed: true,
-      },
-      {
-        headers: {
-          Authorization: `Token ${assignmentData.token}`,
-        },
-      }
-    ).catch((error) => {
+    const response = await API.put(`user-assignments-update/${assignmentData.id}`, {
+      is_completed: true,
+    }).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -52,11 +38,7 @@ export const completeAssignment = createAsyncThunk(
 export const scheduleAssignments = createAsyncThunk(
   "user/scheduleAssignments",
   async (token, thunkAPI) => {
-    const response = await API.get(`schedule-assignments/`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }).catch((error) => {
+    const response = await API.get(`schedule-assignments/`).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -67,11 +49,7 @@ export const scheduleAssignments = createAsyncThunk(
 export const getCurrentAssignment = createAsyncThunk(
   "user/getCurrentAssignment",
   async (token, thunkAPI) => {
-    const response = await API.get(`current-assignment/`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }).catch((error) => {
+    const response = await API.get(`current-assignment/`).catch((error) => {
       console.log(error);
       throw thunkAPI.rejectWithValue(error.response.data);
     });
@@ -82,11 +60,7 @@ export const getCurrentAssignment = createAsyncThunk(
 export const getCurrentSchedule = createAsyncThunk(
   "user/getCurrentSchedule",
   async (token, thunkAPI) => {
-    const response = await API.get(`current-schedule/`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }).catch((error) => {
+    const response = await API.get(`current-schedule/`).catch((error) => {
       console.log(error);
       throw thunkAPI.rejectWithValue(error.response.data);
     });
@@ -97,14 +71,12 @@ export const getCurrentSchedule = createAsyncThunk(
 export const getSpecificDateSchedule = createAsyncThunk(
   "user/getSpecificDateSchedule",
   async (scheduleData, thunkAPI) => {
-    const response = await API.get(`schedule-date/${scheduleData.date}/`, {
-      headers: {
-        Authorization: `Token ${scheduleData.token}`,
-      },
-    }).catch((error) => {
-      console.log(error);
-      throw thunkAPI.rejectWithValue(error.response.data);
-    });
+    const response = await API.get(`schedule-date/${scheduleData.date}/`).catch(
+      (error) => {
+        console.log(error);
+        throw thunkAPI.rejectWithValue(error.response.data);
+      }
+    );
     return response;
   }
 );
@@ -199,7 +171,8 @@ export const assignmentsSlice = createSlice({
 });
 
 // Access assignments with useSelector(selectAssignments)
-export const selectCourseSpecficAssignments = (state) => state.assignment.courseSpecficAssignments;
+export const selectCourseSpecficAssignments = (state) =>
+  state.assignment.courseSpecficAssignments;
 export const selectCurrentAssignment = (state) => state.assignment.currentAssignment;
 export const selectCurrentSchedule = (state) => state.assignment.schedule;
 export const selectDateSchedule = (state) => state.assignment.dateSchedule;

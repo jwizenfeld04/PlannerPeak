@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { SafeAreaView, Modal, View, Text, TouchableOpacity, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { selectToken } from "../../redux/features/user/userSlice";
 
 import Analytics from "./Analytics";
 import Assignments from "./Assignment";
@@ -19,7 +18,6 @@ const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
   const [colorSwitch, setColorSwitch] = useState(false);
   const dispatch = useDispatch();
-  const token = useSelector(selectToken); // Gets string of user token from DB
 
   const handleMainViewDiplay = () => {
     if (tab === "Assignments") {
@@ -47,14 +45,14 @@ const CourseModal = (props) => {
         text: "Confirm",
         style: "destructive",
         onPress: () => {
-          dispatch(deleteAssignment({ id: id, token: token }));
+          dispatch(deleteAssignment({ id: id}));
         },
       },
     ]);
   };
 
   const handleAssignmentComplete = (id) => {
-    dispatch(completeAssignment({ id: id, token: token }));
+    dispatch(completeAssignment({ id: id }));
   };
 
   return (

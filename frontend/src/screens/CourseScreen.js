@@ -10,7 +10,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  selectToken,
   selectIsSchoologyAuthenticated,
 } from "../redux/features/user/userSlice";
 import {
@@ -18,10 +17,9 @@ import {
   deleteUserCourse,
   getUserCourses,
   updateUserCoursePrefrences,
+  updateSortMethod,
   selectCourseSortMethod,
-  courseSlice
 } from "../redux/features/course/courseSlice";
-import store from "../redux/store";
 import {
   getCourseSpecificAssignments,
   selectCourseSpecficAssignments,
@@ -40,7 +38,6 @@ import { AppColors } from "../styles/globalStyles";
 
 export default function CourseScreen() {
   const dispatch = useDispatch();
-  const token = useSelector(selectToken); // Gets string of user token from DB
   const courses = useSelector(selectCourses); // Gets array of objects for all user courses
   const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated); // Gets boolean of whether their Schoology account is authenticated or not
   const courseSpecficAssignments = useSelector(selectCourseSpecficAssignments);
@@ -56,7 +53,6 @@ export default function CourseScreen() {
   const handleOnCoursePress = (item) => {
     setModalData({
       id: item.id,
-      token: token,
       name: item.name,
       grade: item.grade,
       color: item.color,
@@ -68,14 +64,13 @@ export default function CourseScreen() {
   const onModalDismiss = () => {
     setModalData({});
     setModalVisible(false);
-    dispatch(getUserCourses(token));
+    dispatch(getUserCourses());
   };
 
   const onModalColorChange = (checkedColor) => {
     dispatch(
       updateUserCoursePrefrences({
         id: modalData.id,
-        token: modalData.token,
         color: checkedColor,
       })
     );
@@ -88,7 +83,7 @@ export default function CourseScreen() {
   // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
     if (createModalVisible === false) {
-      getAllCourses(token, isSchoologyAuthenticated);
+      getAllCourses(isSchoologyAuthenticated);
     }
   }, [isSchoologyAuthenticated, createModalVisible]);
 
@@ -101,8 +96,8 @@ export default function CourseScreen() {
   // Retreives all courses on pull-down refresh; this function is passed into the flatlist
   const onRefresh = () => {
     setIsRefreshing(true); // Must set to true to initate refresh
-    getAllCourses(token, isSchoologyAuthenticated);
-    dispatch(getSchoologyAssignments(token));
+    getAllCourses(isSchoologyAuthenticated);
+    dispatch(getSchoologyAssignments());
     setIsRefreshing(false); // Must set to false to end refresh
   };
 
@@ -139,11 +134,11 @@ export default function CourseScreen() {
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
-          store.dispatch(courseSlice.actions.updateSortMethod('priority'))
+          dispatch(updateSortMethod('priority'))
         } else if (buttonIndex === 1) {
-          store.dispatch(courseSlice.actions.updateSortMethod('grade'))
+          dispatch(updateSortMethod('grade'))
         } else if (buttonIndex === 2) {
-          store.dispatch(courseSlice.actions.updateSortMethod('number_of_assignments'))
+          dispatch(updateSortMethod('number_of_assignments'))
         } else if (buttonIndex === 3) {
           // cancel action
         }
@@ -181,7 +176,7 @@ export default function CourseScreen() {
 
   const handleDelete = (ids) => {
     ids.forEach(function (id) {
-      dispatch(deleteUserCourse({ token: token, id: id }));
+      dispatch(deleteUserCourse({ id: id }));
     });
     setDeleteMode(false);
   };
@@ -242,7 +237,6 @@ export default function CourseScreen() {
         <CreateCourseModal
           modalVisible={createModalVisible}
           onCreateModalBack={() => setCreateModalVisible(false)}
-          token={token}
         />
       </SafeAreaView>
     </Fragment>

@@ -12,7 +12,6 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { getUserInfo } from "../redux/features/user/userSlice";
 import { useState, useEffect } from "react";
-import { selectToken, selectUserName } from "../redux/features/user/userSlice";
 import { selectIsVerified } from "../redux/features/schoology/schoologySlice";
 import {
   scheduleAssignments,
@@ -31,7 +30,6 @@ import { AppColors, AppDimensions } from "../styles/globalStyles";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
-  const token = useSelector(selectToken);
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
   const currentAssignment = useSelector(selectCurrentAssignment);
   const schedule = useSelector(selectCurrentSchedule);
@@ -51,14 +49,14 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    dispatch(getUserInfo(token)); // Rerenders user info any time page renders or schoology becomes authenticated
+    dispatch(getUserInfo()); // Rerenders user info any time page renders or schoology becomes authenticated
   }, [isVerified]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       //assign interval to a variable to clear it.
       if (schedule !== null) {
-        dispatch(getCurrentSchedule(token));
+        dispatch(getCurrentSchedule());
       }
     }, 1000);
     return () => clearInterval(intervalId); //This is important
@@ -85,7 +83,7 @@ export default function HomeScreen() {
       <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
       <SafeAreaView>
         <Header title={"Home"} />
-        <ScrollCalendar token={token} />
+        <ScrollCalendar/>
         {/* <CurrentAssignment
         currentAssignment={currentAssignment}
         remainingTime={remainingTime}

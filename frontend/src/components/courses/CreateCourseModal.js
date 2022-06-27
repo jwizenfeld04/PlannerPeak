@@ -19,7 +19,7 @@ import { AppColors } from "../../styles/globalStyles";
 
 const CreateCourseModal = (props) => {
   const dispatch = useDispatch();
-  const [courseData, setCourseData] = useState({ token: props.token });
+  const [courseData, setCourseData] = useState({});
 
   const ref_input2 = useRef();
 

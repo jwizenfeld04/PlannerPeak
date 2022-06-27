@@ -5,11 +5,7 @@ import API from "../../../api/config";
 export const getUserCourses = createAsyncThunk(
   "user/getUserCourses",
   async (token, thunkAPI) => {
-    const response = await API.get(`user-courses/`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    }).catch((error) => {
+    const response = await API.get(`user-courses/`).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -19,18 +15,10 @@ export const getUserCourses = createAsyncThunk(
 export const createUserCourse = createAsyncThunk(
   "user/createUserCourse",
   async (courseData, thunkAPI) => {
-    const response = await API.post(
-      `user-courses/`,
-      {
-        name: courseData.name,
-        subject: courseData.subject,
-      },
-      {
-        headers: {
-          Authorization: `Token ${courseData.token}`,
-        },
-      }
-    ).catch((error) => {
+    const response = await API.post(`user-courses/`, {
+      name: courseData.name,
+      subject: courseData.subject,
+    }).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -40,19 +28,11 @@ export const createUserCourse = createAsyncThunk(
 export const updateUserCoursePrefrences = createAsyncThunk(
   "user/updateUserCoursePrefrences",
   async (modalData, thunkAPI) => {
-    const response = await API.put(
-      `user-courses-update/${modalData.id}`,
-      {
-        color: modalData.color,
-        notifications: modalData.notifications,
-        priority: modalData.priority,
-      },
-      {
-        headers: {
-          Authorization: `Token ${modalData.token}`,
-        },
-      }
-    ).catch((error) => {
+    const response = await API.put(`user-courses-update/${modalData.id}`, {
+      color: modalData.color,
+      notifications: modalData.notifications,
+      priority: modalData.priority,
+    }).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -62,23 +42,18 @@ export const updateUserCoursePrefrences = createAsyncThunk(
 export const deleteUserCourse = createAsyncThunk(
   "user/deleteUserCourse",
   async (courseData, thunkAPI) => {
-    const response = await API.delete(
-      `user-courses-update/${courseData.id}`,
-      {
-        headers: {
-          Authorization: `Token ${courseData.token}`,
-        },
+    const response = await API.delete(`user-courses-update/${courseData.id}`).catch(
+      (error) => {
+        throw thunkAPI.rejectWithValue(error.response.data);
       }
-    ).catch((error) => {
-      throw thunkAPI.rejectWithValue(error.response.data);
-    });
+    );
     return response;
   }
 );
 
 const initialState = {
   courses: [],
-  sortMethod: 'grade', // Initial sort method of assignments
+  sortMethod: "grade", // Initial sort method of assignments
 };
 
 export const courseSlice = createSlice({
@@ -121,7 +96,9 @@ export const courseSlice = createSlice({
     },
     [deleteUserCourse.fulfilled]: (state, action) => {
       state.status = "success";
-      state.courses = state.courses.filter(element => element.id !== action.payload.data.id)
+      state.courses = state.courses.filter(
+        (element) => element.id !== action.payload.data.id
+      );
     },
     [deleteUserCourse.pending]: (state, action) => {
       state.status = "loading";
@@ -135,5 +112,7 @@ export const courseSlice = createSlice({
 // Access courses with useSelector(selectCourses)
 export const selectCourses = (state) => state.course.courses;
 export const selectCourseSortMethod = (state) => state.course.sortMethod;
+
+export const { updateSortMethod } = courseSlice.actions;
 
 export default courseSlice.reducer;

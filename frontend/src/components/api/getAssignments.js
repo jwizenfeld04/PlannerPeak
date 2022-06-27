@@ -3,15 +3,15 @@ import { getUserAssignments } from "../../redux/features/assignment/assignmentSl
 import { unwrapResult } from "@reduxjs/toolkit";
 
 
-export const getAssignments = (dispatch) => async (token, isSchoologyAuth) => {
+export const getAssignments = (dispatch) => async (isSchoologyAuth) => {
   if (isSchoologyAuth === true) {
     try {
-      await dispatch(getSchoologyAssignments(token)).then(unwrapResult);
-      dispatch(getUserAssignments(token)); 
+      await dispatch(getSchoologyAssignments()).then(unwrapResult);
+      dispatch(getUserAssignments()); 
     } catch (error) {
       console.log(error);
     }
   } else {
-    dispatch(getUserAssignments(token)); 
+    dispatch(getUserAssignments()); 
   }
 };

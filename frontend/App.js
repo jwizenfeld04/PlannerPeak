@@ -9,10 +9,12 @@ import fetchFonts from "./src/hooks/fetchFonts";
 import fetchImages from "./src/hooks/fetchImages";
 import * as SplashScreen from "expo-splash-screen";
 import { AppImages } from "./src/styles/globalStyles";
+import { injectStore } from "./src/api/config";
 
 export default function App() {
   let persistor = persistStore(store);
   const [isReady, setIsReady] = useState(false);
+  injectStore(store);
 
   useEffect(() => {
     async function prepare() {

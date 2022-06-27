@@ -36,17 +36,9 @@ export const registerUser = createAsyncThunk(
 export const verifyPhone = createAsyncThunk(
   "user/verifyPhone",
   async (authData, thunkAPI) => {
-    const response = await API.post(
-      `verify-phone/`,
-      {
-        code: authData.code,
-      },
-      {
-        headers: {
-          Authorization: `Token ${authData.token}`,
-        },
-      }
-    ).catch((error) => {
+    const response = await API.post(`verify-phone/`, {
+      code: authData.code,
+    }).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -56,11 +48,7 @@ export const verifyPhone = createAsyncThunk(
 export const verifyResend = createAsyncThunk(
   "user/verifyResend",
   async (token, thunkAPI) => {
-    const response = await API.get(`verify-resend/`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
+    const response = await API.get(`verify-resend/`);
     return response;
   }
 );
@@ -69,11 +57,7 @@ export const verifyResend = createAsyncThunk(
 export const getUserInfo = createAsyncThunk(
   "user/getUserInfo",
   async (token, thunkAPI) => {
-    const response = await API.get(`dj-rest-auth/user/`, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
+    const response = await API.get(`dj-rest-auth/user/`);
     return response;
   }
 );

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { View, StyleSheet, Text, Button, Linking, Alert, SafeAreaView } from "react-native";
 import store from "../redux/store";
-import { selectToken } from "../redux/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectUrl,
@@ -18,7 +17,6 @@ export default function SettingScreen() {
   const schoologyUrl = useSelector(selectUrl); // Gets Schoology URL from Schoology API Request
   const isSchoologyAuth = useSelector(selectIsSchoologyAuthenticated); // Boolean whether schoology auth or not
   const schoologyConfig = {
-    token: useSelector(selectToken),
     callbackUrl: "plannerpeak.com/schoologyredirect", // TODO: Change to DEEP LINK when available
   };
 

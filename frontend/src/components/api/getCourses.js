@@ -5,16 +5,16 @@ import {
 import { getUserCourses } from "../../redux/features/course/courseSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
-export const getCourses = (dispatch) => async (token, isSchoologyAuth) => {
+export const getCourses = (dispatch) => async (isSchoologyAuth) => {
   if (isSchoologyAuth === true) {
     try {
-      await dispatch(getSchoologyCourses(token)).then(unwrapResult);
-      await dispatch(getSchoologyGrades(token)).then(unwrapResult);
-      dispatch(getUserCourses(token)); 
+      await dispatch(getSchoologyCourses()).then(unwrapResult);
+      await dispatch(getSchoologyGrades()).then(unwrapResult);
+      dispatch(getUserCourses()); 
     } catch (error) {
       console.log(error);
     }
   } else {
-    dispatch(getUserCourses(token)); 
+    dispatch(getUserCourses()); 
   }
 };
