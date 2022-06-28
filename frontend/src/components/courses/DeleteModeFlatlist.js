@@ -63,7 +63,7 @@ const DeleteModeFlatList = (props) => {
 
   return (
     <View style={{ height: AppDimensions.mainViewHeight }}>
-      <View style={{ flexDirection: "row", justifyContent:'space-between' }}>
+      <View style={{ flexDirection: "row", justifyContent:'space-between', paddingBottom:10}}>
         <DeleteButton
           onPress={()=>props.onDeletePress(selected)}
           selectedCount={selectedCount}

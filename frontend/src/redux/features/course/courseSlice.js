@@ -78,6 +78,7 @@ export const courseSlice = createSlice({
     },
     [createUserCourse.fulfilled]: (state, action) => {
       state.status = "success";
+      state.courses.push(action.payload.data)
     },
     [createUserCourse.pending]: (state, action) => {
       state.status = "loading";

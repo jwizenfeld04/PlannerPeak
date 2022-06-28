@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/features/user/userSlice";
 import {
   selectError,
-  selectIsPhoneVerified,
+  selectIsVerified,
   selectToken,
 } from "../redux/features/user/userSlice";
 import { AppColors, AppImages } from "../styles/globalStyles";
@@ -29,11 +29,11 @@ export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const loggedInBeforeVerify = useSelector(selectToken);
-  const isPhoneVerified = useSelector(selectIsPhoneVerified);
+  const isVerified = useSelector(selectIsVerified);
 
   //Not Verify but yes User account
   useEffect(() => {
-    if ( !isPhoneVerified && loggedInBeforeVerify) {
+    if ( !isVerified && loggedInBeforeVerify) {
       navigation.navigate("Verify");
     }
   }, [loggedInBeforeVerify]);
