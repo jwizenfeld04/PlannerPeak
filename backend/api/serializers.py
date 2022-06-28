@@ -8,11 +8,12 @@ from .verify import send, check
 from django.conf import settings
 
 
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'school_level',
-                  'graduation_year', 'schoology_id', 'schoology_school', 'is_schoology_authenticated', 'phone', 'is_phone_verified']
+                  'graduation_year', 'schoology_id', 'schoology_school', 'is_schoology_authenticated', 'phone', 'verified']
 
 
 class CustomRegisterSerializer(RegisterSerializer):

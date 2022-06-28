@@ -10,15 +10,15 @@ from safedelete.models import HARD_DELETE
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     add_form = RegisterForm
-    list_display = ('email', 'phone', 'is_phone_verified',
+    list_display = ('email', 'phone', 'verified',
                     'schoology_id', 'is_schoology_authenticated', 'graduation_year', 'school_level')
     list_filter = ('school_level', 'graduation_year',
-                   'is_active', 'is_phone_verified', 'is_staff', 'is_superuser',)
+                   'is_active', 'verified', 'is_staff', 'is_superuser',)
     fieldsets = (
         ('Account Information', {
             'classes': ('wide',),
             'fields': ('phone',
-                       'is_phone_verified',
+                       'verified',
                        'email',
                        'password',)}),
         ('School Information', {

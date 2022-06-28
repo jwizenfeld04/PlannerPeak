@@ -74,7 +74,7 @@ const initialState = {
     id: "",
     email: "",
     isSchoologyAuthenticated: false,
-    isPhoneVerified: false,
+    isVerified: false,
   },
 };
 
@@ -84,7 +84,7 @@ export const userSlice = createSlice({
   extraReducers: {
     [loginUser.fulfilled]: (state, action) => {
       state.accesstoken = action.payload.data.key;
-      state.user.isPhoneVerified = action.payload.data.is_phone_verified;
+      state.user.isVerified = action.payload.data.verified;
       state.isLoggedIn = true;
       state.error = null;
       state.status = "success";
@@ -100,7 +100,7 @@ export const userSlice = createSlice({
       state.user.email = action.payload.data.email;
       state.user.isSchoologyAuthenticated =
         action.payload.data.is_schoology_authenticated;
-      state.user.isPhoneVerified = action.payload.data.is_phone_verified;
+      state.user.isVerified = action.payload.data.verified;
       state.status = "success";
     },
     [registerUser.fulfilled]: (state, action) => {
@@ -119,7 +119,7 @@ export const userSlice = createSlice({
 });
 
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
-export const selectIsPhoneVerified = (state) => state.user.user.isPhoneVerified;
+export const selectIsVerified = (state) => state.user.user.isVerified;
 export const selectIsSchoologyAuthenticated = (state) =>
   state.user.user.isSchoologyAuthenticated;
 export const selectToken = (state) => state.user.accesstoken;

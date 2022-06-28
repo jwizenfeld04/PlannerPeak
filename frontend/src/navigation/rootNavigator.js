@@ -3,13 +3,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "./authNavigator";
 import AppNavigator from "./appNavigator";
 import {
-  selectIsPhoneVerified,
+  selectIsVerified,
 } from "../redux/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as Linking from "expo-linking";
 import { useEffect } from "react";
 import { verifySchoology } from "../redux/features/schoology/schoologySlice";
-import { selectToken, getUserInfo, selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
+import { selectToken, selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
 import {
   selectUrl,
   selectIsAuthorized,
@@ -19,7 +19,7 @@ const prefix = Linking.createURL("/");
 
 const AppRoute = () => {
   const dispatch = useDispatch();
-  const isPhoneVerified = useSelector(selectIsPhoneVerified);
+  const isVerified = useSelector(selectIsVerified);
   const token = useSelector(selectToken);
   const isAuthorized = useSelector(selectIsAuthorized);
   const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated);
@@ -38,7 +38,7 @@ const AppRoute = () => {
   const handleDeepLink = (ev) => {
     if (isAuthorized === true) {
       setTimeout(() => {
-        dispatch(verifySchoology(token))
+        dispatch(verifySchoology())
       }, 1500);
     }
   };
@@ -53,7 +53,7 @@ const AppRoute = () => {
 
   return (
     <NavigationContainer linking={linking}>
-      {token && isPhoneVerified ? <AppNavigator /> : <AuthNavigator />}
+      {token && isVerified ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

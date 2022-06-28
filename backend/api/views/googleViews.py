@@ -7,6 +7,5 @@ from rest_framework.response import Response
 from rest_framework.status import *
 from datetime import datetime, timedelta
 
-
 class GoogleCalendar(APIView):
     pass

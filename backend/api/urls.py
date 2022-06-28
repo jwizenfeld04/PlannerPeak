@@ -4,7 +4,7 @@ from .views.schoologyViews import *
 from .views.courseViews import *
 from .views.assignmentViews import *
 from .views.scheduleViews import *
-from .views.googleCalendarViews import *
+from .views.googleViews import *
 from .views.timeBlockViews import *
 from .views.verifyView import *
 from .converters import DateConverter

@@ -16,7 +16,7 @@ class PhoneVerificationLoginView(LoginView):
         orginal_response = super().get_response()
         tokens = Token.objects.get(key=orginal_response.data['key'])
         user = CustomUser.objects.get(email=tokens.user)
-        mydata = {"is_phone_verified": user.is_phone_verified}
+        mydata = {"verified": user.verified}
         orginal_response.data.update(mydata)
         return orginal_response
 
@@ -29,7 +29,7 @@ class VerifyPhoneView(APIView):
         if serializer.is_valid():
             code = serializer.data.get('code')
             if check(request.user.phone, code):
-                request.user.is_phone_verified = True
+                request.user.verified = True
                 request.user.save()
                 return Response({"Success": "Verified Code"}, status=HTTP_201_CREATED)
         return Response({"Error": "Invalid Verify Code"}, status=HTTP_400_BAD_REQUEST)
