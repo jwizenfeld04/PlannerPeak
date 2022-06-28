@@ -6,7 +6,7 @@ export const loginUser = createAsyncThunk(
   "user/loginUser",
   // authData is object that must constain email and password
   async (authData, thunkAPI) => {
-    const response = await API.post(`dj-rest-auth/login/`, {
+    const response = await API.post(`login/`, {
       email: authData.email,
       password: authData.password,
     }).catch((error) => {
@@ -84,6 +84,7 @@ export const userSlice = createSlice({
   extraReducers: {
     [loginUser.fulfilled]: (state, action) => {
       state.accesstoken = action.payload.data.key;
+      state.user.isPhoneVerified = action.payload.data.is_phone_verified;
       state.isLoggedIn = true;
       state.error = null;
       state.status = "success";

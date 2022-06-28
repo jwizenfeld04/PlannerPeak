@@ -38,6 +38,7 @@ urlpatterns = [
          name="user_assignments"),
     path('user-assignments-update/<int:assignment_id>', UserSpecificAssignmentUpdateView.as_view(),
          name="user_assignments_update"),
+    path('login/', PhoneVerificationLoginView.as_view(), name='phone_verify_login'),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 ]
