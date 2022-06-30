@@ -18,6 +18,7 @@ export const createUserCourse = createAsyncThunk(
     const response = await API.post(`user-courses/`, {
       name: courseData.name,
       subject: courseData.subject,
+      color: courseData.color
     }).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
