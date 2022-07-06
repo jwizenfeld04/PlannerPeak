@@ -55,6 +55,7 @@
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^4.11.2",
     "react-native-phone-number-input": "^2.1.0",
+    "react-native-picker-select": "^8.0.4",
     "react-native-radio-buttons-group": "^2.2.7",
     "react-native-reanimated": "^2.8.0",
     "react-native-safe-area-context": "4.2.4",
@@ -70,7 +71,8 @@
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

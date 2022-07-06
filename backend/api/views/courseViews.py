@@ -24,7 +24,12 @@ class UserSpecificCourseView(APIView):
         if serializer.is_valid():
             name = serializer.data.get('name')
             subject = serializer.data.get('subject')
-            course = Course(user_id=request.user.id,
+            color = serializer.data.get('color')
+            if color:
+                course = Course(user_id=request.user.id,
+                            name=name, subject=subject, color=color)
+            else:
+                course = Course(user_id=request.user.id,
                             name=name, subject=subject)
             course.save()
             return Response(self.serializer_class(course).data, status=HTTP_201_CREATED)

@@ -1,5 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
-import { ListItem } from "react-native-elements";
 import {
   StyleSheet,
   Modal,
@@ -9,6 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { createUserCourse } from "../../redux/features/course/courseSlice";
@@ -16,66 +16,32 @@ import styles from "./styles";
 import { useDispatch } from "react-redux";
 import Header from "../base/Header";
 import { AppColors } from "../../styles/globalStyles";
+import AddCourseForm from "./AddCourseForm";
 
 const CreateCourseModal = (props) => {
   const dispatch = useDispatch();
-  const [courseData, setCourseData] = useState({});
 
-  const ref_input2 = useRef();
 
   useEffect(() => {}, []);
 
+  const onSubmit = (courseData) => {
+    dispatch(createUserCourse(courseData));
+    props.onCreateModalBack();
+  };
+
   return (
-    <Modal
-      animationType="slide"
-      visible={props.modalVisible}
-      transparent={false}
-    >
+    <Modal animationType="slide" visible={props.modalVisible} transparent={false}>
       <SafeAreaView
         style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
       />
       <SafeAreaView style={{ alignItems: "center" }}>
-      <Header
-          title={'Add Course'}  
+        <Header
+          title={"Add Course"}
           backButton={true}
           onBackButtonPress={props.onCreateModalBack}
           iconColor={AppColors.primaryAccentColor}
         />
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Course Name"
-            returnKeyType="next"
-            onSubmitEditing={() => ref_input2.current.focus()}
-            textAlign="center"
-            onChangeText={(text) =>
-              setCourseData({
-                ...courseData,
-                name: text,
-              })
-            }
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Course Subject"
-            textAlign="center"
-            ref={ref_input2}
-            onChangeText={(text) => {
-              setCourseData({ ...courseData, subject: text });
-            }}
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={() => {
-            dispatch(createUserCourse(courseData));
-            props.onCreateModalBack();
-          }}
-        >
-          <Text>Create Course</Text>
-        </TouchableOpacity>
+        <AddCourseForm onSubmit={onSubmit}/>
       </SafeAreaView>
     </Modal>
   );
