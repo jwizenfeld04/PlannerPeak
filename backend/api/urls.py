@@ -7,7 +7,9 @@ from .views.scheduleViews import *
 from .views.googleViews import *
 from .views.timeBlockViews import *
 from .views.verifyView import *
+from dj_rest_auth.views import PasswordResetView
 from .converters import DateConverter
+
 
 register_converter(DateConverter, 'date')
 
@@ -39,6 +41,11 @@ urlpatterns = [
     path('user-assignments-update/<int:assignment_id>', UserSpecificAssignmentUpdateView.as_view(),
          name="user_assignments_update"),
     path('login/', PhoneVerificationLoginView.as_view(), name='phone_verify_login'),
+    path('password-reset/', PasswordResetView.as_view()),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password-reset-done/', TemplateView.as_view(template_name='password_reset_done.html'),
+         name='password_reset_done'),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 ]

@@ -62,14 +62,15 @@ INSTALLED_APPS = [
 
 SITE_ID = 2
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'your.email.host'
-# EMAIL_USE_TLS = True
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'your email host user'
-# EMAIL_HOST_PASSWORD = 'your email host password'
+# Do not specify email backend
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'plannerpeak@gmail.com'
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 
 
 AUTH_USER_MODEL = "api.CustomUser"

@@ -14,7 +14,7 @@ export default function TouchableIcon(props) {
       <Icon
         name={props.name}
         type={props.type}
-        size={28}
+        size={props.size ? props.size : 28}
         color={props.color}
         style={{...props.style}}
       />

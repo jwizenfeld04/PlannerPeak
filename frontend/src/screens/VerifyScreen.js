@@ -9,7 +9,7 @@ import OTPInputView from "@twotalltotems/react-native-otp-input";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { getUserInfo } from "../redux/features/user/userSlice";
 
-const VerifyNumber = ({ route, navigation }) => {
+const VerifyScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const [invalidCode, setInvalidCode] = useState(false);
   const [authData, setAuthData] = useState(null);
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerifyNumber;
+export default VerifyScreen;

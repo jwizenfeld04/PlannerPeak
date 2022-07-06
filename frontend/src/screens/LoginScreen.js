@@ -12,7 +12,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { loginUser } from "../redux/features/user/userSlice";
+import { loginUser, forgotPassword } from "../redux/features/user/userSlice";
 import {
   selectError,
   selectIsVerified,
@@ -33,7 +33,7 @@ export default function LoginScreen({ navigation }) {
 
   //Not Verify but yes User account
   useEffect(() => {
-    if ( !isVerified && loggedInBeforeVerify) {
+    if (!isVerified && loggedInBeforeVerify) {
       navigation.navigate("Verify");
     }
   }, [loggedInBeforeVerify]);
@@ -70,9 +70,7 @@ export default function LoginScreen({ navigation }) {
             ref={ref_input2}
             autoComplete="password"
             secureTextEntry={true}
-            onChangeText={(text) =>
-              setAuthData({ ...authData, password: text })
-            }
+            onChangeText={(text) => setAuthData({ ...authData, password: text })}
           />
         </View>
         <TouchableOpacity
@@ -90,7 +88,12 @@ export default function LoginScreen({ navigation }) {
         >
           <Text style={{ paddingTop: 10, color: "blue" }}>Sign Up?</Text>
         </TouchableOpacity>
-        <Button title="Forgot Password?" onPress={() => {}} />
+        <Button
+          title="Forgot Password?"
+          onPress={() => {
+            navigation.navigate("Forgot Password");
+          }}
+        />
 
         {/* <Text style={styles.errorText}>{error.errorMessage}</Text> */}
       </View>
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
   },
   loginImage: {
     marginTop: 50,
-    marginBottom: 100,    
+    marginBottom: 100,
   },
   inputView: {
     backgroundColor: "#ADD8E6",

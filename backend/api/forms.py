@@ -11,6 +11,7 @@ class RegisterForm(UserCreationForm):
         fields = ('email', 'graduation_year',
                   'school_level', 'schoology_id', 'phone')
 
+
 class CourseForm(forms.ModelForm):
 
     deleted = forms.DateTimeField()
@@ -23,3 +24,8 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = '__all__'
+
+
+class ResetPasswordForm(forms.Form):
+    new_password1 = forms.CharField(label="New password")
+    new_password2 = forms.CharField(label="Confirm New password")

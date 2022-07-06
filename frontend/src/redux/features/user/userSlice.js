@@ -53,6 +53,33 @@ export const verifyResend = createAsyncThunk(
   }
 );
 
+export const requestForgotPassword = createAsyncThunk(
+  "user/requestForgotPassword",
+  async (authData, thunkAPI) => {
+    const response = await API.post(`password-reset/`, {
+      email: authData.email,
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
+export const confirmForgotPassword = createAsyncThunk(
+  "user/forgotPassword",
+  async (authData, thunkAPI) => {
+    const response = await API.post(`password-reset/`, {
+      uid: authData.uid,
+      token: authData.token,
+      new_password1: authData.password1,
+      new_password2: authData.password2,
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
 // API Request that retreives user info as an object
 export const getUserInfo = createAsyncThunk(
   "user/getUserInfo",
@@ -113,6 +140,18 @@ export const userSlice = createSlice({
       state.error.errorType = "Register Error";
       state.error.errorField = Object.keys(action.payload);
       state.error.errorMessage = Object.values(action.payload);
+      state.status = "failed";
+    },
+    [requestForgotPassword.fulfilled]: (state, action) => {
+      state.status = "success";
+    },
+    [requestForgotPassword.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+    [confirmForgotPassword.fulfilled]: (state, action) => {
+      state.status = "success";
+    },
+    [confirmForgotPassword.rejected]: (state, action) => {
       state.status = "failed";
     },
   },
