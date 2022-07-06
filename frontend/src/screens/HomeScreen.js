@@ -27,6 +27,8 @@ import CurrentAssignment from "../components/home/CurrentAssignment";
 import TimeTable from "../components/home/TimeTable";
 import Header from "../components/base/Header";
 import { AppColors, AppDimensions } from "../styles/globalStyles";
+import CustomTextInput from "../components/base/textInput/TextInput";
+import CustomButton from '../components/base/Button';
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -72,17 +74,22 @@ export default function HomeScreen() {
   //   return () => clearInterval(intervalId); //This is important
   // }, [currentAssignment]);
 
-  useEffect(() => {
-    if (scheduleData !== null) {
-      dispatch(getSpecificDateSchedule(scheduleData));
-    }
-  }, [scheduleData]);
+  // useEffect(() => {
+  //   if (scheduleData !== null) {
+  //     dispatch(getSpecificDateSchedule(scheduleData));
+  //   }
+  // }, [scheduleData]);
 
   return (
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
       <SafeAreaView>
         <Header title={"Home"} />
+      <CustomTextInput placeholder='Email' label='Email' iconName='home' iconType='ionicon'/>
+      <CustomButton text='Submit' width='30%'/>
+    {/* Coby Test global input form here */}
+
+
         <ScrollCalendar/>
         {/* <CurrentAssignment
         currentAssignment={currentAssignment}

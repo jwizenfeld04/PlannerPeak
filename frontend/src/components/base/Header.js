@@ -32,7 +32,7 @@ export default function Header(props) {
       <View style={styles.headerTitleContainer}>
         <Text
           style={{
-            fontSize: props.titleSize ? props.titleSize : 36,
+            fontSize: props.titleSize ? props.titleSize : 24,
             color: AppColors.primaryAccentColor,
             fontFamily: AppFonts.primaryTextBold,
           }}
