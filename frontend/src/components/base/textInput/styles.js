@@ -1,5 +1,5 @@
-import { StyleSheet, Dimensions } from "react-native";
-import { AppFonts } from "../../../styles/globalStyles";
+import { StyleSheet } from "react-native";
+import { AppColors, AppFonts } from "../../../styles/globalStyles";
 
 const styles = StyleSheet.create({
   fullTextInputContainer: {
@@ -17,16 +17,15 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-  textInputLabelContainer: { width: "100%", paddingBottom: 3, paddingLeft: 2 },
   textInputLabel: {
     textAlign: "left",
     fontFamily: AppFonts.primaryText,
     fontSize: 14,
   },
-  textInputIconContainer: {
-    padding: 10,
-  },
-  textInput: { paddingLeft: 10, width:'100%'},
+  textInputLabelContainer: { width: "100%", paddingBottom: 3, paddingLeft: 2 },
+  textInputIconContainer: { paddingLeft: 8 },
+  textInput: { paddingLeft: 10, color: AppColors.primaryBackgroundColor, flex: 1 },
+  errorText: { marginTop: 6, color: "red", fontSize: 10 },
 });
 
 export default styles;

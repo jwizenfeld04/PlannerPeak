@@ -28,7 +28,7 @@ import TimeTable from "../components/home/TimeTable";
 import Header from "../components/base/Header";
 import { AppColors, AppDimensions } from "../styles/globalStyles";
 import CustomTextInput from "../components/base/textInput/TextInput";
-import CustomButton from '../components/base/Button';
+import CustomButton from "../components/base/Button";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -82,15 +82,22 @@ export default function HomeScreen() {
 
   return (
     <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
+      <SafeAreaView
+        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
+      />
       <SafeAreaView>
         <Header title={"Home"} />
-      <CustomTextInput placeholder='Email' label='Email' iconName='home' iconType='ionicon'/>
-      <CustomButton text='Submit' width='30%'/>
-    {/* Coby Test global input form here */}
+        <CustomTextInput
+          placeholder="Password"
+          label="Password"
+          iconName="home"
+          iconType="ionicon"
+          password
+        />
+        <CustomButton text="Submit" width="30%" />
+        {/* Coby Test global input form here */}
 
-
-        <ScrollCalendar/>
+        <ScrollCalendar />
         {/* <CurrentAssignment
         currentAssignment={currentAssignment}
         remainingTime={remainingTime}
