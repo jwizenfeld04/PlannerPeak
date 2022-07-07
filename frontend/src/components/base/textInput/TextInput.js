@@ -25,7 +25,7 @@ const CustomTextInput = (props) => {
 
   const passwordIcon = () => {
     return (
-      <View style={{ paddingRight: 8, zIndex: 1 }}>
+      <View style={{...styles.textInputIconContainer, paddingLeft:0, paddingRight: 8, zIndex: 1 }}>
         <TouchableIcon
           name={password ? "eye-off-outline" : "eye-outline"}
           type={"ionicon"}
@@ -57,11 +57,14 @@ const CustomTextInput = (props) => {
         />
         {props.password && passwordIcon()}
       </View>
+      <View style={{flex:3, alignItems: "center", width:'100%',}}>
       {props.error && (
         <Text style={styles.errorText}>
           {props.error}
         </Text>
+
       )}
+      </View>
     </View>
   );
 };

@@ -87,15 +87,7 @@ export default function HomeScreen() {
       />
       <SafeAreaView>
         <Header title={"Home"} />
-        <CustomTextInput
-          placeholder="Password"
-          label="Password"
-          iconName="home"
-          iconType="ionicon"
-          password
-        />
-        <CustomButton text="Submit" width="30%" />
-        {/* Coby Test global input form here */}
+
 
         <ScrollCalendar />
         {/* <CurrentAssignment

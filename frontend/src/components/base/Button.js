@@ -4,12 +4,13 @@ import styles from "./styles";
 
 export default function CustomButton(props) {
   return (
-    <View style={{ alignItems: "center", padding: 5 }}>
+    <View style={{ alignItems: "center", padding: 5, flex:1 }}>
       <TouchableOpacity
         onPress={props.onPress}
         style={{ ...styles.buttonContainer, width: props.width }}
+        disabled={props.disabled}
       >
-        <Text style={styles.buttonText}>{props.text}</Text>
+        <Text style={styles.buttonText}>{props.title}</Text>
       </TouchableOpacity>
     </View>
   );
