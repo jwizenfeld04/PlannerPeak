@@ -21,7 +21,6 @@ import AddCourseForm from "./AddCourseForm";
 const CreateCourseModal = (props) => {
   const dispatch = useDispatch();
 
-
   useEffect(() => {}, []);
 
   const onSubmit = (courseData) => {
@@ -41,7 +40,8 @@ const CreateCourseModal = (props) => {
           onBackButtonPress={props.onCreateModalBack}
           iconColor={AppColors.primaryAccentColor}
         />
-        <AddCourseForm onSubmit={onSubmit}/>
+        <View style={{ paddingBottom: 50 }} />
+        <AddCourseForm onSubmit={onSubmit} />
       </SafeAreaView>
     </Modal>
   );

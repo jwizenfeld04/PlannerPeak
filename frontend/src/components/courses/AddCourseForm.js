@@ -53,11 +53,9 @@ const AddCourseForm = (props) => {
     }
   };
 
-
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{height:'100%', width:'100%'}}>
+      <View style={{ height: "100%", width: "100%" }}>
         <Formik
           validationSchema={loginValidationSchema}
           validateOnChange={true}
@@ -78,84 +76,112 @@ const AddCourseForm = (props) => {
           }) => (
             <>
               <CustomTextInput
-                placeholder="Course Name" 
-                onPressIn={() =>
-                  setTimeout(() => setFieldTouched("name", true), 2000)
-                }
+                placeholder="Course Name"
+                onPressIn={() => setTimeout(() => setFieldTouched("name", true), 2000)}
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
                 value={values.name}
                 error={touched.name && errors.name && `${errors.name}`}
+                borderColor={touched.name && handleBorderColor(values.name, errors.name)}
               />
               <View style={styles.fullTextInputContainer}>
-                <View style={styles.textInputLabelContainer}>
+                <View style={{ flex: 5, width: "100%" }}>
+                  <RNPickerSelect
+                    onValueChange={handleChange("subject")}
+                    onOpen={() =>
+                      setTimeout(() => setFieldTouched("subject", true), 1000)
+                    }
+                    placeholder={{ label: "Course Subject", value: "" }}
+                    items={subjects}
+                    Icon={() => {
+                      return (
+                        <Icon name="chevron-down-outline" type="ionicon" color="grey" />
+                      );
+                    }}
+                    style={{
+                      placeholder: {
+                        color: AppColors.primaryBackgroundColor,
+                      },
+                      inputIOS: {
+                        color: AppColors.primaryBackgroundColor,
+                        paddingLeft: 10,
+                      },
+                      inputIOSContainer: {
+                        flexDirection: "row",
+                        borderWidth: 1,
+                        borderColor:
+                          touched.subject &&
+                          handleBorderColor(values.subject, errors.subject),
+                        alignItems: "center",
+                        height: "100%",
+                      },
+                      iconContainer: {
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingRight: 10,
+                        height: "100%",
+                      },
+                    }}
+                  />
                 </View>
-                <View style={styles.textInputContainer}>
-              <RNPickerSelect
-                onValueChange={handleChange("subject")}
-                onOpen={() =>
-                  setTimeout(() => setFieldTouched("subject", true), 2000)
-                }
-                placeholder={{ label: "Course Subject", value: "" }}
-                items={subjects}
-                // Icon={() => {
-                //   return (
-                //     <Icon
-                //       name="chevron-down-outline"
-                //       type="ionicon"
-                //       color="grey"
-                //     />
-                //   );
-                // }}
+                <View style={{ flex: 4, alignItems: "center", width: "100%" }}>
+                  {touched.subject && errors.subject && (
+                    <Text style={styles.errorText}>{errors.subject}</Text>
+                  )}
+                </View>
+              </View>
+              <View
                 style={{
-                  viewContainer: {backgroundColor: "orange", justifyContent: "center", paddingLeft:10,},
-                  inputIOSContainer: {backgroundColor:'blue', width:'100%', flex:1,},
-                  placeholder: { color: AppColors.primaryBackgroundColor, },
-                  iconContainer: {justifyContent:'flex-end', alignItems:'flex-end', backgroundColor:'yellow', position:'relative'}
-                }}
-              />
-         </View>
-              <View style={{flex:3, alignItems: "center", width:'100%',}}>
-              {touched.subject && errors.subject && (
-                <Text style={styles.errorText}>{errors.subject}</Text>
-                )}
-                </View>
-                </View>
-              <ColorPalette
-                onChange={handleChange("color")}
-                title="Course Color"
-                titleStyles={styles.textHeader}
-                paletteStyles={{
-                  ...styles.textInput,
-                  margin: 2,
-                  height: 110,
+                  borderWidth: 1,
+                  width: "90%",
+                  alignSelf: "center",
                   borderColor:
-                    values.color &&
-                    handleBorderColor(values.color, errors.color),
+                    touched.color && handleBorderColor(values.color, errors.color),
                 }}
-                defaultColor={props.color}
-                value={values.color}
-                colors={[
-                  "#C0392B",
-                  "#E67E22",
-                  "#F1C40F",
-                  "#16A085",
-                  "#2980B9",
-                  "#8E44AD",
-                  "#FFC0CB",
-                  "#FA8072",
-                  "#39FF14",
-                  "#808080",
-                ]}
-              />
-              {touched.color && errors.color && (
-                <Text style={styles.errorText}>{errors.color}</Text>
-              )}
+              >
+                <Text
+                  style={{
+                    color: AppColors.primaryBackgroundColor,
+                    fontSize: 15,
+                    paddingLeft: 10,
+                    paddingTop: 10,
+                  }}
+                >
+                  Course Color
+                </Text>
+                <ColorPalette
+                  onChange={(e) => {
+                    handleChange("color")(e);
+                    setTimeout(() => setFieldTouched("color", true), 50);
+                  }}
+                  title=""
+                  paletteStyles={{ paddingBottom: 10 }}
+                  defaultColor={props.color}
+                  value={values.color}
+                  colors={[
+                    "#C0392B",
+                    "#E67E22",
+                    "#F1C40F",
+                    "#16A085",
+                    "#2980B9",
+                    "#8E44AD",
+                    "#FFC0CB",
+                    "#FA8072",
+                    "#39FF14",
+                    "#808080",
+                  ]}
+                />
+              </View>
+              <View style={{ alignItems: "center", width: "100%" }}>
+                {touched.color && errors.color && (
+                  <Text style={styles.errorText}>{errors.color}</Text>
+                )}
+              </View>
               <CustomButton
                 onPress={() => handleSubmit(values)}
-                title="Submit"
-                width='30%'
+                title="Add Course"
                 disabled={!isValid || isSubmitting}
+                styles={{ padding: 30 }}
               />
             </>
           )}

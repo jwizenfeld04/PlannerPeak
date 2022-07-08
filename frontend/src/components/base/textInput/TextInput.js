@@ -25,7 +25,14 @@ const CustomTextInput = (props) => {
 
   const passwordIcon = () => {
     return (
-      <View style={{...styles.textInputIconContainer, paddingLeft:0, paddingRight: 8, zIndex: 1 }}>
+      <View
+        style={{
+          ...styles.textInputIconContainer,
+          paddingLeft: 0,
+          paddingRight: 8,
+          zIndex: 1,
+        }}
+      >
         <TouchableIcon
           name={password ? "eye-off-outline" : "eye-outline"}
           type={"ionicon"}
@@ -39,12 +46,18 @@ const CustomTextInput = (props) => {
     );
   };
 
-  return (
-    <View style={styles.fullTextInputContainer}>
+  const label = () => {
+    return (
       <View style={styles.textInputLabelContainer}>
         <Text style={styles.textInputLabel}>{props.label}</Text>
       </View>
-      <View style={styles.textInputContainer}>
+    );
+  };
+
+  return (
+    <View style={{ ...styles.fullTextInputContainer, ...props.styles }}>
+      {props.label ? label() : null}
+      <View style={{ ...styles.textInputContainer, borderColor: props.borderColor }}>
         {leadingIcon()}
         <TextInput
           style={styles.textInput}
@@ -57,13 +70,8 @@ const CustomTextInput = (props) => {
         />
         {props.password && passwordIcon()}
       </View>
-      <View style={{flex:3, alignItems: "center", width:'100%',}}>
-      {props.error && (
-        <Text style={styles.errorText}>
-          {props.error}
-        </Text>
-
-      )}
+      <View style={{ flex: 4, alignItems: "center", width: "100%" }}>
+        {props.error && <Text style={styles.errorText}>{props.error}</Text>}
       </View>
     </View>
   );

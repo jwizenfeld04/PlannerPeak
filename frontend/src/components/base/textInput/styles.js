@@ -12,12 +12,7 @@ const styles = StyleSheet.create({
   textInputContainer: {
     flexDirection: "row",
     borderWidth: 1,
-    height: "40%",
-    borderRadius: 3,
-    width: "100%",
-    alignItems: "center",
-    flex: 4,
-    backgroundColor: "pink"
+    flex: 5,
   },
   textInputLabel: {
     textAlign: "left",
@@ -29,7 +24,6 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     paddingTop:5,
     paddingLeft: 2,
-    flex: 1.5,
   },
   textInputIconContainer: {
     paddingLeft: 8,
@@ -40,9 +34,8 @@ const styles = StyleSheet.create({
   textInput: {
     paddingLeft: 10,
     color: AppColors.primaryBackgroundColor,
-    flex: 1,
+    width:'100%',
     height: "100%",
-    backgroundColor: "green",
   },
   errorText: { marginTop: 6, color: "red", fontSize: 10 },
 });

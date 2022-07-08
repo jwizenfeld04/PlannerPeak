@@ -50,7 +50,6 @@ export const getCurrentAssignment = createAsyncThunk(
   "user/getCurrentAssignment",
   async (token, thunkAPI) => {
     const response = await API.get(`current-assignment/`).catch((error) => {
-      console.log(error);
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -61,7 +60,6 @@ export const getCurrentSchedule = createAsyncThunk(
   "user/getCurrentSchedule",
   async (token, thunkAPI) => {
     const response = await API.get(`current-schedule/`).catch((error) => {
-      console.log(error);
       throw thunkAPI.rejectWithValue(error.response.data);
     });
     return response;
@@ -73,7 +71,6 @@ export const getSpecificDateSchedule = createAsyncThunk(
   async (scheduleData, thunkAPI) => {
     const response = await API.get(`schedule-date/${scheduleData.date}/`).catch(
       (error) => {
-        console.log(error);
         throw thunkAPI.rejectWithValue(error.response.data);
       }
     );

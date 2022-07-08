@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     shadowOffset: { height: 2, width: 1 },
     shadowOpacity: 0.5,
+    padding:10
   },
   buttonText: {
     textAlign: "center",
