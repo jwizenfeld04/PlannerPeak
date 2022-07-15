@@ -62,7 +62,7 @@ const CustomTextInput = (props) => {
         <TextInput
           style={styles.textInput}
           placeholder={props.placeholder ? props.placeholder : ""}
-          placeholderTextColor={AppColors.primaryBackgroundColor}
+          placeholderTextColor={"grey"}
           textAlign={props.textAlign ? props.textAlign : "left"}
           autoCorrect={props.autoCorrect ? props.autoCorrect : true}
           secureTextEntry={password}

@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     flex: 5,
+    borderRadius: 3
   },
   textInputLabel: {
     textAlign: "left",
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     color: AppColors.primaryBackgroundColor,
     width:'100%',
     height: "100%",
+    fontSize: 22,
   },
   errorText: { marginTop: 6, color: "red", fontSize: 10 },
 });

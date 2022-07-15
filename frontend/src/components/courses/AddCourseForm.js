@@ -34,7 +34,7 @@ const AddCourseForm = (props) => {
     { label: "Other", value: "Other" },
   ];
 
-  const loginValidationSchema = yup.object().shape({
+  const validationSchema = yup.object().shape({
     name: yup
       .string()
       .max(30, ({ max }) => `Course name must be less than ${max} characters`)
@@ -57,7 +57,7 @@ const AddCourseForm = (props) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ height: "100%", width: "100%" }}>
         <Formik
-          validationSchema={loginValidationSchema}
+          validationSchema={validationSchema}
           validateOnChange={true}
           validateOnBlur={false}
           initialValues={{ name: "", subject: "", color: "" }}
@@ -85,7 +85,7 @@ const AddCourseForm = (props) => {
                 borderColor={touched.name && handleBorderColor(values.name, errors.name)}
               />
               <View style={styles.fullTextInputContainer}>
-                <View style={{ flex: 5, width: "100%" }}>
+                <View style={{ flex: 5, width: "100%", }}>
                   <RNPickerSelect
                     onValueChange={handleChange("subject")}
                     onOpen={() =>
@@ -100,11 +100,13 @@ const AddCourseForm = (props) => {
                     }}
                     style={{
                       placeholder: {
-                        color: AppColors.primaryBackgroundColor,
+                        color: "grey", fontSize: 22,
                       },
                       inputIOS: {
                         color: AppColors.primaryBackgroundColor,
                         paddingLeft: 10,
+                        fontSize: 22,
+
                       },
                       inputIOSContainer: {
                         flexDirection: "row",
@@ -114,6 +116,7 @@ const AddCourseForm = (props) => {
                           handleBorderColor(values.subject, errors.subject),
                         alignItems: "center",
                         height: "100%",
+                        borderRadius: 3,
                       },
                       iconContainer: {
                         justifyContent: "center",
