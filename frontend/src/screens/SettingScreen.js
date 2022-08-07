@@ -11,6 +11,7 @@ import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice
 import Header from "../components/base/Header";
 import { AppColors, AppDimensions, AppImages } from "../styles/globalStyles";
 import IntegrationIcon from "../components/base/IntegrationIcon";
+import CustomButton from "../components/base/Button";
 
 export default function SettingScreen() {
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ export default function SettingScreen() {
             paddingTop: 10,
           }}
         >
-          <Button
+          <CustomButton
             title="Logout"
             onPress={() => {
               store.dispatch({

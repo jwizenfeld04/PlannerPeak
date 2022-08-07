@@ -1,14 +1,8 @@
-import React, { Component, useRef, useState, useEffect } from "react";
+import React, { useEffect, Fragment } from "react";
 import {
   View,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   TouchableWithoutFeedback,
-  Button,
-  Linking,
-  TextInput,
+  SafeAreaView,
   Keyboard,
   Image,
   KeyboardAvoidingView,
@@ -17,16 +11,17 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   registerUser,
   selectToken,
-  selectIsPhoneVerified,
+  selectIsVerified,
 } from "../redux/features/user/userSlice";
 import { AppImages, AppColors } from "../styles/globalStyles";
 import { unwrapResult } from "@reduxjs/toolkit";
 import RegisterForm from "../components/register/RegisterForm";
+import { StackActions } from "@react-navigation/native";
 
 export default function RegisterScreen({ navigation }) {
   const dispatch = useDispatch();
   const loggedInBeforeVerify = useSelector(selectToken);
-  const isPhoneVerified = useSelector(selectIsPhoneVerified);
+  const isPhoneVerified = useSelector(selectIsVerified);
 
   // Not Verify but yes User account
   useEffect(() => {
@@ -41,67 +36,25 @@ export default function RegisterScreen({ navigation }) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View>
-          <Image
-            style={styles.registerImage}
-            source={AppImages.plannerPeakIcon}
-          />
-        </View>
-        <RegisterForm onPress={onPress} />
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Login");
+    <Fragment>
+      <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <SafeAreaView
+          style={{
+            flex: 1,
+            backgroundColor: "white",
+            alignItems: "center",
           }}
         >
-          <Text style={{ paddingTop: 10, color: "blue" }}>Login?</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableWithoutFeedback>
+          <Image source={AppImages.plannerPeakIcon} />
+          <RegisterForm
+            onPress={onPress}
+            loginPress={() => {
+              navigation.dispatch(StackActions.replace("Login"));
+            }}
+          />
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </Fragment>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  registerImage: {
-    marginTop: 50,
-    marginBottom: 20,
-  },
-  loginImage: {
-    marginTop: 50,
-    marginBottom: 100,    
-  },
-  inputView: {
-    backgroundColor: "#ADD8E6",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 12,
-    marginTop: 12,
-  },
-  textInput: {
-    height: 50,
-    width: "70%",
-    flex: 1,
-    padding: 10,
-    marginLeft: 40,
-  },
-  loginBtn: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#4169e1",
-  },
-  errorText: {
-    color: "red",
-  },
-});

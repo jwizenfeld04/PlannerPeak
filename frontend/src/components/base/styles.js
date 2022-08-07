@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     backgroundColor: AppColors.primaryBackgroundColor,
-    height: 40,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
     shadowOffset: { height: 2, width: 1 },
     shadowOpacity: 0.5,
-    padding:10
+    padding:12
   },
   buttonText: {
     textAlign: "center",

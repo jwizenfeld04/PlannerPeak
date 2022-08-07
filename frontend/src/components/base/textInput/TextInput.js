@@ -4,9 +4,10 @@ import styles from "./styles";
 import { Icon } from "react-native-elements";
 import { AppColors } from "../../../styles/globalStyles";
 import TouchableIcon from "../TouchableIcon";
+import { formatPhoneNumber } from "../../register/formatPhoneNumber";
 
 const CustomTextInput = (props) => {
-  const [password, setPassword] = useState(false);
+  const [password, setPassword] = useState(props.password);
 
   const leadingIcon = () => {
     if (props.iconName) {
@@ -37,7 +38,7 @@ const CustomTextInput = (props) => {
           name={password ? "eye-off-outline" : "eye-outline"}
           type={"ionicon"}
           size={20}
-          color={AppColors.primaryBackgroundColor}
+          color={"grey"}
           onPress={() => {
             setPassword(!password);
           }}
@@ -63,12 +64,13 @@ const CustomTextInput = (props) => {
           style={styles.textInput}
           placeholder={props.placeholder ? props.placeholder : ""}
           placeholderTextColor={"grey"}
-          textAlign={props.textAlign ? props.textAlign : "left"}
+          textAlign={props.textAlign ? props.textAlign : "center"}
           autoCorrect={props.autoCorrect ? props.autoCorrect : true}
           secureTextEntry={password}
+          onChangeText={props.phone ? (e)=>formatPhoneNumber(e): null}
           {...props}
         />
-        {props.password && passwordIcon()}
+        {/* {props.password && passwordIcon()} */}
       </View>
       <View style={{ flex: 4, alignItems: "center", width: "100%" }}>
         {props.error && <Text style={styles.errorText}>{props.error}</Text>}

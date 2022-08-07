@@ -4,7 +4,7 @@ import { AppColors, AppFonts } from "../../../styles/globalStyles";
 const styles = StyleSheet.create({
   fullTextInputContainer: {
     height: "12%",
-    width: "90%",
+    width: "94%",
     alignItems: "center",
     alignSelf: "center",
     justifyContent: "center",
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     color: AppColors.primaryBackgroundColor,
     width:'100%',
     height: "100%",
-    fontSize: 22,
+    fontSize: 18,
   },
   errorText: { marginTop: 6, color: "red", fontSize: 10 },
 });

@@ -91,11 +91,7 @@ export const getUserInfo = createAsyncThunk(
 
 const initialState = {
   isLoggedIn: false,
-  error: {
-    errorType: null,
-    errorField: null,
-    errorMessage: null,
-  },
+  loginError: null,
   accesstoken: null,
   user: {
     id: "",
@@ -108,18 +104,21 @@ const initialState = {
 export const userSlice = createSlice({
   name: "user",
   initialState: initialState,
+  reducers: {
+    clearLoginError: (state, action) => {
+      state.loginError = null;
+    },
+  },
   extraReducers: {
     [loginUser.fulfilled]: (state, action) => {
       state.accesstoken = action.payload.data.key;
       state.user.isVerified = action.payload.data.verified;
       state.isLoggedIn = true;
-      state.error = null;
+      state.loginError = null;
       state.status = "success";
     },
     [loginUser.rejected]: (state, action) => {
-      state.error.errorType = "Login Error";
-      state.error.errorField = Object.keys(action.payload)[0];
-      state.error.errorMessage = Object.values(action.payload)[0][0];
+      state.loginError = Object.values(action.payload)[0][0];
       state.status = "failed";
     },
     [getUserInfo.fulfilled]: (state, action) => {
@@ -133,13 +132,10 @@ export const userSlice = createSlice({
     [registerUser.fulfilled]: (state, action) => {
       state.accesstoken = action.payload.data.key;
       state.isLoggedIn = true;
-      state.error = null;
+      state.loginError = null;
       state.status = "success";
     },
     [registerUser.rejected]: (state, action) => {
-      state.error.errorType = "Register Error";
-      state.error.errorField = Object.keys(action.payload);
-      state.error.errorMessage = Object.values(action.payload);
       state.status = "failed";
     },
     [requestForgotPassword.fulfilled]: (state, action) => {
@@ -162,6 +158,8 @@ export const selectIsVerified = (state) => state.user.user.isVerified;
 export const selectIsSchoologyAuthenticated = (state) =>
   state.user.user.isSchoologyAuthenticated;
 export const selectToken = (state) => state.user.accesstoken;
-export const selectError = (state) => state.user.error;
+export const selectError = (state) => state.user.loginError;
+
+export const { clearLoginError } = userSlice.actions;
 
 export default userSlice.reducer;

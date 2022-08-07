@@ -15,7 +15,7 @@ import RNPickerSelect from "react-native-picker-select";
 import { Icon } from "react-native-elements";
 import CustomTextInput from "../base/textInput/TextInput";
 import CustomButton from "../base/Button";
-import { AppColors } from "../../styles/globalStyles";
+import { AppColors, AppDimensions, BaseAppDimensions } from "../../styles/globalStyles";
 import styles from "../base/textInput/styles";
 
 const AddCourseForm = (props) => {
@@ -100,13 +100,12 @@ const AddCourseForm = (props) => {
                     }}
                     style={{
                       placeholder: {
-                        color: "grey", fontSize: 22,
+                        color: "grey", fontSize: 18, paddingLeft:BaseAppDimensions.screenWidth/3.1
                       },
                       inputIOS: {
                         color: AppColors.primaryBackgroundColor,
                         paddingLeft: 10,
-                        fontSize: 22,
-
+                        fontSize: 18,
                       },
                       inputIOSContainer: {
                         flexDirection: "row",
@@ -144,10 +143,11 @@ const AddCourseForm = (props) => {
               >
                 <Text
                   style={{
-                    color: AppColors.primaryBackgroundColor,
-                    fontSize: 15,
+                    color: 'grey',
+                    fontSize: 18,
                     paddingLeft: 10,
                     paddingTop: 10,
+                    textAlign:'center'
                   }}
                 >
                   Course Color
