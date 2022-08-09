@@ -13,6 +13,8 @@ export const AppFonts = {
   primaryTextBold: 'MontserratBold',
   primaryTextItalic: 'MontserratItalic',
   primaryTextBoldItalic: 'MontserratBoldItalic',
+  SFRegular: 'SFRegular',
+  SFBOLD: 'SFBold',
 }
 
 const IMAGE_SOURCE = "../assets/images";
