@@ -51,7 +51,6 @@ export default function SettingScreen() {
 
   // Button tied to Schoology alert: initiate Oauth process
   const schoologyLoginButton = () => {
-    console.log(auth)
     if (!isSchoologyAuth) {
       schoologyAlert();
     }
