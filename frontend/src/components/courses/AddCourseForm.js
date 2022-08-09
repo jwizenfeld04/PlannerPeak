@@ -85,7 +85,7 @@ const AddCourseForm = (props) => {
                 borderColor={touched.name && handleBorderColor(values.name, errors.name)}
               />
               <View style={styles.fullTextInputContainer}>
-                <View style={{ flex: 5, width: "100%", }}>
+                <View style={{ flex: 5, width: "100%" }}>
                   <RNPickerSelect
                     onValueChange={handleChange("subject")}
                     onOpen={() =>
@@ -100,7 +100,8 @@ const AddCourseForm = (props) => {
                     }}
                     style={{
                       placeholder: {
-                        color: "grey", fontSize: 18, paddingLeft:BaseAppDimensions.screenWidth/3.1
+                        color: "grey",
+                        fontSize: 18,
                       },
                       inputIOS: {
                         color: AppColors.primaryBackgroundColor,
@@ -114,6 +115,7 @@ const AddCourseForm = (props) => {
                           touched.subject &&
                           handleBorderColor(values.subject, errors.subject),
                         alignItems: "center",
+                        justifyContent: "center",
                         height: "100%",
                         borderRadius: 3,
                       },
@@ -135,7 +137,7 @@ const AddCourseForm = (props) => {
               <View
                 style={{
                   borderWidth: 1,
-                  width: "90%",
+                  width: "93%",
                   alignSelf: "center",
                   borderColor:
                     touched.color && handleBorderColor(values.color, errors.color),
@@ -143,11 +145,11 @@ const AddCourseForm = (props) => {
               >
                 <Text
                   style={{
-                    color: 'grey',
+                    color: "grey",
                     fontSize: 18,
                     paddingLeft: 10,
                     paddingTop: 10,
-                    textAlign:'center'
+                    textAlign: "center",
                   }}
                 >
                   Course Color

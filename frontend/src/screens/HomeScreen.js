@@ -29,56 +29,36 @@ import Header from "../components/base/Header";
 import { AppColors, AppDimensions } from "../styles/globalStyles";
 import CustomTextInput from "../components/base/textInput/TextInput";
 import CustomButton from "../components/base/Button";
+import * as Calendar from "expo-calendar";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
-  const currentAssignment = useSelector(selectCurrentAssignment);
-  const schedule = useSelector(selectCurrentSchedule);
-  const [remainingTime, setRemainingTime] = useState(null);
   const dateSchedule = useSelector(selectDateSchedule);
-  const [scheduleData, setScheduleData] = useState(null);
-
-  const getCurrentAssignmentTimeRemaining = (assignment) => {
-    const now = new Date();
-    const finish = new Date(assignment.scheduled_finish);
-    setRemainingTime(difMinutes(now, finish));
-  };
-
-  const difMinutes = (dt1, dt2) => {
-    const diff = (dt2.getTime() - dt1.getTime()) / 60000;
-    return Math.abs(Math.ceil(diff)); // change so neg time means skip assignment
-  };
 
   useEffect(() => {
     dispatch(getUserInfo()); // Rerenders user info any time page renders or schoology becomes authenticated
   }, [isVerified]);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      //assign interval to a variable to clear it.
-      if (schedule !== null) {
-        dispatch(getCurrentSchedule());
-      }
-    }, 1000);
-    return () => clearInterval(intervalId); //This is important
-  }, [schedule]);
+  const getCurrentCalendar = async () => {
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status === "granted") {
+      const yourCalendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+      console.log({ yourCalendars });
+    }
+  };
 
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     //assign interval to a variable to clear it.
-  //     if (schedule !== null && currentAssignment !== null) {
-  //       getCurrentAssignmentTimeRemaining(currentAssignment);
-  //     }
-  //   }, 1000);
-  //   return () => clearInterval(intervalId); //This is important
-  // }, [currentAssignment]);
-
-  // useEffect(() => {
-  //   if (scheduleData !== null) {
-  //     dispatch(getSpecificDateSchedule(scheduleData));
-  //   }
-  // }, [scheduleData]);
+  const getCurrentEvents = async (startDate, endDate) => {
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status === "granted") {
+      const yourEvents = await Calendar.getEventsAsync(
+        ["DE7394EF-67B3-487D-9981-BA7986281A93"],
+        startDate,
+        endDate
+      );
+      console.log({ yourEvents });
+    }
+  };
 
   return (
     <Fragment>
@@ -87,61 +67,10 @@ export default function HomeScreen() {
       />
       <SafeAreaView>
         <Header title={"Home"} />
-
-
-        <ScrollCalendar />
-        {/* <CurrentAssignment
-        currentAssignment={currentAssignment}
-        remainingTime={remainingTime}
-        />
-        <Button
-        title="Update Schedule"
-        onPress={() => {
-          dispatch(scheduleAssignments(token));
-          dispatch(getCurrentSchedule(token));
-        }}
-        />
-        <Button
-        title="Fetch Schedule"
-        onPress={() => {
-          dispatch(getCurrentSchedule(token));
-        }}
-      /> */}
-        {/* <Button
-        title="Log Date Schedule"
-        onPress={() => {
-          console.log(dateSchedule);
-        }}
-        />
-        <Button
-        title="Log Schedule"
-        onPress={() => {
-          console.log(schedule);
-        }}
-      /> */}
-        <TimeTable schedule={dateSchedule} />
+        <ScrollCalendar getCurrentEvents={getCurrentEvents} />
+        <Button title="Get Current Calendars" onPress={getCurrentCalendar} />
+        <Button title="Get Current Events" onPress={getCurrentEvents} />
       </SafeAreaView>
     </Fragment>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textInput: {
-    borderColor: "black",
-    borderWidth: 2,
-  },
-  currentAssignmentView: {
-    paddingTop: 20,
-  },
-  currentAssignmentText: {
-    borderColor: "black",
-    borderWidth: 2,
-    fontSize: 20,
-  },
-});

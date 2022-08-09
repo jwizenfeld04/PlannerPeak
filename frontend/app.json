@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme":"plannerpeak",
+    "scheme": "plannerpeak",
     "name": "frontend",
     "owner": "plannerpeak",
     "privacy": "hidden",
@@ -16,13 +16,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.plannerpeak.plannerpeak",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSRemindersUsageDescription": "Planner Peak syncs with Apple Calendar to provide accurate schedules."
+      }
     },
     "android": {
       "adaptiveIcon": {

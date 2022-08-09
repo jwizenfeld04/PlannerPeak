@@ -31,7 +31,7 @@ export const BaseAppDimensions = {
 export const AppDimensions = {
     bottomTabHeight: BaseAppDimensions.screenHeight/12,
     headerHeight: BaseAppDimensions.screenHeight/20,
-    mainViewHeight: BaseAppDimensions.screenHeight/1.25,
+    mainViewHeight: BaseAppDimensions.screenHeight/1.21,
     integrationIcon: BaseAppDimensions.screenWidth/6,
 }
 

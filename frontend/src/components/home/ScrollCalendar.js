@@ -9,26 +9,19 @@ export default function ScrollCalendar(props) {
   const dispatch = useDispatch();
   const calendarStart = moment();
   const calendarEnd = moment().add(2, "months");
-  const [scheduleData, setScheduleData] = useState(null);
 
-  const onDateSelected = (d) => {
-    const date = moment(d).format("YYYY-MM-DD");
-    setScheduleData({ token: props.token, date: date });
+  const onDateSelected = (date) => {
+    const startDate = moment(date).format("YYYY-MM-DDTHH:mm:ss.sssZ");
+    const endDate = moment(date).endOf("day").format("YYYY-MM-DDTHH:mm:ss.sssZ");
+    props.getCurrentEvents(startDate, endDate);
   };
 
   const onHeaderSelected = (weekStartDate, weekEndDate) => {
-    //Add drop down calendar when that is clicked
     console.log("header selected");
   };
 
-  useEffect(() => {
-    if (scheduleData !== null) {
-      dispatch(getSpecificDateSchedule(scheduleData));
-    }
-  }, [scheduleData]);
-
   return (
-    <View style={{  height:200 }}>
+    <View style={{ height: 300 }}>
       <CalendarStrip
         scrollable={true}
         calendarAnimation={{ type: "sequence", duration: 30 }}
@@ -38,10 +31,12 @@ export default function ScrollCalendar(props) {
           borderWidth: 1,
           borderHighlightColor: "blue",
         }}
-        style={{paddingTop: 20, height:200}}
+        style={{ paddingTop: 20, height: 300 }}
+        dayComponentHeight={200}
         calendarHeaderStyle={{ color: "black" }}
         dateNumberStyle={{ color: "black" }}
         dateNameStyle={{ color: "black" }}
+        dayContainerStyle={{ backgroundColor: "yellow", height:80}}
         highlightDateNumberStyle={{ color: "blue" }}
         highlightDateNameStyle={{ color: "blue" }}
         disabledDateNameStyle={{ color: "grey" }}

@@ -1,4 +1,5 @@
 from datetime import datetime
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
@@ -140,6 +141,24 @@ class AssignmentSchedule(SafeDeleteModel):
     def total_time(self):
         total_time = round((self.scheduled_finish - self.scheduled_start).total_seconds() / 60.0)
         return total_time
+
+class AppleCalendarIds(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    calendar_id = models.CharField(max_length=100)
+
+class AppleCalendarEvents(models.Model):
+    calendar = models.ForeignKey(AppleCalendarIds, on_delete=models.CASCADE)
+    event_id = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    all_day = models.BooleanField()
+    notes = models.TextField(max_length=100)
+    organizer = models.CharField(max_length=100)
+    timezone = models.CharField(max_length=40)
+    url = models.CharField(max_length=100)
+    
+
 
 
 # class IndividualTimeBlock(models.Model):
