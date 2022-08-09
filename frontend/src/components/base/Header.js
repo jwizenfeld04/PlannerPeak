@@ -11,30 +11,33 @@ import styles from "./styles";
 export default function Header(props) {
   return (
     <View style={styles.headerContainer}>
-      <View style={{ ...styles.iconContainer, paddingLeft: 15 }}>
         {props.backButton ? (
+          <View style={{ ...styles.iconContainer, paddingLeft: 15 }}>
           <TouchableIcon
             name={"chevron-back-sharp"}
             type={"ionicon"}
             onPress={props.onBackButtonPress}
             color={props.iconColor}
           />
+           </View>
         ) : null}
         {props.iconName1 && !props.deleteMode && !props.saveButton ? (
+           <View style={{ ...styles.iconContainer, paddingLeft: 15 }}>
           <TouchableIcon
             name={props.iconName1}
             type={props.iconType1}
             onPress={props.onIconPress1}
             color={props.iconColor}
           />
+          </View>
         ) : null}
-      </View>
       <View style={styles.headerTitleContainer}>
         <Text
           style={{
             fontSize: props.titleSize ? props.titleSize : 24,
-            color: AppColors.primaryAccentColor,
-            fontFamily: AppFonts.primaryTextBold,
+            color: AppColors.primaryBackgroundColor,
+            fontFamily: AppFonts.SFBOLD,
+            
           }}
           numberOfLines={1}
           ellipsizeMode="tail"

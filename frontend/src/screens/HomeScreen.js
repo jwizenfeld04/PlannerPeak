@@ -61,12 +61,11 @@ export default function HomeScreen() {
   };
 
   return (
-    <Fragment>
+    <Fragment> 
       <SafeAreaView
-        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
+        style={{ flex: 0, backgroundColor: "white" }}
       />
-      <SafeAreaView>
-        <Header title={"Home"} />
+      <SafeAreaView style={{backgroundColor:'white', flex:1}}>
         <ScrollCalendar getCurrentEvents={getCurrentEvents} />
         <Button title="Get Current Calendars" onPress={getCurrentCalendar} />
         <Button title="Get Current Events" onPress={getCurrentEvents} />

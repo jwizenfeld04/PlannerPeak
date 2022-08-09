@@ -210,9 +210,9 @@ export default function CourseScreen() {
   return (
     <Fragment>
       <SafeAreaView
-        style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }}
+        style={{ flex: 0, backgroundColor: 'white' }}
       />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <Header
           title={handleHeaderTitle()} //required
           iconColor={AppColors.primaryAccentColor}

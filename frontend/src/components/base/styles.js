@@ -17,17 +17,19 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     height: AppDimensions.headerHeight,
-    backgroundColor: AppColors.primaryBackgroundColor,
+    backgroundColor: "white",
     width: BaseAppDimensions.screenWidth,
     flexDirection: "row",
+    justifyContent: "flex-start"
   },
   headerTitleContainer: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
     flex: 10,
-    paddingLeft: 10,
+    paddingLeft: 0,
     paddingRight: 10,
     paddingBottom: 10,
+    paddingTop: 10,
   },
   listItemContainer: {
     width: BaseAppDimensions.screenWidth,
