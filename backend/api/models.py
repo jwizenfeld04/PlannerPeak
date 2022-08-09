@@ -32,6 +32,7 @@ class CustomUser(AbstractUser):
     schoology_school = models.ForeignKey(
         SchoologySchools, on_delete=models.SET_NULL, null=True, blank=True)
     is_schoology_authenticated = models.BooleanField(default=False)
+    is_apple_calendar_authenticated = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

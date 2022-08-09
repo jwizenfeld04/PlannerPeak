@@ -7,16 +7,18 @@ import {
   authorizeSchoology,
   resetLink,
 } from "../redux/features/schoology/schoologySlice";
-import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
+import { selectIsSchoologyAuthenticated, selectIsAppleCalendarAuthetnicated } from "../redux/features/user/userSlice";
 import Header from "../components/base/Header";
 import { AppColors, AppDimensions, AppImages } from "../styles/globalStyles";
 import IntegrationIcon from "../components/base/IntegrationIcon";
 import CustomButton from "../components/base/Button";
 
+
 export default function SettingScreen() {
   const dispatch = useDispatch();
   const schoologyUrl = useSelector(selectUrl); // Gets Schoology URL from Schoology API Request
   const isSchoologyAuth = useSelector(selectIsSchoologyAuthenticated); // Boolean whether schoology auth or not
+  const isAppleCalendarAuth = useSelector(selectIsAppleCalendarAuthetnicated);
   const schoologyConfig = {
     callbackUrl: "plannerpeak.com/schoologyredirect", // TODO: Change to DEEP LINK when available
   };
@@ -49,6 +51,7 @@ export default function SettingScreen() {
 
   // Button tied to Schoology alert: initiate Oauth process
   const schoologyLoginButton = () => {
+    console.log(auth)
     if (!isSchoologyAuth) {
       schoologyAlert();
     }
@@ -56,7 +59,7 @@ export default function SettingScreen() {
 
   return (
     <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <Header title={"Settings"} />
         <View
@@ -90,7 +93,7 @@ export default function SettingScreen() {
             icon={AppImages.schoologyIcon}
             onPress={schoologyLoginButton}
           />
-          <IntegrationIcon isAuth={false} icon={AppImages.googleClassroomIcon} />
+          <IntegrationIcon isAuth={isAppleCalendarAuth} icon={AppImages.appleCalendarIcon} />
         </View>
       </SafeAreaView>
     </Fragment>

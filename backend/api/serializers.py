@@ -8,12 +8,11 @@ from .verify import send, check
 from django.conf import settings
 
 
-
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'email', 'school_level',
-                  'graduation_year', 'schoology_id', 'schoology_school', 'is_schoology_authenticated', 'phone', 'verified']
+                  'graduation_year', 'schoology_id', 'schoology_school', 'is_schoology_authenticated', 'phone', 'verified', 'is_apple_calendar_authenticated']
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -22,6 +21,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     graduation_year = serializers.CharField(max_length=30, required=False)
     schoology_id = serializers.CharField(max_length=30, required=False)
     is_schoology_authenticated = serializers.BooleanField(default=False)
+    is_apple_calendar_authenticated = serializers.BooleanField(default=False)
     username = None
 
     # Define transaction.atomic to rollback the save operation in case of error
@@ -34,6 +34,8 @@ class CustomRegisterSerializer(RegisterSerializer):
         CustomUser.schoology_id = self.data.get('schoology_id')
         CustomUser.is_schoology_authenticated = self.data.get(
             'is_schoology_authenticated')
+        CustomUser.is_apple_calendar_authenticated = self.data.get(
+            'is_apple_calendar_authenticated')
         CustomUser.save()
         send(CustomUser.phone)
         return CustomUser

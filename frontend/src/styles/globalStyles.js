@@ -21,6 +21,7 @@ export const AppImages = {
   schoologyIcon: require(`${IMAGE_SOURCE}/schoologyIcon.png`),
   plannerPeakIcon: require(`${IMAGE_SOURCE}/plannerPeakIcon.png`),
   googleClassroomIcon: require(`${IMAGE_SOURCE}/googleClassroomIcon.png`),
+  appleCalendarIcon: require(`${IMAGE_SOURCE}/appleCalendarIcon.png`),
 };
 
 export const BaseAppDimensions = {

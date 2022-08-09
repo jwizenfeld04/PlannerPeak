@@ -11,7 +11,7 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     add_form = RegisterForm
     list_display = ('email', 'phone', 'verified',
-                    'schoology_id', 'is_schoology_authenticated', 'graduation_year', 'school_level')
+                    'schoology_id', 'is_schoology_authenticated','is_apple_calendar_authenticated', 'graduation_year', 'school_level')
     list_filter = ('school_level', 'graduation_year',
                    'is_active', 'verified', 'is_staff', 'is_superuser',)
     fieldsets = (
@@ -22,7 +22,7 @@ class CustomUserAdmin(UserAdmin):
                        'email',
                        'password',)}),
         ('School Information', {
-         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated')}),
+         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated','is_apple_calendar_authenticated')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
     )
     add_fieldsets = (
@@ -32,7 +32,7 @@ class CustomUserAdmin(UserAdmin):
                        'password1',
                        'password2',)}),
         ('School Information', {
-         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated')}),
+         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated','is_apple_calendar_authenticated')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
     )
     search_fields = ('email', 'phone')

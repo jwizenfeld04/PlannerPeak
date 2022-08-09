@@ -97,6 +97,7 @@ const initialState = {
     id: "",
     email: "",
     isSchoologyAuthenticated: false,
+    isAppleCalendarAuthenticated: false,
     isVerified: false,
   },
 };
@@ -126,6 +127,8 @@ export const userSlice = createSlice({
       state.user.email = action.payload.data.email;
       state.user.isSchoologyAuthenticated =
         action.payload.data.is_schoology_authenticated;
+      state.user.isAppleCalendarAuthenticated =
+        action.payload.data.is_apple_calendar_authenticated;
       state.user.isVerified = action.payload.data.verified;
       state.status = "success";
     },
@@ -157,6 +160,8 @@ export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
 export const selectIsVerified = (state) => state.user.user.isVerified;
 export const selectIsSchoologyAuthenticated = (state) =>
   state.user.user.isSchoologyAuthenticated;
+export const selectIsAppleCalendarAuthetnicated = (state) =>
+  state.user.user.isAppleCalendarAuthenticated;
 export const selectToken = (state) => state.user.accesstoken;
 export const selectError = (state) => state.user.loginError;
 
