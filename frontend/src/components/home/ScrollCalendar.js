@@ -1,30 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import CalendarStrip from "react-native-calendar-strip";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import { getSpecificDateSchedule } from "../../redux/features/assignment/assignmentSlice";
 import { AppColors, AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
+import CustomButton from "../base/Button";
+import TouchableIcon from "../base/TouchableIcon";
 
 export default function ScrollCalendar(props) {
   const dispatch = useDispatch();
   const calendarStart = moment();
   const calendarEnd = moment().add(2, "months");
+  const [selectedDate, setSelectedDate] = useState(moment());
 
   const onDateSelected = (date) => {
+    setSelectedDate(date);
     const startDate = moment(date).format("YYYY-MM-DDTHH:mm:ss.sssZ");
     const endDate = moment(date).endOf("day").format("YYYY-MM-DDTHH:mm:ss.sssZ");
     props.getCurrentEvents(startDate, endDate);
   };
-
-  const onHeaderSelected = (weekStartDate, weekEndDate) => {
-    console.log("header selected");
-  };
-
   return (
     <View style={{ height: 300 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View style={{ paddingLeft: 10 }}>
+          <Text style={{ fontSize: 20, color: "grey" }}>Today</Text>
+        </View>
+      </View>
       <CalendarStrip
         scrollable={true}
+        scrollerPaging={true}
+        headerText={`${selectedDate.format("ddd, D MMM")}`}
+        useIsoWeekday={false}
         calendarAnimation={{ type: "sequence", duration: 30 }}
         daySelectionAnimation={{
           type: "border",
@@ -32,18 +39,17 @@ export default function ScrollCalendar(props) {
           borderWidth: 1,
           borderHighlightColor: AppColors.primaryBackgroundColor,
         }}
-        style={{ paddingTop: 10, height: 300 }}
+        style={{ height: 270 }}
         dayComponentHeight={200}
         calendarHeaderStyle={{
           color: "black",
           textAlign: "left",
-          fontSize: 20,
+          fontSize: 25,
           fontFamily: AppFonts.SFBOLD,
-          paddingLeft: 15,
+          paddingLeft: 10,
           width: BaseAppDimensions.screenWidth,
         }}
         dateNumberStyle={{ color: "black" }}
-        headerText="Current Assignment"
         dateNameStyle={{ color: "black" }}
         dayContainerStyle={{ backgroundColor: "white", height: 55, borderRadius: 10 }}
         highlightDateNumberStyle={{ color: AppColors.primaryBackgroundColor }}
@@ -55,19 +61,8 @@ export default function ScrollCalendar(props) {
         selectedDate={calendarStart}
         minDate={calendarStart}
         maxDate={calendarEnd}
-        markedDates={[{"date":Date.now(), dots:[{color:AppColors.primaryBackgroundColor}]}]}
         onDateSelected={onDateSelected}
-        onHeaderSelected={onHeaderSelected}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

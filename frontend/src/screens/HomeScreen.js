@@ -30,6 +30,7 @@ import { AppColors, AppDimensions } from "../styles/globalStyles";
 import CustomTextInput from "../components/base/textInput/TextInput";
 import CustomButton from "../components/base/Button";
 import * as Calendar from "expo-calendar";
+import { FloatingAction } from "react-native-floating-action";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -61,14 +62,18 @@ export default function HomeScreen() {
   };
 
   return (
-    <Fragment> 
-      <SafeAreaView
-        style={{ flex: 0, backgroundColor: "white" }}
-      />
-      <SafeAreaView style={{backgroundColor:'white', flex:1}}>
+    <Fragment>
+      <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
+      <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
         <ScrollCalendar getCurrentEvents={getCurrentEvents} />
-        <Button title="Get Current Calendars" onPress={getCurrentCalendar} />
-        <Button title="Get Current Events" onPress={getCurrentEvents} />
+        {/* <Button title="Get Current Calendars" onPress={getCurrentCalendar} /> */}
+        {/* <Button title="Get Current Events" onPress={getCurrentEvents} /> */}
+        <FloatingAction
+          onPressMain={() => {
+            console.log("HERE");
+          }}
+          showBackground={false}
+        />
       </SafeAreaView>
     </Fragment>
   );
