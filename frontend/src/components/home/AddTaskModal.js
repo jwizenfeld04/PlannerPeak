@@ -8,6 +8,7 @@ import {
   Linking,
   TextInput,
   SafeAreaView,
+  Dimensions
 } from "react-native";
 import { AppColors, AppDimensions, AppFonts } from "../../styles/globalStyles";
 import Modal from "react-native-modal";
@@ -48,6 +49,7 @@ export default function AddTaskModal(props) {
     >
       <View style={{ alignItems: "center", flex: 1, padding:5 }}>
         <Text>Add Task</Text>
+        <Button title='get height' onPress={()=>{console.log(Dimensions.get("window").width)}}/>
       </View>
     </BottomSheet>
   );

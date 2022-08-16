@@ -15,8 +15,8 @@ import { Icon } from "react-native-elements";
 
 export default function ScheduleBlock(props) {
   return (
-    <View style={{ flexDirection: "row", height: 120 }}>
-      <View style={{ width: 42 }}>
+    <View style={{ flexDirection: "row", height: BaseAppDimensions.screenHeight / 7 }}>
+      <View style={{ width: BaseAppDimensions.screenWidth / 9.3 }}>
         <Text style={styles.primaryTimeText}>{props.scheduledStart}</Text>
         <Text style={styles.secondaryTimeText}>{props.scheduledFinish}</Text>
       </View>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   iconContainer: { alignItems: "center", paddingLeft: 10, paddingTop: 2 },
   lineContainer: {
     borderWidth: 1,
-    height: 100,
+    height: BaseAppDimensions.screenHeight / 8.4,
     marginTop: 2,
   },
   taskContainer: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderColor: "#E8E8E8",
     borderWidth: 1,
     borderRadius: 4,
-    height: 110,
+    height: BaseAppDimensions.screenHeight / 7.7,
     padding: 5,
     marginLeft: 10,
     marginTop: 2,
@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     fontFamily: AppFonts.SFItalic,
     fontSize: 11,
     color: "red",
-    padding:4
+    padding: 4,
   },
 });
