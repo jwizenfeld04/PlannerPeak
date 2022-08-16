@@ -35,7 +35,7 @@ const AppNavigator = () => {
         component={CourseScreen}
         options={{
           tabBarLabel: (
-            <Text style={{ fontFamily: AppFonts.primaryText }}>Courses</Text>
+            <Text style={{ fontFamily: AppFonts.SFRegular }}>Courses</Text>
           ),
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="menu-book" color={color} size={26} />
@@ -47,7 +47,7 @@ const AppNavigator = () => {
         component={HomeScreen}
         options={{
           tabBarLabel: (
-            <Text style={{ fontFamily: AppFonts.primaryText }}>Home</Text>
+            <Text style={{ fontFamily: AppFonts.SFRegular }}>Home</Text>
           ),
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="home" color={color} size={26} />
@@ -59,7 +59,7 @@ const AppNavigator = () => {
         component={SettingScreen}
         options={{
           tabBarLabel: (
-            <Text style={{ fontFamily: AppFonts.primaryText }}>Settings</Text>
+            <Text style={{ fontFamily: AppFonts.SFRegular }}>Settings</Text>
           ),
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="settings" color={color} size={26} />

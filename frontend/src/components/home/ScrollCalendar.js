@@ -20,17 +20,48 @@ export default function ScrollCalendar(props) {
     const endDate = moment(date).endOf("day").format("YYYY-MM-DDTHH:mm:ss.sssZ");
     props.getCurrentEvents(startDate, endDate);
   };
+
+  // const handleHeaderText = (selectedDate) => {
+  //   const today = moment();
+  //   const newSelectedDate = moment(selectedDate);
+  //   const formattedSelectedDate = newSelectedDate.format("YYYY-MM-DD");
+  //   const formattedTommorowDate = today.clone().add(1, "day").format("YYYY-MM-DD");
+  //   if (formattedSelectedDate === today.clone().format('YYYY-MM-DD')) {
+  //     return "Today";
+  //   } else if (formattedSelectedDate === formattedTommorowDate) {
+  //     return "Tommorow";
+  //   } else if (selectedDate.isBetween(today, today.clone().endOf('week'))) {
+  //     return "This Week";
+  //   } else if (selectedDate.isBetween(today, today.clone().endOf('month'))) {
+  //     return "This Month";
+  //   } else {
+  //     return "This Year";
+  //   }
+  // };
+
   return (
-    <View style={{ height: 300 }}>
+    <View style={{ height: 130 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <View style={{ paddingLeft: 10 }}>
-          <Text style={{ fontSize: 20, color: "grey" }}>Today</Text>
+        <View style={{ paddingLeft: 20 }}>
+          <Text style={{ fontSize: 18, color: "grey", fontFamily: AppFonts.SFRegular }}>
+            Today
+          </Text>
+          <Text
+            style={{
+              color: "black",
+              fontSize: 20,
+              fontFamily: AppFonts.SFBOLD,
+            }}
+          >{`${calendarStart.format("dddd, D MMMM")}`}</Text>
+        </View>
+        <View style={{ paddingRight: 25, paddingTop:12 }}>
+          <TouchableIcon name='notifications' type='ionicon'/>
         </View>
       </View>
       <CalendarStrip
         scrollable={true}
         scrollerPaging={true}
-        headerText={`${selectedDate.format("ddd, D MMM")}`}
+        showMonth={false}
         useIsoWeekday={false}
         calendarAnimation={{ type: "sequence", duration: 30 }}
         daySelectionAnimation={{
@@ -39,21 +70,16 @@ export default function ScrollCalendar(props) {
           borderWidth: 1,
           borderHighlightColor: AppColors.primaryBackgroundColor,
         }}
-        style={{ height: 270 }}
+        style={{ height: 230, paddingLeft:15, paddingRight:15 }}
         dayComponentHeight={200}
-        calendarHeaderStyle={{
-          color: "black",
-          textAlign: "left",
-          fontSize: 25,
-          fontFamily: AppFonts.SFBOLD,
-          paddingLeft: 10,
-          width: BaseAppDimensions.screenWidth,
-        }}
         dateNumberStyle={{ color: "black" }}
         dateNameStyle={{ color: "black" }}
         dayContainerStyle={{ backgroundColor: "white", height: 55, borderRadius: 10 }}
-        highlightDateNumberStyle={{ color: AppColors.primaryBackgroundColor }}
-        highlightDateNameStyle={{ color: AppColors.primaryBackgroundColor }}
+        highlightDateNumberStyle={{ color: "white" }}
+        highlightDateNameStyle={{ color: "white" }}
+        highlightDateContainerStyle={{
+          backgroundColor: AppColors.primaryBackgroundColor,
+        }}
         disabledDateNameStyle={{ color: "grey" }}
         disabledDateNumberStyle={{ color: "grey" }}
         iconStyle={{ display: "none" }}

@@ -60,7 +60,6 @@ export default function SettingScreen() {
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <Header title={"Settings"} />
         <View
           style={{
             justifyContent: "flex-start",

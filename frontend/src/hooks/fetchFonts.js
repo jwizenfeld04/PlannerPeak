@@ -8,5 +8,6 @@ export default fetchFonts = () => {
     MontserratBoldItalic: require("../assets/fonts/Montserrat/Montserrat-BoldItalic.ttf"),
     SFRegular: require("../assets/fonts/SF/SF-Pro-Display-Regular.otf"),
     SFBold: require("../assets/fonts/SF/SF-Pro-Display-Bold.otf"),
+    SFItalic: require("../assets/fonts/SF/SF-Pro-Display-RegularItalic.otf"),
   });
 };

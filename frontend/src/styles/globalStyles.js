@@ -15,6 +15,7 @@ export const AppFonts = {
   primaryTextBoldItalic: 'MontserratBoldItalic',
   SFRegular: 'SFRegular',
   SFBOLD: 'SFBold',
+  SFItalic: 'SFItalic',
 }
 
 const IMAGE_SOURCE = "../assets/images";
@@ -24,6 +25,7 @@ export const AppImages = {
   plannerPeakIcon: require(`${IMAGE_SOURCE}/plannerPeakIcon.png`),
   googleClassroomIcon: require(`${IMAGE_SOURCE}/googleClassroomIcon.png`),
   appleCalendarIcon: require(`${IMAGE_SOURCE}/appleCalendarIcon.png`),
+  addTaskIcon: require(`${IMAGE_SOURCE}/addTaskIcon.png`)
 };
 
 export const BaseAppDimensions = {

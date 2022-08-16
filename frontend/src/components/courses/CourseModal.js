@@ -62,7 +62,7 @@ const CourseModal = (props) => {
         visible={props.modalVisible}
         transparent={false}
       >
-        <SafeAreaView style={{ flex: 0, backgroundColor: AppColors.primaryBackgroundColor }} />
+        <SafeAreaView style={{ flex: 0 }} />
         <SafeAreaView style={{ flex: 1 }}>
           <Header
             title={props.modalData.name} //required
