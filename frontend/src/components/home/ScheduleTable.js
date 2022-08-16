@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     padding: 5,
     flexDirection: "row",
-    height: 400,
+    height: BaseAppDimensions.screenHeight / 2.05,
   },
   primaryTimeText: { fontFamily: AppFonts.SFBOLD, paddingBottom: 5 },
   secondaryTimeText: { fontFamily: AppFonts.SFRegular, color: "grey", fontSize: 12 },

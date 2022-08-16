@@ -25,8 +25,6 @@ const AppNavigator = () => {
       barStyle={{
         backgroundColor: AppColors.primaryBackgroundColor,
         height: AppDimensions.bottomTabHeight,
-        borderTopColor: AppColors.primaryAccentColor,
-        borderTopWidth: 1.5,
       }}
       inactiveColor={AppColors.primaryAccentColor}
     >
