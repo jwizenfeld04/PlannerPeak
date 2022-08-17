@@ -7,9 +7,7 @@ export default function CancelDeleteButton(props) {
   return (
     <View
       style={{
-        paddingTop: 15,
-        paddingRight:15,
-
+        paddingRight:20,
       }}
     >
       <TouchableOpacity
@@ -17,9 +15,9 @@ export default function CancelDeleteButton(props) {
       >
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 20,
             color: AppColors.primaryBackgroundColor,
-            fontFamily: AppFonts.primaryText,
+            fontFamily: AppFonts.SFRegular,
           }}
         >
          Cancel

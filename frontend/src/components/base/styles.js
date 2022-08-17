@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: BaseAppDimensions.screenWidth,
     flexDirection: "row",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   headerTitleContainer: {
     justifyContent: "center",
@@ -33,11 +33,6 @@ const styles = StyleSheet.create({
   },
   listItemContainer: {
     width: BaseAppDimensions.screenWidth,
-    borderRadius: 0,
-    shadowOffset: { height: 2, width: -2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    backgroundColor: "#F1F1F1",
   },
   buttonContainer: {
     backgroundColor: AppColors.primaryBackgroundColor,
@@ -47,13 +42,13 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     shadowOffset: { height: 2, width: 1 },
     shadowOpacity: 0.5,
-    padding:12
+    padding: 12,
   },
   buttonText: {
     textAlign: "center",
     fontSize: 16,
     color: AppColors.primaryAccentColor,
-    fontFamily: AppFonts.primaryTextBold
+    fontFamily: AppFonts.SFBOLD,
   },
 });
 

@@ -84,13 +84,13 @@ const DeleteModeFlatList = (props) => {
               }}
               leadingIcon={true}
               leadingIconName={
-                selected.includes(item.id) ? "circle-with-cross" : "circle"
+                selected.includes(item.id) ? "close-circle-outline" : "circle-outline"
               }
-              leadingIconType={"entypo"}
+              leadingIconType={"material-community"}
               leadingIconColor={
-                selected.includes(item.id) ? AppColors.errorColor : "grey"
+                selected.includes(item.id) ? AppColors.errorColor : item.color
               }
-              leadingIconSize={24}
+              // leadingIconSize={25}
               title={item.name}
               subtitle={handleAssignment(item)}
               trailingIcon={true}

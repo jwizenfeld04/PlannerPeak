@@ -9,9 +9,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  selectIsSchoologyAuthenticated,
-} from "../redux/features/user/userSlice";
+import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
 import {
   selectCourses,
   deleteUserCourse,
@@ -34,7 +32,9 @@ import CourseModal from "../components/courses/CourseModal";
 import DeleteModeFlatList from "../components/courses/DeleteModeFlatlist";
 import { getCourses } from "../components/api/getCourses";
 
-import { AppColors } from "../styles/globalStyles";
+import { AppColors, AppFonts } from "../styles/globalStyles";
+import TouchableIcon from "../components/base/TouchableIcon";
+import CourseHeader from "../components/courses/CourseHeader";
 
 export default function CourseScreen() {
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ export default function CourseScreen() {
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [modalData, setModalData] = useState({});
   const getAllCourses = getCourses(dispatch);
-  const sort = useSelector(selectCourseSortMethod)
+  const sort = useSelector(selectCourseSortMethod);
   const [editPriority, setEditPriority] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
 
@@ -134,11 +134,11 @@ export default function CourseScreen() {
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
-          dispatch(updateSortMethod('priority'))
+          dispatch(updateSortMethod("priority"));
         } else if (buttonIndex === 1) {
-          dispatch(updateSortMethod('grade'))
+          dispatch(updateSortMethod("grade"));
         } else if (buttonIndex === 2) {
-          dispatch(updateSortMethod('number_of_assignments'))
+          dispatch(updateSortMethod("number_of_assignments"));
         } else if (buttonIndex === 3) {
           // cancel action
         }
@@ -208,37 +208,25 @@ export default function CourseScreen() {
   };
 
   return (
-    <Fragment>
-      <SafeAreaView
-        style={{ flex: 0, backgroundColor: 'white' }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      {!deleteMode ? (
+        <CourseHeader
+          setCreateModalVisible={setCreateModalVisible}
+          onActionSheetPress={onActionSheetPress}
+        />
+      ) : null}
+      {handleFlatListDisplay()}
+      <CourseModal
+        modalVisible={modalVisible}
+        modalData={modalData}
+        courseSpecficAssignments={courseSpecficAssignments}
+        onModalDismiss={onModalDismiss}
+        onModalColorChange={onModalColorChange}
       />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <Header
-          title={handleHeaderTitle()} //required
-          iconColor={AppColors.primaryAccentColor}
-          iconName1={"dots-three-horizontal"}
-          iconType1={"entypo"}
-          onIconPress1={onActionSheetPress}
-          iconName2={"add-circle-outline"}
-          iconType2={"ionicon"}
-          onIconPress2={() => setCreateModalVisible(true)}
-          saveButton={editPriority}
-          onSavePress={setEditPriority}
-          deleteMode={deleteMode}
-        />
-        {handleFlatListDisplay()}
-        <CourseModal
-          modalVisible={modalVisible}
-          modalData={modalData}
-          courseSpecficAssignments={courseSpecficAssignments}
-          onModalDismiss={onModalDismiss}
-          onModalColorChange={onModalColorChange}
-        />
-        <CreateCourseModal
-          modalVisible={createModalVisible}
-          onCreateModalBack={() => setCreateModalVisible(false)}
-        />
-      </SafeAreaView>
-    </Fragment>
+      <CreateCourseModal
+        modalVisible={createModalVisible}
+        onCreateModalBack={() => setCreateModalVisible(false)}
+      />
+    </SafeAreaView>
   );
 }

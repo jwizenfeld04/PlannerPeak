@@ -24,7 +24,7 @@ export default function CustomListItem(props) {
         <Text
           style={{
             color: props.leadingIconColor,
-            fontFamily: AppFonts.primaryText,
+            fontFamily: AppFonts.SFRegular,
           }}
         >
           {props.grade}%
@@ -35,7 +35,7 @@ export default function CustomListItem(props) {
         <Text
           style={{
             color: props.leadingIconColor,
-            fontFamily: AppFonts.primaryText,
+            fontFamily: AppFonts.SFRegular,
           }}
         >
           N/A
@@ -59,7 +59,8 @@ export default function CustomListItem(props) {
           ellipsizeMode="tail"
           style={{
             width: BaseAppDimensions.screenWidth / 1.7,
-            fontFamily: AppFonts.primaryText,
+            fontFamily: AppFonts.SFRegular,
+            fontSize:18
           }}
         >
           {props.leadingIcon ? (
@@ -77,10 +78,10 @@ export default function CustomListItem(props) {
         <ListItem.Subtitle
           style={{
             fontSize: 12,
-            fontStyle: "italic",
             color: props.subtitleColor,
-            fontFamily: AppFonts.primaryTextItalic,
+            fontFamily: AppFonts.SFItalic,
             paddingTop:5,
+            paddingLeft:3.5
           }}
         >
           {props.subtitle}

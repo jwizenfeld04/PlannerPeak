@@ -15,8 +15,14 @@ import RNPickerSelect from "react-native-picker-select";
 import { Icon } from "react-native-elements";
 import CustomTextInput from "../base/textInput/TextInput";
 import CustomButton from "../base/Button";
-import { AppColors, AppDimensions, BaseAppDimensions } from "../../styles/globalStyles";
+import {
+  AppColors,
+  AppDimensions,
+  BaseAppDimensions,
+  AppFonts,
+} from "../../styles/globalStyles";
 import styles from "../base/textInput/styles";
+import ModernTextInput from "../base/textInput/ModernTextInput";
 
 const AddCourseForm = (props) => {
   const subjects = [
@@ -75,8 +81,8 @@ const AddCourseForm = (props) => {
             setFieldTouched,
           }) => (
             <>
-              <CustomTextInput
-                placeholder="Course Name"
+              <ModernTextInput
+                label="Course Name"
                 onPressIn={() => setTimeout(() => setFieldTouched("name", true), 2000)}
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
@@ -84,76 +90,36 @@ const AddCourseForm = (props) => {
                 error={touched.name && errors.name && `${errors.name}`}
                 borderColor={touched.name && handleBorderColor(values.name, errors.name)}
               />
-              <View style={styles.fullTextInputContainer}>
-                <View style={{ flex: 5, width: "100%" }}>
-                  <RNPickerSelect
-                    onValueChange={handleChange("subject")}
-                    onOpen={() =>
-                      setTimeout(() => setFieldTouched("subject", true), 1000)
-                    }
-                    placeholder={{ label: "Course Subject", value: "" }}
-                    items={subjects}
-                    Icon={() => {
-                      return (
-                        <Icon name="chevron-down-outline" type="ionicon" color="grey" />
-                      );
-                    }}
-                    style={{
-                      placeholder: {
-                        color: "grey",
-                        fontSize: 18,
-                      },
-                      inputIOS: {
-                        color: AppColors.primaryBackgroundColor,
-                        paddingLeft: 10,
-                        fontSize: 18,
-                      },
-                      inputIOSContainer: {
-                        flexDirection: "row",
-                        borderWidth: 1,
-                        borderColor:
-                          touched.subject &&
-                          handleBorderColor(values.subject, errors.subject),
-                        alignItems: "center",
-                        justifyContent: "center",
-                        height: "100%",
-                        borderRadius: 3,
-                      },
-                      iconContainer: {
-                        justifyContent: "center",
-                        alignItems: "center",
-                        paddingRight: 10,
-                        height: "100%",
-                      },
-                    }}
-                  />
-                </View>
-                <View style={{ flex: 4, alignItems: "center", width: "100%" }}>
-                  {touched.subject && errors.subject && (
-                    <Text style={styles.errorText}>{errors.subject}</Text>
-                  )}
-                </View>
-              </View>
+              <ModernTextInput
+                selector
+                label="Course Subject"
+                placeholder={{ label: "", value: "" }}
+                items={subjects}
+                onPressIn={() => setTimeout(() => setFieldTouched("subject", true), 2000)}
+                onChangeText={handleChange("subject")}
+                onBlur={handleBlur("subject")}
+                value={values.subject}
+                error={touched.subject && errors.subject && `${errors.subject}`}
+                borderColor={
+                  touched.subject && handleBorderColor(values.subject, errors.subject)
+                }
+                Icon={() => {
+                  return <Icon name="chevron-down-outline" type="ionicon" color="grey" />;
+                }}
+              />
+
               <View
                 style={{
-                  borderWidth: 1,
-                  width: "93%",
+                  width: BaseAppDimensions.screenWidth / 1.1,
                   alignSelf: "center",
-                  borderColor:
-                    touched.color && handleBorderColor(values.color, errors.color),
                 }}
               >
                 <Text
-                  style={{
-                    color: "grey",
-                    fontSize: 18,
-                    paddingLeft: 10,
-                    paddingTop: 10,
-                    textAlign: "center",
-                  }}
+                  style={{ color: "grey", fontFamily: AppFonts.SFRegular, fontSize: 14 }}
                 >
                   Course Color
                 </Text>
+
                 <ColorPalette
                   onChange={(e) => {
                     handleChange("color")(e);
