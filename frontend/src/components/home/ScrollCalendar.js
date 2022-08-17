@@ -12,10 +12,9 @@ export default function ScrollCalendar(props) {
   const dispatch = useDispatch();
   const calendarStart = moment();
   const calendarEnd = moment().add(2, "months");
-  const [selectedDate, setSelectedDate] = useState(moment());
 
   const onDateSelected = (date) => {
-    setSelectedDate(date);
+    props.setSelectedDate(date);
     const startDate = moment(date).format("YYYY-MM-DDTHH:mm:ss.sssZ");
     const endDate = moment(date).endOf("day").format("YYYY-MM-DDTHH:mm:ss.sssZ");
     props.getCurrentEvents(startDate, endDate);

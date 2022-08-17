@@ -13,33 +13,57 @@ import { AppColors, AppFonts, BaseAppDimensions } from "../../styles/globalStyle
 import ScheduleBlock from "./ScheduleBlock";
 
 export default function ScheduleTable(props) {
+  const scheduleBlocks = [
+    {
+      id: "1",
+      name: "Integrals HW",
+      scheduledStart: "9:30",
+      scheduledFinish: "10:20",
+      color: "green",
+      day: "2022-08-17",
+    },
+    {
+      id: "2",
+      name: "History Essay",
+      scheduledStart: "11:30",
+      scheduledFinish: "12:20",
+      color: "red",
+      day: "2022-08-17",
+    },
+    {
+      id: "3",
+      name: "English Test",
+      scheduledStart: "1:30",
+      scheduledFinish: "2:20",
+      color: "blue",
+      day: "2022-08-17",
+    },
+    {
+      id: "4",
+      name: "Study for Math Test",
+      scheduledStart: "3:30",
+      scheduledFinish: "4:20",
+      color: "green",
+      day: "2022-08-18",
+    },
+  ];
   return (
     <View style={styles.container}>
       <ScrollView>
-        <ScheduleBlock
-          color="green"
-          name="Integrals HW"
-          scheduledStart="9:30"
-          scheduledFinish="10:20"
-        />
-        <ScheduleBlock
-          color="red"
-          name="History Essay"
-          scheduledStart="11:30"
-          scheduledFinish="12:20"
-        />
-        <ScheduleBlock
-          color="blue"
-          name="English Test"
-          scheduledStart="1:30"
-          scheduledFinish="2:20"
-        />
-        <ScheduleBlock
-          color="green"
-          name="Study for Math Test"
-          scheduledStart="4:30"
-          scheduledFinish="5:15"
-        />
+        {scheduleBlocks.map((obj, index) => {
+          if (obj.day === props.selectedDate) {
+            return (
+              <View key={index}>
+                <ScheduleBlock
+                  name={obj.name}
+                  color={obj.color}
+                  scheduledStart={obj.scheduledStart}
+                  scheduledFinish={obj.scheduledFinish}
+                />
+              </View>
+            );
+          }
+        })}
       </ScrollView>
     </View>
   );

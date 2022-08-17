@@ -40,6 +40,7 @@ import * as Calendar from "expo-calendar";
 import { FloatingAction } from "react-native-floating-action";
 import AddAssignmentModal from "../components/home/AddAssignmentModal";
 import AddTaskModal from "../components/home/AddTaskModal";
+import moment from "moment";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ export default function HomeScreen() {
   const dateSchedule = useSelector(selectDateSchedule);
   const [addAssignmentVisible, setAddAssignmentVisible] = useState(false);
   const [addTaskVisible, setAddTaskVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(moment());
 
   useEffect(() => {
     dispatch(getUserInfo()); // Rerenders user info any time page renders or schoology becomes authenticated
@@ -68,7 +70,6 @@ export default function HomeScreen() {
         startDate,
         endDate
       );
-      console.log({ yourEvents });
     }
   };
 
@@ -79,7 +80,7 @@ export default function HomeScreen() {
       position: 2,
       color: AppColors.primaryBackgroundColor,
       text: "Add Assignment",
-      textStyle: {fontFamily: AppFonts.SFRegular, color:'black'}
+      textStyle: { fontFamily: AppFonts.SFRegular, color: "black" },
     },
     {
       icon: AppImages.addTaskIcon,
@@ -87,31 +88,38 @@ export default function HomeScreen() {
       position: 1,
       color: AppColors.primaryBackgroundColor,
       text: "Add Task",
-      textStyle: {fontFamily: AppFonts.SFRegular, color:'black'}
+      textStyle: { fontFamily: AppFonts.SFRegular, color: "black" },
     },
   ];
 
   return (
-      <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
-        <ScrollCalendar getCurrentEvents={getCurrentEvents} />
-        <Text style={styles.headerText}>Current Task</Text>
-        <CurrentAssignment />
-        <Text style={styles.headerText}>Schedule</Text>
-        <ScheduleTable />
-        <FloatingAction
-          actions={actions}
-          color={AppColors.primaryBackgroundColor}
-          onPressItem={(name) => {
-            if (name === "assignment") {
-              setAddAssignmentVisible(!addAssignmentVisible)
-            } else if (name === "task") {
-              setAddTaskVisible(!addTaskVisible)
-            }
-          }}
-        />
-        <AddAssignmentModal visible={addAssignmentVisible} setVisible={setAddAssignmentVisible} />
-        <AddTaskModal visible={addTaskVisible} setVisible={setAddTaskVisible} />
-      </SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
+      <ScrollCalendar
+        getCurrentEvents={getCurrentEvents}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
+      <Text style={styles.headerText}>Current Task</Text>
+      <CurrentAssignment />
+      <Text style={styles.headerText}>Schedule</Text>
+      <ScheduleTable selectedDate={selectedDate.format('YYYY-MM-DD')}/>
+      <FloatingAction
+        actions={actions}
+        color={AppColors.primaryBackgroundColor}
+        onPressItem={(name) => {
+          if (name === "assignment") {
+            setAddAssignmentVisible(!addAssignmentVisible);
+          } else if (name === "task") {
+            setAddTaskVisible(!addTaskVisible);
+          }
+        }}
+      />
+      <AddAssignmentModal
+        visible={addAssignmentVisible}
+        setVisible={setAddAssignmentVisible}
+      />
+      <AddTaskModal visible={addTaskVisible} setVisible={setAddTaskVisible} />
+    </SafeAreaView>
   );
 }
 

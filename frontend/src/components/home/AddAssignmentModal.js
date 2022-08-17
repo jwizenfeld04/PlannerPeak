@@ -20,10 +20,27 @@ import {
 } from "../../styles/globalStyles";
 import Modal from "react-native-modal";
 import BottomSheet, { BottomSheetView, BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import RNPickerSelect from "react-native-picker-select";
+import { Icon } from "react-native-elements";
 
 export default function AddAssignmentModal(props) {
   const snapPoints = useMemo(() => ["58%"], []);
   const bottomSheetRef = useRef();
+
+  const subjects = [
+    { label: "Mathematics", value: "Mathematics" },
+    { label: "Language Arts", value: "Language Arts" },
+    { label: "Science", value: "Science" },
+    { label: "Social Studies", value: "Social Studies" },
+    { label: "Arts", value: "Arts" },
+    { label: "Technology", value: "Technology" },
+    {
+      label: "Health & Physical Education",
+      value: "Health & Physical Education",
+    },
+    { label: "Professional Development", value: "Professional Development" },
+    { label: "Other", value: "Other" },
+  ];
 
   const handleOpenPress = () => bottomSheetRef.current.snapToIndex(0);
 
@@ -67,10 +84,38 @@ export default function AddAssignmentModal(props) {
             placeholder="Name"
             placeholderTextColor="black"
           />
-          <BottomSheetTextInput
-            style={styles.textInput}
-            placeholder="Subject"
-            placeholderTextColor="black"
+          <RNPickerSelect
+            placeholder={{ label: "Course", value: "" }}
+            onValueChange={(value) => {
+            }}
+            items={subjects} //List of all courses the user has
+            Icon={() => {
+              return <Icon name="chevron-down-outline" type="ionicon" color="grey" />;
+            }}
+            style={{
+              placeholder: {
+                color: "black",
+              },
+              inputIOS: {
+              },
+              inputIOSContainer: {
+                flexDirection: "row",
+                borderWidth: 1,
+                alignItems: "center",
+                borderRadius: 4,
+                backgroundColor: "white",
+                width: BaseAppDimensions.screenWidth / 1.5,
+                alignSelf: "center",
+                marginTop: 10,
+                padding:5
+              },
+              iconContainer: {
+                justifyContent: "center",
+                alignItems: "center",
+                paddingRight: 10,
+                height: "100%",
+              },
+            }}
           />
         </View>
       </TouchableWithoutFeedback>

@@ -54,21 +54,28 @@ export default function AddTaskModal(props) {
       }}
       handleIndicatorStyle={{ backgroundColor: AppColors.primaryBackgroundColor }}
     >
-      <View style={{ alignItems: "center", flex: 1, padding: 5 }}>
-        <Text>Add Task</Text>
-        <BottomSheetTextInput
-          style={{
-            backgroundColor: "white",
-            width: BaseAppDimensions.screenWidth / 1.5,
-            borderWidth: 1,
-            borderRadius: 4,
-            padding: 5,
-            marginTop: 10,
-          }}
-          placeholder="Name"
-          placeholderTextColor="black"
-        />
-      </View>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+          handleOpenPress();
+        }}
+      >
+        <View style={{ alignItems: "center", flex: 1, padding: 5 }}>
+          <Text>Add Task</Text>
+          <BottomSheetTextInput
+            style={{
+              backgroundColor: "white",
+              width: BaseAppDimensions.screenWidth / 1.5,
+              borderWidth: 1,
+              borderRadius: 4,
+              padding: 5,
+              marginTop: 10,
+            }}
+            placeholder="Name"
+            placeholderTextColor="black"
+          />
+        </View>
+      </TouchableWithoutFeedback>
     </BottomSheet>
   );
 }
