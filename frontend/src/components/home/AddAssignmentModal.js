@@ -21,7 +21,7 @@ import {
 import Modal from "react-native-modal";
 import BottomSheet, { BottomSheetView, BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
-export default function AddTaskModal(props) {
+export default function AddAssignmentModal(props) {
   const snapPoints = useMemo(() => ["58%"], []);
   const bottomSheetRef = useRef();
 
@@ -54,21 +54,26 @@ export default function AddTaskModal(props) {
       }}
       handleIndicatorStyle={{ backgroundColor: AppColors.primaryBackgroundColor }}
     >
-      <View style={{ alignItems: "center", flex: 1, padding: 5 }}>
-        <Text>Add Task</Text>
-        <BottomSheetTextInput
-          style={{
-            backgroundColor: "white",
-            width: BaseAppDimensions.screenWidth / 1.5,
-            borderWidth: 1,
-            borderRadius: 4,
-            padding: 5,
-            marginTop: 10,
-          }}
-          placeholder="Name"
-          placeholderTextColor="black"
-        />
-      </View>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+          handleOpenPress();
+        }}
+      >
+        <View style={{ alignItems: "center", flex: 1, padding: 5 }}>
+          <Text>Add Assignment</Text>
+          <BottomSheetTextInput
+            style={styles.textInput}
+            placeholder="Name"
+            placeholderTextColor="black"
+          />
+          <BottomSheetTextInput
+            style={styles.textInput}
+            placeholder="Subject"
+            placeholderTextColor="black"
+          />
+        </View>
+      </TouchableWithoutFeedback>
     </BottomSheet>
   );
 }
@@ -79,5 +84,13 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     fontFamily: AppFonts.SFRegular,
     fontSize: 18,
+  },
+  textInput: {
+    backgroundColor: "white",
+    width: BaseAppDimensions.screenWidth / 1.5,
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 5,
+    marginTop: 10,
   },
 });

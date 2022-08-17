@@ -8,7 +8,7 @@ import {
   Linking,
   TextInput,
   SafeAreaView,
-  Modal
+  Modal,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserInfo } from "../redux/features/user/userSlice";
@@ -38,12 +38,14 @@ import CustomTextInput from "../components/base/textInput/TextInput";
 import CustomButton from "../components/base/Button";
 import * as Calendar from "expo-calendar";
 import { FloatingAction } from "react-native-floating-action";
+import AddAssignmentModal from "../components/home/AddAssignmentModal";
 import AddTaskModal from "../components/home/AddTaskModal";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
   const isVerified = useSelector(selectIsVerified); // Boolean whether schoology callback deeplink was hit properly
   const dateSchedule = useSelector(selectDateSchedule);
+  const [addAssignmentVisible, setAddAssignmentVisible] = useState(false);
   const [addTaskVisible, setAddTaskVisible] = useState(false);
 
   useEffect(() => {
@@ -73,27 +75,23 @@ export default function HomeScreen() {
   const actions = [
     {
       icon: AppImages.addTaskIcon,
-      name: "add_task",
-      position: 1,
-      color: AppColors.primaryBackgroundColor,
-    },
-    {
-      icon: AppImages.addTaskIcon,
-      name: "add_task2",
-      position: 3,
-      color: AppColors.primaryBackgroundColor,
-    },
-    {
-      icon: AppImages.addTaskIcon,
-      name: "add_task3",
+      name: "assignment",
       position: 2,
       color: AppColors.primaryBackgroundColor,
+      text: "Add Assignment",
+      textStyle: {fontFamily: AppFonts.SFRegular, color:'black'}
+    },
+    {
+      icon: AppImages.addTaskIcon,
+      name: "task",
+      position: 1,
+      color: AppColors.primaryBackgroundColor,
+      text: "Add Task",
+      textStyle: {fontFamily: AppFonts.SFRegular, color:'black'}
     },
   ];
 
   return (
-    <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "white" }} />
       <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
         <ScrollCalendar getCurrentEvents={getCurrentEvents} />
         <Text style={styles.headerText}>Current Task</Text>
@@ -101,25 +99,26 @@ export default function HomeScreen() {
         <Text style={styles.headerText}>Schedule</Text>
         <ScheduleTable />
         <FloatingAction
-          onPressMain={() => {
-            setAddTaskVisible(!addTaskVisible)
-          }}
-          showBackground={false}
-          floatingIcon={AppImages.addTaskIcon}
-          iconHeight={30}
-          iconWidth={30}
+          actions={actions}
           color={AppColors.primaryBackgroundColor}
+          onPressItem={(name) => {
+            if (name === "assignment") {
+              setAddAssignmentVisible(!addAssignmentVisible)
+            } else if (name === "task") {
+              setAddTaskVisible(!addTaskVisible)
+            }
+          }}
         />
-          <AddTaskModal visible={addTaskVisible} setVisible={setAddTaskVisible}/>
+        <AddAssignmentModal visible={addAssignmentVisible} setVisible={setAddAssignmentVisible} />
+        <AddTaskModal visible={addTaskVisible} setVisible={setAddTaskVisible} />
       </SafeAreaView>
-    </Fragment>
   );
 }
 
 const styles = StyleSheet.create({
   headerText: {
     padding: 15,
-    paddingLeft:20,
+    paddingLeft: 20,
     fontFamily: AppFonts.SFRegular,
     fontSize: 18,
   },
