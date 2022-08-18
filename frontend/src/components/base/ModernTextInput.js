@@ -1,17 +1,20 @@
 import React from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  Button,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { AppFonts, BaseAppDimensions } from "../../../styles/globalStyles";
+import { View, TextInput, StyleSheet } from "react-native";
+import { AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
 import RNPickerSelect from "react-native-picker-select";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import CustomText from "./CustomText";
 
 const ModernTextInput = (props) => {
+  const styles = StyleSheet.create({
+    textInput: {
+      padding: 5,
+      fontSize: 18,
+      fontFamily: AppFonts.SFRegular,
+      borderBottomWidth: 1,
+      borderBottomColor: props.borderColor ? props.borderColor : "grey",
+    },
+  });
   const handleTextInput = () => {
     if (props.selector) {
       return (
@@ -23,7 +26,7 @@ const ModernTextInput = (props) => {
             inputIOS: {
               padding: 5,
               fontSize: 18,
-              fontFamily:AppFonts.SFRegular
+              fontFamily: AppFonts.SFRegular,
             },
             inputIOSContainer: {
               flexDirection: "row",
@@ -40,19 +43,10 @@ const ModernTextInput = (props) => {
           }}
         />
       );
+    } else if (props.bottomSheet) {
+      return <BottomSheetTextInput style={styles.textInput} {...props} />;
     } else {
-      return (
-        <TextInput
-          style={{
-            padding: 5,
-            fontSize: 18,
-            fontFamily: AppFonts.SFRegular,
-            borderBottomWidth: 1,
-            borderBottomColor: props.borderColor ? props.borderColor : "grey",
-          }}
-          {...props}
-        />
-      );
+      return <TextInput style={styles.textInput} {...props} />;
     }
   };
   return (
@@ -64,22 +58,11 @@ const ModernTextInput = (props) => {
       }}
     >
       <View>
-        <Text style={{ color: "grey", fontFamily: AppFonts.SFRegular, fontSize: 14 }}>
-          {props.label}
-        </Text>
+        <CustomText text={props.label} size="s" color="grey" />
       </View>
       {handleTextInput()}
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Text
-          style={{
-            marginTop: 6,
-            color: "red",
-            fontSize: 10,
-            fontFamily: AppFonts.SFRegular,
-          }}
-        >
-          {props.error}
-        </Text>
+        <CustomText text={props.error} error />
       </View>
     </View>
   );

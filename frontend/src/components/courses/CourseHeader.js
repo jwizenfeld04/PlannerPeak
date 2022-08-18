@@ -1,15 +1,8 @@
-import React, { useState, useEffect, Fragment } from "react";
-import {
-  SafeAreaView,
-  Text,
-  ActionSheetIOS,
-  View,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import React from "react";
+import { View } from "react-native";
 
-import { AppFonts } from "../../styles/globalStyles";
 import TouchableIcon from "../base/TouchableIcon";
+import CustomText from "../base/CustomText";
 
 export default function CourseHeader(props) {
   return (
@@ -21,15 +14,7 @@ export default function CourseHeader(props) {
         marginBottom: 10,
       }}
     >
-      <Text
-        style={{
-          color: "black",
-          fontSize: 24,
-          fontFamily: AppFonts.SFBOLD,
-        }}
-      >
-        Courses
-      </Text>
+      <CustomText text="Courses" font="bold" size="xl" />
       <View
         style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}
       >
@@ -45,7 +30,7 @@ export default function CourseHeader(props) {
           type="ionicon"
           size={36}
           style={{ paddingRight: 15 }}
-          onPress={() => props.setCreateModalVisible(true)}
+          onPress={() => props.setCreateModalVisible(!props.createModalVisible)}
         />
       </View>
     </View>

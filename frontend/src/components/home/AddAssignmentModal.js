@@ -1,25 +1,11 @@
-import React, { Component, Fragment, useState, useEffect, useMemo, useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Button,
-  Linking,
-  TextInput,
-  SafeAreaView,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import {
-  AppColors,
-  AppDimensions,
-  AppFonts,
-  BaseAppDimensions,
-} from "../../styles/globalStyles";
+import React, { useEffect, useMemo, useRef, useCallback } from "react";
+import { View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { AppColors, AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
 import Modal from "react-native-modal";
-import BottomSheet, { BottomSheetView, BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetTextInput,
+  BottomSheetBackdrop,
+} from "@gorhom/bottom-sheet";
 import RNPickerSelect from "react-native-picker-select";
 import { Icon } from "react-native-elements";
 import RadioButtonRN from "radio-buttons-react-native";
@@ -61,10 +47,24 @@ export default function AddAssignmentModal(props) {
     handleOpenPress();
   }, [props.visible]);
 
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        enableTouchThrough={true}
+        pressBehavior="close"
+      />
+    ),
+    []
+  );
+
   return (
     <BottomSheet
       snapPoints={snapPoints}
       ref={bottomSheetRef}
+      backdropComponent={renderBackdrop}
       index={-1}
       enablePanDownToClose={true}
       handleStyle={{

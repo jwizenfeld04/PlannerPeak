@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     height: "100%",
     fontSize: 18,
   },
-  errorText: { marginTop: 6, color: "red", fontSize: 10 },
+  errorText: { marginTop: 6, color: "red", fontSize: 10, fontFamily:AppFonts.SFRegular },
 });
 
 export default styles;

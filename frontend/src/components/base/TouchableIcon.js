@@ -1,11 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Ionicons, Entypo } from "@expo/vector-icons";
-import {
-  AppColors,
-  AppDimensions,
-  BaseAppDimensions,
-} from "../../styles/globalStyles";
+import React from "react";
+import { TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 
 export default function TouchableIcon(props) {
@@ -16,7 +10,7 @@ export default function TouchableIcon(props) {
         type={props.type}
         size={props.size ? props.size : 28}
         color={props.color}
-        style={{...props.style}}
+        style={{ ...props.style }}
       />
     </TouchableOpacity>
   );

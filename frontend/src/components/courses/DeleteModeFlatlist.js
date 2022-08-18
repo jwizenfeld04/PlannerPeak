@@ -1,20 +1,6 @@
-import {
-  StyleSheet,
-  FlatList,
-  Text,
-  View,
-  TouchableOpacity,
-  TextPropTypes,
-  Platform,
-} from "react-native";
-import { ListItem, Icon, Avatar } from "react-native-elements";
+import { FlatList, View } from "react-native";
 import React, { useState, useEffect } from "react";
-import {
-  AppColors,
-  AppImages,
-  AppDimensions,
-  BaseAppDimensions,
-} from "../../styles/globalStyles";
+import { AppColors, AppDimensions } from "../../styles/globalStyles";
 import CustomListItem from "../base/ListItem";
 import DeleteButton from "../base/DeleteButton";
 import CancelDeleteButton from "../base/CancelDeleteButton";
@@ -63,9 +49,15 @@ const DeleteModeFlatList = (props) => {
 
   return (
     <View style={{ height: AppDimensions.mainViewHeight }}>
-      <View style={{ flexDirection: "row", justifyContent:'space-between', paddingBottom:10}}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingBottom: 10,
+        }}
+      >
         <DeleteButton
-          onPress={()=>props.onDeletePress(selected)}
+          onPress={() => props.onDeletePress(selected)}
           selectedCount={selectedCount}
         />
         <CancelDeleteButton onPress={props.onCancelPress} />

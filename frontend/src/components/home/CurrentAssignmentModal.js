@@ -1,14 +1,5 @@
-import React, { Component, Fragment } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Button,
-  Linking,
-  TextInput,
-  SafeAreaView,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { AppFonts, AppColors, BaseAppDimensions } from "../../styles/globalStyles";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
@@ -106,7 +97,7 @@ export default function CurrentAssignmentModal(props) {
                 );
               }}
             </CountdownCircleTimer>
-            <View style={{ justifyContent: "space-between", flex: 1, paddingTop:10 }}>
+            <View style={{ justifyContent: "space-between", flex: 1, paddingTop: 10 }}>
               <TimeButton title="+5" />
               <TimeButton title="+30" />
               <TimeButton title="-5" />

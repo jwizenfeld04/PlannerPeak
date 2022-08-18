@@ -1,15 +1,6 @@
-import React, { useState } from "react";
-import moment from "moment";
-import {
-  ScrollView,
-  SafeAreaView,
-  View,
-  Button,
-  Alert,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { AppColors, AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
+import React from "react";
+import { ScrollView, View, StyleSheet } from "react-native";
+import { BaseAppDimensions } from "../../styles/globalStyles";
 import ScheduleBlock from "./ScheduleBlock";
 
 export default function ScheduleTable(props) {
@@ -21,6 +12,9 @@ export default function ScheduleTable(props) {
       scheduledFinish: "10:20",
       color: "green",
       day: "2022-08-17",
+      dueDate: "8/17/22",
+      description:
+        "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
     {
       id: "2",
@@ -29,6 +23,9 @@ export default function ScheduleTable(props) {
       scheduledFinish: "12:20",
       color: "red",
       day: "2022-08-17",
+      dueDate: "8/17/22",
+      description:
+        "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
     {
       id: "3",
@@ -36,7 +33,10 @@ export default function ScheduleTable(props) {
       scheduledStart: "1:30",
       scheduledFinish: "2:20",
       color: "blue",
+      dueDate: "8/17/22",
       day: "2022-08-17",
+      description:
+        "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
     {
       id: "4",
@@ -44,7 +44,10 @@ export default function ScheduleTable(props) {
       scheduledStart: "3:30",
       scheduledFinish: "4:20",
       color: "green",
+      dueDate: "8/17/22",
       day: "2022-08-18",
+      description:
+        "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
   ];
   return (
@@ -59,6 +62,8 @@ export default function ScheduleTable(props) {
                   color={obj.color}
                   scheduledStart={obj.scheduledStart}
                   scheduledFinish={obj.scheduledFinish}
+                  description={obj.description}
+                  dueDate={obj.dueDate}
                 />
               </View>
             );
@@ -77,6 +82,4 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: BaseAppDimensions.screenHeight / 2.05,
   },
-  primaryTimeText: { fontFamily: AppFonts.SFBOLD, paddingBottom: 5 },
-  secondaryTimeText: { fontFamily: AppFonts.SFRegular, color: "grey", fontSize: 12 },
 });

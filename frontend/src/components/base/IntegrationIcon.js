@@ -1,18 +1,7 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
-import { Ionicons, Entypo } from "@expo/vector-icons";
-import {
-  AppColors,
-  AppDimensions,
-  BaseAppDimensions,
-  AppImages,
-} from "../../styles/globalStyles";
+import React from "react";
+import { View, TouchableOpacity, ImageBackground } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { AppColors, AppDimensions } from "../../styles/globalStyles";
 
 export default function IntegrationIcon(props) {
   return (
@@ -24,9 +13,7 @@ export default function IntegrationIcon(props) {
           backgroundColor: "white",
           width: AppDimensions.integrationIcon,
           height: AppDimensions.integrationIcon,
-          borderColor: props.isAuth
-            ? AppColors.successColor
-            : "lightgrey",
+          borderColor: props.isAuth ? AppColors.successColor : "lightgrey",
           borderRadius: 40,
         }}
       >

@@ -1,26 +1,26 @@
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { AppColors, AppFonts } from "../../styles/globalStyles";
-import styles from "./styles";
+import { View, TouchableOpacity } from "react-native";
+import { AppColors } from "../../styles/globalStyles";
+import CustomText from "./CustomText";
 
 export default function DeleteButton(props) {
   return (
     <View
       style={{
-        marginBottom:12,
+        marginBottom: 12,
         paddingLeft: 20,
       }}
     >
-      <TouchableOpacity onPress={props.onPress} disabled={props.selectedCount === 0 ? true : false}>
-        <Text
-          style={{
-            fontSize: 20,
-            color: props.selectedCount === 0 ? "black" : AppColors.errorColor,
-            fontFamily: AppFonts.SFBOLD,
-          }}
-        >
-          Delete ({props.selectedCount})
-        </Text>
+      <TouchableOpacity
+        onPress={props.onPress}
+        disabled={props.selectedCount === 0 ? true : false}
+      >
+        <CustomText
+          text={`Delete (${props.selectedCount})`}
+          size="l"
+          font="bold"
+          color={props.selectedCount === 0 ? "black" : AppColors.errorColor}
+        />
       </TouchableOpacity>
     </View>
   );

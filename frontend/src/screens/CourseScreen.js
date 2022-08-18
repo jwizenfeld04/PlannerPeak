@@ -23,9 +23,6 @@ import {
   selectCourseSpecficAssignments,
 } from "../redux/features/assignment/assignmentSlice";
 import { getSchoologyAssignments } from "../redux/features/schoology/schoologySlice";
-
-import Header from "../components/base/Header";
-import SaveButton from "../components/base/SaveButton";
 import CourseFlatList from "../components/courses/CourseFlatList";
 import CreateCourseModal from "../components/courses/CreateCourseModal";
 import CourseModal from "../components/courses/CourseModal";
@@ -213,6 +210,7 @@ export default function CourseScreen() {
         <CourseHeader
           setCreateModalVisible={setCreateModalVisible}
           onActionSheetPress={onActionSheetPress}
+          createModalVisible={createModalVisible}
         />
       ) : null}
       {handleFlatListDisplay()}
@@ -224,7 +222,7 @@ export default function CourseScreen() {
         onModalColorChange={onModalColorChange}
       />
       <CreateCourseModal
-        modalVisible={createModalVisible}
+        visible={createModalVisible}
         onCreateModalBack={() => setCreateModalVisible(false)}
       />
     </SafeAreaView>

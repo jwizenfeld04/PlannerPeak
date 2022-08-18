@@ -2,7 +2,6 @@ import React from "react";
 import { Text, View } from "react-native";
 
 import TouchableIcon from "./TouchableIcon";
-import SaveButton from "./SaveButton";
 import DeleteButton from "./DeleteButton";
 
 import { AppColors, AppFonts } from "../../styles/globalStyles";
@@ -54,7 +53,6 @@ export default function Header(props) {
             color={props.iconColor}
           />
         ) : null}
-        {props.saveButton ? <SaveButton onPress={props.onSavePress} /> : null}
         {props.deleteButton ? <DeleteButton onPress={props.onDeletePress} /> : null}
       </View>
     </View>

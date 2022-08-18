@@ -1,28 +1,13 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Formik } from "formik";
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  Button,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import * as yup from "yup";
+import CustomText from "../base/CustomText";
 import ColorPalette from "react-native-color-palette";
-import RNPickerSelect from "react-native-picker-select";
 import { Icon } from "react-native-elements";
-import CustomTextInput from "../base/textInput/TextInput";
 import CustomButton from "../base/Button";
-import {
-  AppColors,
-  AppDimensions,
-  BaseAppDimensions,
-  AppFonts,
-} from "../../styles/globalStyles";
-import styles from "../base/textInput/styles";
-import ModernTextInput from "../base/textInput/ModernTextInput";
+import { BaseAppDimensions } from "../../styles/globalStyles";
+import ModernTextInput from "../base/ModernTextInput";
 
 const AddCourseForm = (props) => {
   const subjects = [
@@ -59,15 +44,33 @@ const AddCourseForm = (props) => {
     }
   };
 
+  const formikRef = useRef();
+  const resetForm = () => formikRef.current.resetForm();
+
+  useEffect(() => {
+    if (props.bottomSheetIndex === -1) {
+      resetForm();
+    }
+  }, [props.bottomSheetIndex]);
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        props.handleOpenPress();
+      }}
+    >
       <View style={{ height: "100%", width: "100%" }}>
         <Formik
           validationSchema={validationSchema}
           validateOnChange={true}
           validateOnBlur={false}
           initialValues={{ name: "", subject: "", color: "" }}
-          onSubmit={(values) => props.onSubmit(values)}
+          onSubmit={(values) => {
+            props.onSubmit(values);
+            props.handleClosePress();
+          }}
+          innerRef={formikRef}
         >
           {({
             handleChange,
@@ -81,6 +84,15 @@ const AddCourseForm = (props) => {
             setFieldTouched,
           }) => (
             <>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 20,
+                }}
+              >
+                <CustomText text="Add Course" font="bold" size="xl" />
+              </View>
               <ModernTextInput
                 label="Course Name"
                 onPressIn={() => setTimeout(() => setFieldTouched("name", true), 2000)}
@@ -89,9 +101,11 @@ const AddCourseForm = (props) => {
                 value={values.name}
                 error={touched.name && errors.name && `${errors.name}`}
                 borderColor={touched.name && handleBorderColor(values.name, errors.name)}
+                bottomSheet
               />
               <ModernTextInput
                 selector
+                bottomSheet
                 label="Course Subject"
                 placeholder={{ label: "", value: "" }}
                 items={subjects}
@@ -114,12 +128,14 @@ const AddCourseForm = (props) => {
                   alignSelf: "center",
                 }}
               >
-                <Text
-                  style={{ color: "grey", fontFamily: AppFonts.SFRegular, fontSize: 14 }}
-                >
-                  Course Color
-                </Text>
-
+                <CustomText text="Course Color" size="s" color="grey" />
+              </View>
+              <View
+                style={{
+                  width: BaseAppDimensions.screenWidth / 1.5,
+                  alignSelf: "center",
+                }}
+              >
                 <ColorPalette
                   onChange={(e) => {
                     handleChange("color")(e);
@@ -127,7 +143,6 @@ const AddCourseForm = (props) => {
                   }}
                   title=""
                   paletteStyles={{ paddingBottom: 10 }}
-                  defaultColor={props.color}
                   value={values.color}
                   colors={[
                     "#C0392B",
@@ -145,14 +160,14 @@ const AddCourseForm = (props) => {
               </View>
               <View style={{ alignItems: "center", width: "100%" }}>
                 {touched.color && errors.color && (
-                  <Text style={styles.errorText}>{errors.color}</Text>
+                  <CustomText text={errors.color} error />
                 )}
               </View>
               <CustomButton
                 onPress={() => handleSubmit(values)}
-                title="Add Course"
+                title="Add"
                 disabled={!isValid || isSubmitting}
-                styles={{ padding: 30 }}
+                styles={{ padding: 20 }}
               />
             </>
           )}

@@ -1,10 +1,5 @@
-import { StyleSheet, Dimensions } from "react-native";
-import {
-  AppColors,
-  AppDimensions,
-  AppFonts,
-  BaseAppDimensions,
-} from "../../styles/globalStyles";
+import { StyleSheet } from "react-native";
+import { AppColors, AppDimensions, BaseAppDimensions } from "../../styles/globalStyles";
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -36,19 +31,13 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     backgroundColor: AppColors.primaryBackgroundColor,
-    height: 45,
+    height: 42,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 50,
+    borderRadius: 20,
     shadowOffset: { height: 2, width: 1 },
     shadowOpacity: 0.5,
     padding: 12,
-  },
-  buttonText: {
-    textAlign: "center",
-    fontSize: 16,
-    color: AppColors.primaryAccentColor,
-    fontFamily: AppFonts.SFBOLD,
   },
 });
 

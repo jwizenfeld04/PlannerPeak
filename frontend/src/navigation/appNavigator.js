@@ -1,11 +1,6 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import {
-  MaterialCommunityIcons,
-  Ionicons,
-  FontAwesome5,
-  MaterialIcons,
-} from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Text } from "react-native";
 
 // Import mock screens
@@ -32,9 +27,7 @@ const AppNavigator = () => {
         name="Courses"
         component={CourseScreen}
         options={{
-          tabBarLabel: (
-            <Text style={{ fontFamily: AppFonts.SFRegular }}>Courses</Text>
-          ),
+          tabBarLabel: <Text style={{ fontFamily: AppFonts.SFRegular }}>Courses</Text>,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="menu-book" color={color} size={26} />
           ),
@@ -44,9 +37,7 @@ const AppNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: (
-            <Text style={{ fontFamily: AppFonts.SFRegular }}>Home</Text>
-          ),
+          tabBarLabel: <Text style={{ fontFamily: AppFonts.SFRegular }}>Home</Text>,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="home" color={color} size={26} />
           ),
@@ -56,9 +47,7 @@ const AppNavigator = () => {
         name="Settings"
         component={SettingScreen}
         options={{
-          tabBarLabel: (
-            <Text style={{ fontFamily: AppFonts.SFRegular }}>Settings</Text>
-          ),
+          tabBarLabel: <Text style={{ fontFamily: AppFonts.SFRegular }}>Settings</Text>,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="settings" color={color} size={26} />
           ),

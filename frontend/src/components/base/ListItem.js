@@ -1,14 +1,8 @@
 import React from "react";
-import { Text } from "react-native";
-import {
-  AppColors,
-  AppDimensions,
-  BaseAppDimensions,
-  AppImages,
-  AppFonts,
-} from "../../styles/globalStyles";
+import { BaseAppDimensions, AppImages, AppFonts } from "../../styles/globalStyles";
 import styles from "./styles";
 import { ListItem, Icon, Avatar } from "react-native-elements";
+import CustomText from "./CustomText";
 
 export default function CustomListItem(props) {
   const trailingIcon = () => {
@@ -20,27 +14,9 @@ export default function CustomListItem(props) {
   };
   const grade = () => {
     if (props.grade) {
-      return (
-        <Text
-          style={{
-            color: props.leadingIconColor,
-            fontFamily: AppFonts.SFRegular,
-          }}
-        >
-          {props.grade}%
-        </Text>
-      );
+      return <CustomText text={`${props.grade}%`} color={props.leadingIconColor} />;
     } else {
-      return (
-        <Text
-          style={{
-            color: props.leadingIconColor,
-            fontFamily: AppFonts.SFRegular,
-          }}
-        >
-          N/A
-        </Text>
-      );
+      return <CustomText text="N/A" color={props.leadingIconColor} />;
     }
   };
 
@@ -60,7 +36,7 @@ export default function CustomListItem(props) {
           style={{
             width: BaseAppDimensions.screenWidth / 1.7,
             fontFamily: AppFonts.SFRegular,
-            fontSize:18
+            fontSize: 18,
           }}
         >
           {props.leadingIcon ? (
@@ -73,15 +49,14 @@ export default function CustomListItem(props) {
             />
           ) : null}
           {props.title}
-  
         </ListItem.Title>
         <ListItem.Subtitle
           style={{
             fontSize: 12,
             color: props.subtitleColor,
             fontFamily: AppFonts.SFItalic,
-            paddingTop:5,
-            paddingLeft:3.5
+            paddingTop: 5,
+            paddingLeft: 3.5,
           }}
         >
           {props.subtitle}
