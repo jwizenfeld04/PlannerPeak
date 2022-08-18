@@ -51,6 +51,7 @@ export default function CourseScreen() {
     setModalData({
       id: item.id,
       name: item.name,
+      subject: item.subject,
       grade: item.grade,
       color: item.color,
       avgAssignmentMinutes: item.avg_assignment_minutes,
@@ -217,6 +218,7 @@ export default function CourseScreen() {
       <CourseModal
         modalVisible={modalVisible}
         modalData={modalData}
+        setModalData={setModalData}
         courseSpecficAssignments={courseSpecficAssignments}
         onModalDismiss={onModalDismiss}
         onModalColorChange={onModalColorChange}

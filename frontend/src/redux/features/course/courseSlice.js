@@ -18,7 +18,7 @@ export const createUserCourse = createAsyncThunk(
     const response = await API.post(`user-courses/`, {
       name: courseData.name,
       subject: courseData.subject,
-      color: courseData.color
+      color: courseData.color,
     }).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
@@ -26,13 +26,13 @@ export const createUserCourse = createAsyncThunk(
   }
 );
 
-export const updateUserCoursePrefrences = createAsyncThunk(
+export const updateUserCourse = createAsyncThunk(
   "user/updateUserCoursePrefrences",
   async (modalData, thunkAPI) => {
     const response = await API.put(`user-courses-update/${modalData.id}`, {
+      name: modalData.name,
+      subject: modalData.subject,
       color: modalData.color,
-      notifications: modalData.notifications,
-      priority: modalData.priority,
     }).catch((error) => {
       throw thunkAPI.rejectWithValue(error.response.data);
     });
@@ -79,7 +79,7 @@ export const courseSlice = createSlice({
     },
     [createUserCourse.fulfilled]: (state, action) => {
       state.status = "success";
-      state.courses.push(action.payload.data)
+      state.courses.push(action.payload.data);
     },
     [createUserCourse.pending]: (state, action) => {
       state.status = "loading";
@@ -87,13 +87,18 @@ export const courseSlice = createSlice({
     [createUserCourse.rejected]: (state, action) => {
       state.status = "failed";
     },
-    [updateUserCoursePrefrences.fulfilled]: (state, action) => {
+    [updateUserCourse.fulfilled]: (state, action) => {
+      //Update state of course after edit save
+      const previousCourseId = state.courses.findIndex(
+        (obj) => obj.id === action.payload.data.id
+      );
+      state.courses[previousCourseId] = action.payload.data;
       state.status = "success";
     },
-    [updateUserCoursePrefrences.pending]: (state, action) => {
+    [updateUserCourse.pending]: (state, action) => {
       state.status = "loading";
     },
-    [updateUserCoursePrefrences.rejected]: (state, action) => {
+    [updateUserCourse.rejected]: (state, action) => {
       state.status = "failed";
     },
     [deleteUserCourse.fulfilled]: (state, action) => {

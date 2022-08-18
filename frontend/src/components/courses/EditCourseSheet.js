@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { createUserCourse } from "../../redux/features/course/courseSlice";
+import { updateUserCourse } from "../../redux/features/course/courseSlice";
 import { useDispatch } from "react-redux";
 import { AppColors } from "../../styles/globalStyles";
 import AddCourseForm from "./AddCourseForm";
@@ -17,7 +17,13 @@ const EditCourseSheet = (props) => {
   };
 
   const onSubmit = (courseData) => {
-    dispatch(createUserCourse(courseData));
+    courseData.id = props.course.id;
+    dispatch(updateUserCourse(courseData));
+    props.setModalData({
+      name: courseData.name,
+      subject: courseData.subject,
+      color: courseData.color,
+    });
     props.onCreateModalBack();
   };
 
@@ -64,6 +70,8 @@ const EditCourseSheet = (props) => {
       handleIndicatorStyle={{ backgroundColor: AppColors.primaryBackgroundColor }}
     >
       <AddCourseForm
+        edit
+        course={props.course}
         onSubmit={onSubmit}
         handleOpenPress={handleOpenPress}
         bottomSheetIndex={sheetIndex}

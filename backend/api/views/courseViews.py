@@ -60,7 +60,7 @@ class UserSpecificCourseUpdateView(APIView):
             serializer = self.serializer_class(course, request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=HTTP_204_NO_CONTENT)
+                return Response(serializer.data, status=HTTP_202_ACCEPTED)
             return Response({"Error": "Invalid Update Fields"}, status=HTTP_400_BAD_REQUEST)
         return Response({"Error": "Invalid Course Id or Permissions "}, status=HTTP_403_FORBIDDEN)
 

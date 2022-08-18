@@ -18,7 +18,7 @@ import EditCourseSheet from "./EditCourseSheet";
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
   const [colorSwitch, setColorSwitch] = useState(false);
-  const [editSheetVisible, setEditSheetVisible] = useState(false)
+  const [editSheetVisible, setEditSheetVisible] = useState(false);
   const dispatch = useDispatch();
 
   const handleMainViewDiplay = () => {
@@ -78,9 +78,9 @@ const CourseModal = (props) => {
             }}
           />
           <TouchableIcon
-            name="color-palette-outline"
+            name="edit"
             color={props.modalData.color}
-            type="ionicon"
+            type="material-icon"
             onPress={() => {
               setEditSheetVisible(!editSheetVisible);
             }}
@@ -150,6 +150,8 @@ const CourseModal = (props) => {
         <EditCourseSheet
           visible={editSheetVisible}
           onCreateModalBack={() => setEditSheetVisible(false)}
+          course={props.modalData}
+          setModalData={props.setModalData}
         />
       </SafeAreaView>
     </Modal>

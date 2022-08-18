@@ -11,18 +11,19 @@ import ModernTextInput from "../base/ModernTextInput";
 
 const AddCourseForm = (props) => {
   const subjects = [
-    { label: "Mathematics", value: "Mathematics" },
-    { label: "Language Arts", value: "Language Arts" },
-    { label: "Science", value: "Science" },
-    { label: "Social Studies", value: "Social Studies" },
-    { label: "Arts", value: "Arts" },
-    { label: "Technology", value: "Technology" },
+    { label: "Mathematics", value: "Mathematics", key: "1" },
+    { label: "Language Arts", value: "Language Arts", key: "2" },
+    { label: "Science", value: "Science", key: "3" },
+    { label: "Social Studies", value: "Social Studies", key: "4" },
+    { label: "Arts", value: "Arts", key: "5" },
+    { label: "Technology", value: "Technology", key: "6" },
     {
       label: "Health & Physical Education",
       value: "Health & Physical Education",
+      key: "7",
     },
-    { label: "Professional Development", value: "Professional Development" },
-    { label: "Other", value: "Other" },
+    { label: "Professional Development", value: "Professional Development", key: "8" },
+    { label: "Other", value: "Other", key: "9" },
   ];
 
   const validationSchema = yup.object().shape({
@@ -65,7 +66,11 @@ const AddCourseForm = (props) => {
           validationSchema={validationSchema}
           validateOnChange={true}
           validateOnBlur={false}
-          initialValues={{ name: "", subject: "", color: "" }}
+          initialValues={{
+            name: props.edit ? props.course.name : "",
+            subject: props.edit ? props.course.subject : "",
+            color: props.edit ? props.course.color : "",
+          }}
           onSubmit={(values) => {
             props.onSubmit(values);
             props.handleClosePress();
@@ -91,7 +96,11 @@ const AddCourseForm = (props) => {
                   marginBottom: 20,
                 }}
               >
-                <CustomText text="Add Course" font="bold" size="xl" />
+                <CustomText
+                  text={props.edit ? "Edit Course" : "Add Course"}
+                  font="bold"
+                  size="xl"
+                />
               </View>
               <ModernTextInput
                 label="Course Name"
@@ -101,6 +110,7 @@ const AddCourseForm = (props) => {
                 value={values.name}
                 error={touched.name && errors.name && `${errors.name}`}
                 borderColor={touched.name && handleBorderColor(values.name, errors.name)}
+                defaultValue={values.name}
                 bottomSheet
                 required
               />
@@ -108,7 +118,7 @@ const AddCourseForm = (props) => {
                 selector
                 bottomSheet
                 label="Course Subject"
-                placeholder={{ label: "", value: "" }}
+                placeholder={{ label: values.subject, value: values.subject }}
                 items={subjects}
                 onPressIn={() => setTimeout(() => setFieldTouched("subject", true), 2000)}
                 onChangeText={handleChange("subject")}
@@ -169,7 +179,7 @@ const AddCourseForm = (props) => {
               </View>
               <CustomButton
                 onPress={() => handleSubmit(values)}
-                title="Add"
+                title={props.edit ? "Save" : "Add"}
                 disabled={!isValid || isSubmitting}
                 styles={{ padding: 20 }}
               />

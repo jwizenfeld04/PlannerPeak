@@ -40,6 +40,7 @@ const ModernTextInput = (props) => {
               paddingRight: 10,
               height: "100%",
             },
+            placeholder: { color: "black" },
           }}
         />
       );
@@ -59,9 +60,9 @@ const ModernTextInput = (props) => {
         alignSelf: "center",
       }}
     >
-      <View style={{flexDirection:'row'}}>
+      <View style={{ flexDirection: "row" }}>
         <CustomText text={props.label} size="s" color="grey" />
-        {props.required ? <CustomText text=' *' size="xs" color="red" /> : null}
+        {props.required ? <CustomText text=" *" size="xs" color="red" /> : null}
       </View>
       {handleTextInput()}
       <View style={{ justifyContent: "center", alignItems: "center" }}>
