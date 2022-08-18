@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { View, StyleSheet, Text, Button, Linking, Alert, SafeAreaView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Linking, Alert, SafeAreaView } from "react-native";
 import store from "../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,12 +7,14 @@ import {
   authorizeSchoology,
   resetLink,
 } from "../redux/features/schoology/schoologySlice";
-import { selectIsSchoologyAuthenticated, selectIsAppleCalendarAuthetnicated } from "../redux/features/user/userSlice";
-import Header from "../components/base/Header";
+import {
+  selectIsSchoologyAuthenticated,
+  selectIsAppleCalendarAuthetnicated,
+} from "../redux/features/user/userSlice";
 import { AppColors, AppDimensions, AppImages } from "../styles/globalStyles";
 import IntegrationIcon from "../components/base/IntegrationIcon";
 import CustomButton from "../components/base/Button";
-
+import CustomText from "../components/base/CustomText";
 
 export default function SettingScreen() {
   const dispatch = useDispatch();
@@ -57,33 +59,23 @@ export default function SettingScreen() {
   };
 
   return (
-    <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: 'white' }} />
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <View
+        style={{
+          paddingLeft: 20,
+          flex: 2,
+        }}
+      >
+        <CustomText text="Settings" font="bold" size="xl" />
+      </View>
+      <View style={{ flex: 2, padding: 15, paddingLeft: 20 }}>
+        <CustomText text="Integrations:" size={18} />
         <View
           style={{
-            justifyContent: "flex-start",
-            alignItems: "center",
-            flex: 1,
-            paddingTop: 10,
-          }}
-        >
-          <CustomButton
-            title="Logout"
-            onPress={() => {
-              store.dispatch({
-                type: "user/logoutUser",
-              });
-            }}
-          />
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
             flexDirection: "row",
             alignItems: "flex-start",
-            flex: 1,
             flexWrap: "wrap",
+            marginTop: 20,
           }}
         >
           <IntegrationIcon
@@ -91,16 +83,18 @@ export default function SettingScreen() {
             icon={AppImages.schoologyIcon}
             onPress={schoologyLoginButton}
           />
-          <IntegrationIcon isAuth={isAppleCalendarAuth} icon={AppImages.appleCalendarIcon} />
         </View>
-      </SafeAreaView>
-    </Fragment>
+      </View>
+      <View style={{ flex: 1 }}>
+        <CustomButton
+          title="Logout"
+          onPress={() => {
+            store.dispatch({
+              type: "user/logoutUser",
+            });
+          }}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});

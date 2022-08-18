@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
 import RNPickerSelect from "react-native-picker-select";
@@ -45,6 +45,8 @@ const ModernTextInput = (props) => {
       );
     } else if (props.bottomSheet) {
       return <BottomSheetTextInput style={styles.textInput} {...props} />;
+    } else if (props.date) {
+      return;
     } else {
       return <TextInput style={styles.textInput} {...props} />;
     }
@@ -52,13 +54,14 @@ const ModernTextInput = (props) => {
   return (
     <View
       style={{
-        width: BaseAppDimensions.screenWidth / 1.1,
+        width: props.width ? props.width : BaseAppDimensions.screenWidth / 1.1,
         margin: 10,
         alignSelf: "center",
       }}
     >
-      <View>
+      <View style={{flexDirection:'row'}}>
         <CustomText text={props.label} size="s" color="grey" />
+        {props.required ? <CustomText text=' *' size="xs" color="red" /> : null}
       </View>
       {handleTextInput()}
       <View style={{ justifyContent: "center", alignItems: "center" }}>

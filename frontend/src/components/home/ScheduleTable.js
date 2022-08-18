@@ -11,7 +11,7 @@ export default function ScheduleTable(props) {
       scheduledStart: "9:30",
       scheduledFinish: "10:20",
       color: "green",
-      day: "2022-08-17",
+      day: "2022-08-18",
       dueDate: "8/17/22",
       description:
         "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
@@ -22,7 +22,7 @@ export default function ScheduleTable(props) {
       scheduledStart: "11:30",
       scheduledFinish: "12:20",
       color: "red",
-      day: "2022-08-17",
+      day: "2022-08-18",
       dueDate: "8/17/22",
       description:
         "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
@@ -34,7 +34,7 @@ export default function ScheduleTable(props) {
       scheduledFinish: "2:20",
       color: "blue",
       dueDate: "8/17/22",
-      day: "2022-08-17",
+      day: "2022-08-18",
       description:
         "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },

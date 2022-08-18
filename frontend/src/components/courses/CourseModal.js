@@ -1,22 +1,24 @@
-import React, { useState, useEffect, Fragment } from "react";
-import { SafeAreaView, Modal, View, Text, TouchableOpacity, Alert } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { SafeAreaView, Modal, View, TouchableOpacity, Alert } from "react-native";
+import { useDispatch } from "react-redux";
 
 import Analytics from "./Analytics";
 import Assignments from "./Assignment";
 import ColorModal from "./ColorModal";
-import Header from "../base/Header";
 
 import { AppColors, BaseAppDimensions } from "../../styles/globalStyles";
-import styles from "./styles";
 import {
   completeAssignment,
   deleteAssignment,
 } from "../../redux/features/assignment/assignmentSlice";
+import CustomText from "../base/CustomText";
+import TouchableIcon from "../base/TouchableIcon";
+import EditCourseSheet from "./EditCourseSheet";
 
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
   const [colorSwitch, setColorSwitch] = useState(false);
+  const [editSheetVisible, setEditSheetVisible] = useState(false)
   const dispatch = useDispatch();
 
   const handleMainViewDiplay = () => {
@@ -45,7 +47,7 @@ const CourseModal = (props) => {
         text: "Confirm",
         style: "destructive",
         onPress: () => {
-          dispatch(deleteAssignment({ id: id}));
+          dispatch(deleteAssignment({ id: id }));
         },
       },
     ]);
@@ -56,75 +58,101 @@ const CourseModal = (props) => {
   };
 
   return (
-    <Fragment>
-      <Modal
-        animationType="slide"
-        visible={props.modalVisible}
-        transparent={false}
-      >
-        <SafeAreaView style={{ flex: 0 }} />
-        <SafeAreaView style={{ flex: 1 }}>
-          <Header
-            title={props.modalData.name} //required
-            titleSize={24} //default 36
-            backButton={true} // required
-            onBackButtonPress={() => {
+    <Modal animationType="slide" visible={props.modalVisible} transparent={false}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View
+          style={{
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            paddingLeft: 20,
+            paddingRight: 20,
+            flexDirection: "row",
+          }}
+        >
+          <TouchableIcon
+            name="arrow-back-outline"
+            type="ionicon"
+            color={props.modalData.color}
+            onPress={() => {
               props.onModalDismiss();
             }}
-            iconColor={AppColors.primaryAccentColor}
-            iconName2={"color-palette-outline"}
-            iconType2={"ionicon"}
-            onIconPress2={() => {
-              setColorSwitch(true);
-            }}
           />
-          <View
-            style={{
-              height: BaseAppDimensions.screenHeight / 20,
-              backgroundColor: "skyblue",
-              flexDirection: "row",
-            }}
-          >
-            <View
-              style={[
-                tab === "Assignments"
-                  ? [styles.tabContainer, styles.selectedBottomColor]
-                  : styles.tabContainer,
-              ]}
-            >
-              <TouchableOpacity onPress={() => setTab("Assignments")}>
-                <Text>Assignments</Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={[
-                tab === "Analytics"
-                  ? [styles.tabContainer, styles.selectedBottomColor]
-                  : styles.tabContainer,
-              ]}
-            >
-              <TouchableOpacity onPress={() => setTab("Analytics")}>
-                <Text>Analytics</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
-            {handleMainViewDiplay()}
-          </View>
-          <ColorModal
+          <TouchableIcon
+            name="color-palette-outline"
             color={props.modalData.color}
-            colorSwitch={colorSwitch}
-            windowHeight={BaseAppDimensions.screenHeight}
-            setColorSwitch={setColorSwitch}
-            onModalColorChange={props.onModalColorChange}
+            type="ionicon"
+            onPress={() => {
+              setEditSheetVisible(!editSheetVisible);
+            }}
           />
-        </SafeAreaView>
-      </Modal>
-    </Fragment>
+        </View>
+        <View style={{ marginTop: 5 }}>
+          <CustomText
+            text={props.modalData.name}
+            size="xl"
+            font="bold"
+            styles={{ textAlign: "center" }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            paddingTop: 20,
+            paddingBottom: 20,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderColor: "grey",
+              borderRadius: 20,
+              padding: 5,
+              width: BaseAppDimensions.screenWidth / 3,
+              alignItems: "center",
+              backgroundColor:
+                tab === "Assignments" ? AppColors.primaryAccentColor : "#F5F5F5",
+            }}
+            onPress={() => setTab("Assignments")}
+          >
+            <CustomText text="Assignments" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderColor: "grey",
+              borderRadius: 20,
+              padding: 5,
+              width: BaseAppDimensions.screenWidth / 3,
+              alignItems: "center",
+              backgroundColor:
+                tab === "Analytics" ? AppColors.primaryAccentColor : "#F5F5F5",
+            }}
+            onPress={() => setTab("Analytics")}
+          >
+            <CustomText text="Analytics" />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          {handleMainViewDiplay()}
+        </View>
+        <ColorModal
+          color={props.modalData.color}
+          colorSwitch={colorSwitch}
+          windowHeight={BaseAppDimensions.screenHeight}
+          setColorSwitch={setColorSwitch}
+          onModalColorChange={props.onModalColorChange}
+        />
+        <EditCourseSheet
+          visible={editSheetVisible}
+          onCreateModalBack={() => setEditSheetVisible(false)}
+        />
+      </SafeAreaView>
+    </Modal>
   );
 };
 

@@ -1,15 +1,5 @@
-import React, { Component, Fragment } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Button,
-  Linking,
-  TextInput,
-  SafeAreaView,
-  Modal,
-} from "react-native";
+import React from "react";
+import { SafeAreaView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserInfo } from "../redux/features/user/userSlice";
 import { useState, useEffect } from "react";
@@ -26,21 +16,14 @@ import {
 import ScrollCalendar from "../components/home/ScrollCalendar";
 import CurrentAssignment from "../components/home/CurrentAssignment";
 import ScheduleTable from "../components/home/ScheduleTable";
-import Header from "../components/base/Header";
-import {
-  AppColors,
-  AppDimensions,
-  AppFonts,
-  AppImages,
-  BaseAppDimensions,
-} from "../styles/globalStyles";
-import CustomTextInput from "../components/base/textInput/TextInput";
-import CustomButton from "../components/base/Button";
+import { AppColors, AppFonts, AppImages } from "../styles/globalStyles";
 import * as Calendar from "expo-calendar";
 import { FloatingAction } from "react-native-floating-action";
 import AddAssignmentModal from "../components/home/AddAssignmentModal";
 import AddTaskModal from "../components/home/AddTaskModal";
 import moment from "moment";
+import CustomText from "../components/base/CustomText";
+import { selectCourses } from "../redux/features/course/courseSlice";
 
 export default function HomeScreen() {
   const dispatch = useDispatch();
@@ -49,6 +32,8 @@ export default function HomeScreen() {
   const [addAssignmentVisible, setAddAssignmentVisible] = useState(false);
   const [addTaskVisible, setAddTaskVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment());
+  const courses = useSelector(selectCourses)
+  const courseNames = courses.map((obj) => ({ label: obj.name, value: obj.name }));
 
   useEffect(() => {
     dispatch(getUserInfo()); // Rerenders user info any time page renders or schoology becomes authenticated
@@ -99,10 +84,14 @@ export default function HomeScreen() {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
-      <Text style={styles.headerText}>Current Task</Text>
+      <CustomText
+        text="Current Task"
+        size={18}
+        styles={{ padding: 15, paddingLeft: 20 }}
+      />
       <CurrentAssignment />
-      <Text style={styles.headerText}>Schedule</Text>
-      <ScheduleTable selectedDate={selectedDate.format('YYYY-MM-DD')}/>
+      <CustomText text="Schedule" size={18} styles={{ padding: 15, paddingLeft: 20 }} />
+      <ScheduleTable selectedDate={selectedDate.format("YYYY-MM-DD")} />
       <FloatingAction
         actions={actions}
         color={AppColors.primaryBackgroundColor}
@@ -117,17 +106,9 @@ export default function HomeScreen() {
       <AddAssignmentModal
         visible={addAssignmentVisible}
         setVisible={setAddAssignmentVisible}
+        courses={courseNames}
       />
       <AddTaskModal visible={addTaskVisible} setVisible={setAddTaskVisible} />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerText: {
-    padding: 15,
-    paddingLeft: 20,
-    fontFamily: AppFonts.SFRegular,
-    fontSize: 18,
-  },
-});

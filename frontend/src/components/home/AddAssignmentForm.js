@@ -3,35 +3,20 @@ import { Formik } from "formik";
 import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import * as yup from "yup";
 import CustomText from "../base/CustomText";
-import ColorPalette from "react-native-color-palette";
 import { Icon } from "react-native-elements";
 import CustomButton from "../base/Button";
 import { BaseAppDimensions } from "../../styles/globalStyles";
 import ModernTextInput from "../base/ModernTextInput";
 
-const AddCourseForm = (props) => {
-  const subjects = [
-    { label: "Mathematics", value: "Mathematics" },
-    { label: "Language Arts", value: "Language Arts" },
-    { label: "Science", value: "Science" },
-    { label: "Social Studies", value: "Social Studies" },
-    { label: "Arts", value: "Arts" },
-    { label: "Technology", value: "Technology" },
-    {
-      label: "Health & Physical Education",
-      value: "Health & Physical Education",
-    },
-    { label: "Professional Development", value: "Professional Development" },
-    { label: "Other", value: "Other" },
-  ];
-
+const AddAssignmentForm = (props) => {
   const validationSchema = yup.object().shape({
     name: yup
       .string()
       .max(30, ({ max }) => `Course name must be less than ${max} characters`)
       .required("Course name is required"),
-    subject: yup.string().required("Course subject is required"),
-    color: yup.string().required("Course color is required"),
+    course: yup.string().required("Course is required"),
+    dueDate: yup.string().required("Due date is required"),
+    time: yup.string().required("Estimated time is required"),
   });
 
   const handleBorderColor = (value, error) => {
@@ -65,9 +50,10 @@ const AddCourseForm = (props) => {
           validationSchema={validationSchema}
           validateOnChange={true}
           validateOnBlur={false}
-          initialValues={{ name: "", subject: "", color: "" }}
+          initialValues={{ name: "", course: "", description: "", dueDate: "", time: "" }}
           onSubmit={(values) => {
-            props.onSubmit(values);
+            console.log(values);
+            Keyboard.dismiss();
             props.handleClosePress();
           }}
           innerRef={formikRef}
@@ -91,10 +77,10 @@ const AddCourseForm = (props) => {
                   marginBottom: 20,
                 }}
               >
-                <CustomText text="Add Course" font="bold" size="xl" />
+                <CustomText text="Add Assignment" font="bold" size="xl" />
               </View>
               <ModernTextInput
-                label="Course Name"
+                label="Name"
                 onPressIn={() => setTimeout(() => setFieldTouched("name", true), 2000)}
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
@@ -106,72 +92,77 @@ const AddCourseForm = (props) => {
               />
               <ModernTextInput
                 selector
+                required
                 bottomSheet
-                label="Course Subject"
+                label="Course"
                 placeholder={{ label: "", value: "" }}
-                items={subjects}
-                onPressIn={() => setTimeout(() => setFieldTouched("subject", true), 2000)}
-                onChangeText={handleChange("subject")}
-                onBlur={handleBlur("subject")}
-                value={values.subject}
-                error={touched.subject && errors.subject && `${errors.subject}`}
+                items={props.courses}
+                onPressIn={() => setTimeout(() => setFieldTouched("course", true), 2000)}
+                onChangeText={handleChange("course")}
+                onBlur={handleBlur("course")}
+                value={values.course}
+                error={touched.course && errors.course && `${errors.course}`}
                 borderColor={
-                  touched.subject && handleBorderColor(values.subject, errors.subject)
+                  touched.course && handleBorderColor(values.course, errors.course)
                 }
                 Icon={() => {
                   return <Icon name="chevron-down-outline" type="ionicon" color="grey" />;
                 }}
-                required
               />
 
-              <View
-                style={{
-                  width: BaseAppDimensions.screenWidth / 1.1,
-                  alignSelf: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <CustomText text="Course Color" size="s" color="grey" />
-                <CustomText text=" *" size="xs" color="red" />
-              </View>
-              <View
-                style={{
-                  width: BaseAppDimensions.screenWidth / 1.5,
-                  alignSelf: "center",
-                }}
-              >
-                <ColorPalette
-                  onChange={(e) => {
-                    handleChange("color")(e);
-                    setTimeout(() => setFieldTouched("color", true), 50);
-                  }}
-                  title=""
-                  paletteStyles={{ paddingBottom: 10 }}
-                  value={values.color}
-                  colors={[
-                    "#C0392B",
-                    "#E67E22",
-                    "#F1C40F",
-                    "#16A085",
-                    "#2980B9",
-                    "#8E44AD",
-                    "#FFC0CB",
-                    "#FA8072",
-                    "#39FF14",
-                    "#808080",
-                  ]}
+              <View style={{ flexDirection: "row", alignSelf: "center" }}>
+                <ModernTextInput
+                  width={BaseAppDimensions.screenWidth / 2.5}
+                  label="Due Date"
+                  required
+                  bottomSheet
+                  onPressIn={() =>
+                    setTimeout(() => setFieldTouched("dueDate", true), 2000)
+                  }
+                  onChangeText={handleChange("dueDate")}
+                  onBlur={handleBlur("dueDate")}
+                  value={values.dueDate}
+                  error={touched.dueDate && errors.dueDate && `${errors.dueDate}`}
+                  borderColor={
+                    touched.dueDate && handleBorderColor(values.dueDate, errors.dueDate)
+                  }
+                />
+                <ModernTextInput
+                  width={BaseAppDimensions.screenWidth / 2.2}
+                  label="Estimated Time"
+                  required
+                  bottomSheet
+                  onPressIn={() => setTimeout(() => setFieldTouched("time", true), 2000)}
+                  onChangeText={handleChange("time")}
+                  onBlur={handleBlur("time")}
+                  value={values.time}
+                  error={touched.time && errors.time && `${errors.time}`}
+                  borderColor={
+                    touched.time && handleBorderColor(values.time, errors.time)
+                  }
                 />
               </View>
-              <View style={{ alignItems: "center", width: "100%" }}>
-                {touched.color && errors.color && (
-                  <CustomText text={errors.color} error />
-                )}
-              </View>
+              <ModernTextInput
+                label="Description"
+                onPressIn={() =>
+                  setTimeout(() => setFieldTouched("description", true), 2000)
+                }
+                onChangeText={handleChange("description")}
+                onBlur={handleBlur("description")}
+                value={values.description}
+                error={
+                  touched.description && errors.description && `${errors.description}`
+                }
+                borderColor={
+                  touched.description &&
+                  handleBorderColor(values.description, errors.description)
+                }
+                bottomSheet
+              />
               <CustomButton
                 onPress={() => handleSubmit(values)}
                 title="Add"
                 disabled={!isValid || isSubmitting}
-                styles={{ padding: 20 }}
               />
             </>
           )}
@@ -181,4 +172,4 @@ const AddCourseForm = (props) => {
   );
 };
 
-export default AddCourseForm;
+export default AddAssignmentForm;

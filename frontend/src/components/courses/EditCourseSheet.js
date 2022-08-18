@@ -1,38 +1,25 @@
-import React, { useEffect, useMemo, useRef, useCallback, useState } from "react";
-import { View, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from "react-native";
-import { AppColors, AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
-import BottomSheet, {
-  BottomSheetTextInput,
-  BottomSheetBackdrop,
-} from "@gorhom/bottom-sheet";
-import AddAssignmentForm from "./AddAssignmentForm";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { createUserCourse } from "../../redux/features/course/courseSlice";
+import { useDispatch } from "react-redux";
+import { AppColors } from "../../styles/globalStyles";
+import AddCourseForm from "./AddCourseForm";
+import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 
-export default function AddAssignmentModal(props) {
-  const snapPoints = useMemo(() => ["68%"], []);
-  const bottomSheetRef = useRef();
+const EditCourseSheet = (props) => {
+  const dispatch = useDispatch();
   const [sheetIndex, setSheetIndex] = useState(-1);
+  const snapPoints = useMemo(() => ["65%"], []);
+  const bottomSheetRef = useRef();
   const handleOpenPress = () => bottomSheetRef.current.snapToIndex(0);
-
   const handleClosePress = () => {
     bottomSheetRef.current.close();
     bottomSheetRef.current.forceClose();
   };
 
-  const data = [
-    {
-      label: "15 Min",
-    },
-    {
-      label: "30 Min",
-    },
-    {
-      label: "1 Hr",
-    },
-  ];
-
-  useEffect(() => {
-    handleOpenPress();
-  }, [props.visible]);
+  const onSubmit = (courseData) => {
+    dispatch(createUserCourse(courseData));
+    props.onCreateModalBack();
+  };
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -47,13 +34,17 @@ export default function AddAssignmentModal(props) {
     []
   );
 
+  useEffect(() => {
+    handleOpenPress();
+  }, [props.visible]);
+
   return (
     <BottomSheet
       snapPoints={snapPoints}
       ref={bottomSheetRef}
+      index={-1}
       backdropComponent={renderBackdrop}
       onChange={(index) => setSheetIndex(index)}
-      index={-1}
       enablePanDownToClose={true}
       handleStyle={{
         backgroundColor: "#F5F5F5",
@@ -72,12 +63,14 @@ export default function AddAssignmentModal(props) {
       }}
       handleIndicatorStyle={{ backgroundColor: AppColors.primaryBackgroundColor }}
     >
-      <AddAssignmentForm
+      <AddCourseForm
+        onSubmit={onSubmit}
         handleOpenPress={handleOpenPress}
         bottomSheetIndex={sheetIndex}
         handleClosePress={handleClosePress}
-        courses={props.courses}
       />
     </BottomSheet>
   );
-}
+};
+
+export default EditCourseSheet;

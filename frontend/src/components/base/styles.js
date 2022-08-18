@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   },
   listItemContainer: {
     width: BaseAppDimensions.screenWidth,
+    // backgroundColor:"#F5F5F5"
   },
   buttonContainer: {
     backgroundColor: AppColors.primaryBackgroundColor,
