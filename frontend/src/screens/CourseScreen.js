@@ -173,8 +173,8 @@ export default function CourseScreen() {
         delete={deleteMode}
         onDeletePress={onDeletePress}
         onCancelPress={() => {
-          setDeleteMode(false);
           setSelected([]);
+          setDeleteMode(false);
         }}
         selected={selected}
         setSelected={setSelected}

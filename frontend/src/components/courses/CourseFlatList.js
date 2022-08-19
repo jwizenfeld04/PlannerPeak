@@ -41,7 +41,7 @@ const CourseFlatList = (props) => {
   };
 
   useEffect(() => {
-    if (props.delete && selected) {
+    if (props.delete) {
       if (selected.length !== 0) {
         setSelectedCount(selected.length);
       } else {
@@ -64,7 +64,12 @@ const CourseFlatList = (props) => {
             onPress={() => props.onDeletePress(selected)}
             selectedCount={selectedCount}
           />
-          <CancelDeleteButton onPress={props.onCancelPress} />
+          <CancelDeleteButton
+            onPress={() => {
+              props.onCancelPress();
+              setSelectedCount(0);
+            }}
+          />
         </View>
       ) : null}
       <FlatList

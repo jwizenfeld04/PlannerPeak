@@ -29,8 +29,22 @@ const AddAssignmentForm = (props) => {
     }
   };
 
+  const times = [
+    { label: "5 Min", value: "5" },
+    { label: "15 Min", value: "15" },
+    { label: "30 Min", value: "30" },
+    { label: "1 Hour", value: "60" },
+    { label: "1 Hour +", value: "90" },
+  ];
+
   const formikRef = useRef();
   const resetForm = () => formikRef.current.resetForm();
+  const touchedDateField = () =>
+    setTimeout(() => formikRef.current.setFieldTouched("dueDate", true, true), 2000);
+  const setDateField = (date) => {
+    formikRef.current.setFieldValue("dueDate", date, true);
+    touchedDateField();
+  };
 
   useEffect(() => {
     if (props.bottomSheetIndex === -1) {
@@ -117,11 +131,13 @@ const AddAssignmentForm = (props) => {
                   width={BaseAppDimensions.screenWidth / 2.5}
                   label="Due Date"
                   required
-                  bottomSheet
+                  date
                   onPressIn={() =>
                     setTimeout(() => setFieldTouched("dueDate", true), 2000)
                   }
                   onChangeText={handleChange("dueDate")}
+                  setDateField={setDateField}
+                  touchedDateField={touchedDateField}
                   onBlur={handleBlur("dueDate")}
                   value={values.dueDate}
                   error={touched.dueDate && errors.dueDate && `${errors.dueDate}`}
@@ -132,7 +148,10 @@ const AddAssignmentForm = (props) => {
                 <ModernTextInput
                   width={BaseAppDimensions.screenWidth / 2.2}
                   label="Estimated Time"
+                  selector
                   required
+                  placeholder={{ label: "", value: "" }}
+                  items={times}
                   bottomSheet
                   onPressIn={() => setTimeout(() => setFieldTouched("time", true), 2000)}
                   onChangeText={handleChange("time")}
@@ -164,7 +183,7 @@ const AddAssignmentForm = (props) => {
               <CustomButton
                 onPress={() => handleSubmit(values)}
                 title="Add"
-                disabled={!isValid || isSubmitting}
+                disabled={isSubmitting}
               />
             </>
           )}

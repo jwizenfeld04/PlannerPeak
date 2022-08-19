@@ -126,9 +126,6 @@ const AddEditCourseForm = (props) => {
                 borderColor={
                   touched.subject && handleBorderColor(values.subject, errors.subject)
                 }
-                Icon={() => {
-                  return <Icon name="chevron-down-outline" type="ionicon" color="grey" />;
-                }}
                 required
               />
 

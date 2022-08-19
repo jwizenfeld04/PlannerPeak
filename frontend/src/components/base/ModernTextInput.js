@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
+import { Icon } from "react-native-elements";
 import RNPickerSelect from "react-native-picker-select";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import CustomText from "./CustomText";
+import { AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import moment from "moment";
 
 const ModernTextInput = (props) => {
   const styles = StyleSheet.create({
@@ -15,6 +19,25 @@ const ModernTextInput = (props) => {
       borderBottomColor: props.borderColor ? props.borderColor : "grey",
     },
   });
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState("");
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    props.touchedDateField()
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    const formattedDate = moment(date).format("MM-DD-YYYY");
+    props.setDateField(formattedDate)
+    setDate(formattedDate);
+    hideDatePicker();
+  };
+
   const handleTextInput = () => {
     if (props.selector) {
       return (
@@ -22,6 +45,9 @@ const ModernTextInput = (props) => {
           {...props}
           onOpen={props.onPressIn}
           onValueChange={props.onChangeText}
+          Icon={() => {
+            return <Icon name="chevron-down-outline" type="ionicon" color="grey" />;
+          }}
           style={{
             inputIOS: {
               padding: 5,
@@ -31,7 +57,7 @@ const ModernTextInput = (props) => {
             inputIOSContainer: {
               flexDirection: "row",
               borderBottomWidth: 1,
-              borderColor: props.borderColor,
+              borderColor: props.borderColor ? props.borderColor : "grey",
               alignItems: "center",
             },
             iconContainer: {
@@ -47,7 +73,20 @@ const ModernTextInput = (props) => {
     } else if (props.bottomSheet) {
       return <BottomSheetTextInput style={styles.textInput} {...props} />;
     } else if (props.date) {
-      return;
+      return (
+        <TouchableWithoutFeedback onPress={showDatePicker}>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            isDarkModeEnabled={false}
+            textColor='black'
+      
+          />
+          <TextInput {...props} style={styles.textInput} />
+        </TouchableWithoutFeedback>
+      );
     } else {
       return <TextInput style={styles.textInput} {...props} />;
     }
