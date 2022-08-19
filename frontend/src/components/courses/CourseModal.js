@@ -98,12 +98,9 @@ const CourseModal = (props) => {
           />
         </View>
         <View style={{ marginTop: 5 }}>
-          <CustomText
-            text={props.modalData.name}
-            size="xl"
-            font="bold"
-            styles={{ textAlign: "center" }}
-          />
+          <CustomText size="xl" font="bold" styles={{ textAlign: "center" }}>
+            {props.modalData.name}
+          </CustomText>
         </View>
         <View
           style={{
@@ -126,7 +123,7 @@ const CourseModal = (props) => {
             }}
             onPress={() => setTab("Assignments")}
           >
-            <CustomText text="Assignments" />
+            <CustomText>Assignments</CustomText>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -141,7 +138,7 @@ const CourseModal = (props) => {
             }}
             onPress={() => setTab("Analytics")}
           >
-            <CustomText text="Analytics" />
+            <CustomText>Analytics</CustomText>
           </TouchableOpacity>
         </View>
         <View

@@ -66,10 +66,12 @@ export default function SettingScreen() {
           flex: 2,
         }}
       >
-        <CustomText text="Settings" font="bold" size="xl" />
+        <CustomText font="bold" size="xl">
+          Settings
+        </CustomText>
       </View>
       <View style={{ flex: 2, padding: 15, paddingLeft: 20 }}>
-        <CustomText text="Integrations:" size={18} />
+        <CustomText size={18}>Integrations:</CustomText>
         <View
           style={{
             flexDirection: "row",

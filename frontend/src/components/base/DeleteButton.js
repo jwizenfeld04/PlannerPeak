@@ -16,11 +16,12 @@ export default function DeleteButton(props) {
         disabled={props.selectedCount === 0 ? true : false}
       >
         <CustomText
-          text={`Delete (${props.selectedCount})`}
           size="l"
           font="bold"
           color={props.selectedCount === 0 ? "black" : AppColors.errorColor}
-        />
+        >
+          {`Delete (${props.selectedCount})`}
+        </CustomText>
       </TouchableOpacity>
     </View>
   );

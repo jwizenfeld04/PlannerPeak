@@ -8,17 +8,12 @@ export default function ScheduleBlock(props) {
   return (
     <View style={{ flexDirection: "row", height: BaseAppDimensions.screenHeight / 7 }}>
       <View style={{ width: BaseAppDimensions.screenWidth / 9.3 }}>
-        <CustomText
-          text={props.scheduledStart}
-          font="bold"
-          size="s"
-          styles={{ paddingBottom: 5 }}
-        />
-        <CustomText
-          text={props.scheduledFinish}
-          size="xs"
-          styles={{ paddingBottom: 5, color: "grey" }}
-        />
+        <CustomText font="bold" size="s" styles={{ paddingBottom: 5 }}>
+          {props.scheduledStart}
+        </CustomText>
+        <CustomText size="xs" styles={{ paddingBottom: 5, color: "grey" }}>
+          {props.scheduledFinish}
+        </CustomText>
       </View>
       <View style={styles.iconContainer}>
         <Icon name="circle" type="entypo" color={props.color} size={14} />
@@ -26,19 +21,19 @@ export default function ScheduleBlock(props) {
       </View>
       <TouchableOpacity style={styles.taskContainer}>
         <View style={{ width: BaseAppDimensions.screenWidth / 1.7 }}>
-          <CustomText text={props.name} font="bold" size="s" styles={{ padding: 5 }} />
+          <CustomText font="bold" size="s" styles={{ padding: 5 }}>
+            {props.name}
+          </CustomText>
           <CustomText
-            text={props.description}
             size="xs"
             numberOfLines={2}
             styles={{ padding: 5, paddingRight: 10 }}
-          />
-          <CustomText
-            text={`Due Date: ${props.dueDate}`}
-            size="xs"
-            font="italic"
-            styles={{ color: "red", padding: 4 }}
-          />
+          >
+            {props.description}
+          </CustomText>
+          <CustomText size="xs" font="italic" styles={{ color: "red", padding: 4 }}>
+            Due Date: {props.dueDate}
+          </CustomText>
         </View>
       </TouchableOpacity>
     </View>

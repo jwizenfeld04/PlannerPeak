@@ -77,7 +77,9 @@ const AddAssignmentForm = (props) => {
                   marginBottom: 20,
                 }}
               >
-                <CustomText text="Add Assignment" font="bold" size="xl" />
+                <CustomText font="bold" size="xl">
+                  Add Assignment
+                </CustomText>
               </View>
               <ModernTextInput
                 label="Name"

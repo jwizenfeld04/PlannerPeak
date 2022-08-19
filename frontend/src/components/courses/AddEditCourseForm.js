@@ -96,11 +96,9 @@ const AddEditCourseForm = (props) => {
                   marginBottom: 20,
                 }}
               >
-                <CustomText
-                  text={props.edit ? "Edit Course" : "Add Course"}
-                  font="bold"
-                  size="xl"
-                />
+                <CustomText font="bold" size="xl">
+                  {props.edit ? "Edit Course" : "Add Course"}
+                </CustomText>
               </View>
               <ModernTextInput
                 label="Course Name"
@@ -141,8 +139,13 @@ const AddEditCourseForm = (props) => {
                   flexDirection: "row",
                 }}
               >
-                <CustomText text="Course Color" size="s" color="grey" />
-                <CustomText text=" *" size="xs" color="red" />
+                <CustomText size="s" color="grey">
+                  Course Color
+                </CustomText>
+                <CustomText size="xs" color="red">
+                  {" "}
+                  *
+                </CustomText>
               </View>
               <View
                 style={{
@@ -174,7 +177,7 @@ const AddEditCourseForm = (props) => {
               </View>
               <View style={{ alignItems: "center", width: "100%" }}>
                 {touched.color && errors.color && (
-                  <CustomText text={errors.color} error />
+                  <CustomText error>{errors.color}</CustomText>
                 )}
               </View>
               <CustomButton

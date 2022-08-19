@@ -22,12 +22,12 @@ export default function ScrollCalendar(props) {
     <View style={{ height: 130 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ paddingLeft: 20 }}>
-          <CustomText text="Today" size={18} color="grey" />
-          <CustomText
-            text={`${calendarStart.format("dddd, D MMMM")}`}
-            size="l"
-            font="bold"
-          />
+          <CustomText size={18} color="grey">
+            Today
+          </CustomText>
+          <CustomText size="l" font="bold">
+            {calendarStart.format("dddd, D MMMM")}
+          </CustomText>
         </View>
         <View style={{ paddingRight: 25, paddingTop: 12 }}>
           <TouchableIcon name="notifications" type="ionicon" />

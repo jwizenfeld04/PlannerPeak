@@ -14,9 +14,9 @@ export default function CustomListItem(props) {
   };
   const grade = () => {
     if (props.grade) {
-      return <CustomText text={`${props.grade}%`} color={props.leadingIconColor} />;
+      return <CustomText color={props.leadingIconColor}>{props.grade}%</CustomText>;
     } else {
-      return <CustomText text="N/A" color={props.leadingIconColor} />;
+      return <CustomText color={props.leadingIconColor}>åN/A</CustomText>;
     }
   };
 

@@ -14,7 +14,9 @@ export default function CourseHeader(props) {
         marginBottom: 10,
       }}
     >
-      <CustomText text="Courses" font="bold" size="xl" />
+      <CustomText font="bold" size="xl">
+        Courses
+      </CustomText>
       <View
         style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}
       >

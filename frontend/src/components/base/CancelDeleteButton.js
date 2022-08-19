@@ -11,7 +11,9 @@ export default function CancelDeleteButton(props) {
       }}
     >
       <TouchableOpacity onPress={() => props.onPress(false)}>
-        <CustomText text="Cancel" size="l" color={AppColors.primaryBackgroundColor} />
+        <CustomText size="l" color={AppColors.primaryBackgroundColor}>
+          Cancel
+        </CustomText>
       </TouchableOpacity>
     </View>
   );

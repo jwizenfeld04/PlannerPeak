@@ -13,6 +13,7 @@ import CustomText from "../components/base/CustomText";
 import { selectCourses } from "../redux/features/course/courseSlice";
 import CustomBottomSheet from "../components/base/CustomBottomSheet";
 import AddAssignmentForm from "../components/home/AddAssignmentForm";
+import AddTaskForm from "../components/home/AddTaskForm";
 
 import { getUserInfo } from "../redux/features/user/userSlice";
 import { selectIsVerified } from "../redux/features/schoology/schoologySlice";
@@ -67,13 +68,13 @@ export default function HomeScreen() {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
-      <CustomText
-        text="Current Task"
-        size={18}
-        styles={{ padding: 15, paddingLeft: 20 }}
-      />
+      <CustomText size={18} styles={{ padding: 15, paddingLeft: 20 }}>
+        Current Task
+      </CustomText>
       <CurrentAssignment />
-      <CustomText text="Schedule" size={18} styles={{ padding: 15, paddingLeft: 20 }} />
+      <CustomText size={18} styles={{ padding: 15, paddingLeft: 20 }}>
+        Schedule
+      </CustomText>
       <ScheduleTable selectedDate={selectedDate.format("YYYY-MM-DD")} />
       <FloatingAction
         actions={actions}
@@ -89,10 +90,9 @@ export default function HomeScreen() {
       <CustomBottomSheet visible={addAssignmentVisible} snapPoints={["68%"]}>
         <AddAssignmentForm courses={courseNames} />
       </CustomBottomSheet>
-      <CustomBottomSheet
-        visible={addTaskVisible}
-        snapPoints={["68%"]}
-      ></CustomBottomSheet>
+      <CustomBottomSheet visible={addTaskVisible} snapPoints={["68%"]}>
+        <AddTaskForm />
+      </CustomBottomSheet>
     </SafeAreaView>
   );
 }

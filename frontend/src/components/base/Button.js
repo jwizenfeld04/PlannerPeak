@@ -15,13 +15,9 @@ export default function CustomButton(props) {
         }}
         disabled={props.disabled}
       >
-        <CustomText
-          text={props.title}
-          size="s"
-          styles={{ textAlign: "center" }}
-          color="white"
-          font="bold"
-        />
+        <CustomText size="s" styles={{ textAlign: "center" }} color="white" font="bold">
+          {props.title}
+        </CustomText>
       </TouchableOpacity>
     </View>
   );

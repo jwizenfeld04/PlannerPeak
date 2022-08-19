@@ -61,12 +61,19 @@ const ModernTextInput = (props) => {
       }}
     >
       <View style={{ flexDirection: "row" }}>
-        <CustomText text={props.label} size="s" color="grey" />
-        {props.required ? <CustomText text=" *" size="xs" color="red" /> : null}
+        <CustomText size="s" color="grey">
+          {props.label}
+        </CustomText>
+        {props.required ? (
+          <CustomText size="xs" color="red">
+            {" "}
+            *
+          </CustomText>
+        ) : null}
       </View>
       {handleTextInput()}
       <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <CustomText text={props.error} error />
+        <CustomText error>{props.error}</CustomText>
       </View>
     </View>
   );
