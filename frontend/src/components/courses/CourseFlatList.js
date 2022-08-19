@@ -1,20 +1,6 @@
-import {
-  StyleSheet,
-  FlatList,
-  Text,
-  View,
-  TouchableOpacity,
-  TextPropTypes,
-  Platform,
-} from "react-native";
-import { ListItem, Icon, Avatar } from "react-native-elements";
-import React, { useState } from "react";
-import {
-  AppColors,
-  AppImages,
-  AppDimensions,
-  BaseAppDimensions,
-} from "../../styles/globalStyles";
+import { FlatList, View } from "react-native";
+import React from "react";
+import { AppDimensions } from "../../styles/globalStyles";
 import CustomListItem from "../base/ListItem";
 
 const CourseFlatList = (props) => {

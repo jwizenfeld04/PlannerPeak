@@ -1,12 +1,5 @@
-import React, { useState, useEffect, Fragment } from "react";
-import {
-  SafeAreaView,
-  Text,
-  ActionSheetIOS,
-  View,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { SafeAreaView, ActionSheetIOS, Alert } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectIsSchoologyAuthenticated } from "../redux/features/user/userSlice";
@@ -17,6 +10,7 @@ import {
   updateUserCoursePrefrences,
   updateSortMethod,
   selectCourseSortMethod,
+  createUserCourse,
 } from "../redux/features/course/courseSlice";
 import {
   getCourseSpecificAssignments,
@@ -24,27 +18,28 @@ import {
 } from "../redux/features/assignment/assignmentSlice";
 import { getSchoologyAssignments } from "../redux/features/schoology/schoologySlice";
 import CourseFlatList from "../components/courses/CourseFlatList";
-import CreateCourseModal from "../components/courses/CreateCourseModal";
 import CourseModal from "../components/courses/CourseModal";
 import DeleteModeFlatList from "../components/courses/DeleteModeFlatlist";
 import { getCourses } from "../components/api/getCourses";
 
-import { AppColors, AppFonts } from "../styles/globalStyles";
-import TouchableIcon from "../components/base/TouchableIcon";
 import CourseHeader from "../components/courses/CourseHeader";
+import CustomBottomSheet from "../components/base/CustomBottomSheet";
+import AddEditCourseForm from "../components/courses/AddEditCourseForm";
 
 export default function CourseScreen() {
   const dispatch = useDispatch();
+
   const courses = useSelector(selectCourses); // Gets array of objects for all user courses
   const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated); // Gets boolean of whether their Schoology account is authenticated or not
   const courseSpecficAssignments = useSelector(selectCourseSpecficAssignments);
-  const [isRefreshing, setIsRefreshing] = useState(false); // Used for pulldown refresh
-  const [modalVisible, setModalVisible] = useState(false);
-  const [createModalVisible, setCreateModalVisible] = useState(false);
-  const [modalData, setModalData] = useState({});
-  const getAllCourses = getCourses(dispatch);
   const sort = useSelector(selectCourseSortMethod);
-  const [editPriority, setEditPriority] = useState(false);
+
+  const getAllCourses = getCourses(dispatch);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [addCourseVisible, setAddCourseVisible] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false); // Used for pulldown refresh
   const [deleteMode, setDeleteMode] = useState(false);
 
   const handleOnCoursePress = (item) => {
@@ -78,18 +73,12 @@ export default function CourseScreen() {
     }));
   };
 
-  // Retrieves all courses any time the tab renders or user signs in with Schoology
   useEffect(() => {
-    if (createModalVisible === false) {
-      getAllCourses(isSchoologyAuthenticated);
-    }
-  }, [isSchoologyAuthenticated, createModalVisible]);
-
-  useEffect(() => {
+    getAllCourses(isSchoologyAuthenticated);
     if (Object.keys(modalData).length !== 0) {
       dispatch(getCourseSpecificAssignments(modalData));
     }
-  }, [modalData]);
+  }, [modalData, isSchoologyAuthenticated]);
 
   // Retreives all courses on pull-down refresh; this function is passed into the flatlist
   const onRefresh = () => {
@@ -102,21 +91,17 @@ export default function CourseScreen() {
   const onActionSheetPress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ["Sort Courses", "Edit Course Priority", "Delete Courses", "Cancel"],
+        options: ["Sort Courses", "Delete Courses", "Cancel"],
         title: "Courses",
-        cancelButtonIndex: 3,
+        cancelButtonIndex: 2,
         userInterfaceStyle: "light",
-        destructiveButtonIndex: 3,
+        destructiveButtonIndex: 2,
       },
       (buttonIndex) => {
         if (buttonIndex === 0) {
           onSortPress();
         } else if (buttonIndex === 1) {
-          setEditPriority(true);
-        } else if (buttonIndex === 2) {
           setDeleteMode(true);
-        } else if (buttonIndex === 2) {
-          // cancel action
         }
       }
     );
@@ -142,16 +127,6 @@ export default function CourseScreen() {
         }
       }
     );
-  };
-
-  const handleHeaderTitle = () => {
-    if (deleteMode) {
-      return "Delete Mode";
-    } else if (editPriority) {
-      return "Edit Priority";
-    } else {
-      return "Courses";
-    }
   };
 
   const onDeletePress = (selected) => {
@@ -205,13 +180,18 @@ export default function CourseScreen() {
     }
   };
 
+  const onAddCourseSubmit = (courseData) => {
+    dispatch(createUserCourse(courseData));
+    setAddCourseVisible(false);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       {!deleteMode ? (
         <CourseHeader
-          setCreateModalVisible={setCreateModalVisible}
+          setAddCourseVisible={setAddCourseVisible}
           onActionSheetPress={onActionSheetPress}
-          createModalVisible={createModalVisible}
+          addCourseVisible={addCourseVisible}
         />
       ) : null}
       {handleFlatListDisplay()}
@@ -223,10 +203,9 @@ export default function CourseScreen() {
         onModalDismiss={onModalDismiss}
         onModalColorChange={onModalColorChange}
       />
-      <CreateCourseModal
-        visible={createModalVisible}
-        onCreateModalBack={() => setCreateModalVisible(false)}
-      />
+      <CustomBottomSheet visible={addCourseVisible} snapPoints={["65%"]}>
+        <AddEditCourseForm onSubmit={onAddCourseSubmit} />
+      </CustomBottomSheet>
     </SafeAreaView>
   );
 }

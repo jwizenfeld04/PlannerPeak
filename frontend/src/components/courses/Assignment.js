@@ -1,9 +1,16 @@
-import { Text, View, FlatList, Animated, TouchableOpacity } from "react-native";
-import { ListItem, Icon } from "react-native-elements";
+import {
+  Text,
+  View,
+  FlatList,
+  Animated,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { Icon } from "react-native-elements";
 import { Swipeable, GestureHandlerRootView } from "react-native-gesture-handler";
 import moment from "moment";
 import ExpandableListItem from "../base/ExpandableListItem";
-import styles from "./styles";
+import { BaseAppDimensions } from "../../styles/globalStyles";
 
 export default function Assignments(props) {
   const handleAssignmentListEmpty = () => {
@@ -101,7 +108,9 @@ export default function Assignments(props) {
               renderRightActions={(progress, dragx) =>
                 RenderRight(progress, dragx, item.id, item.name)
               }
-              renderLeftActions={(progress, dragx) => RenderLeft(progress, dragx, item.id)}
+              renderLeftActions={(progress, dragx) =>
+                RenderLeft(progress, dragx, item.id)
+              }
               overshootRight={false}
               overshootLeft={false}
               friction={2}
@@ -126,3 +135,17 @@ export default function Assignments(props) {
     />
   );
 }
+
+const styles = StyleSheet.create({
+  swipeableIconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 15,
+    marginBottom: 5,
+    width: BaseAppDimensions.screenWidth / 6,
+    flex: 1,
+    shadowOffset: { height: 2, width: -2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+  },
+});

@@ -1,30 +1,22 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { updateUserCourse } from "../../redux/features/course/courseSlice";
-import { useDispatch } from "react-redux";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+  cloneElement,
+} from "react";
 import { AppColors } from "../../styles/globalStyles";
-import AddCourseForm from "./AddCourseForm";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 
-const EditCourseSheet = (props) => {
-  const dispatch = useDispatch();
+const CustomBottomSheet = (props) => {
   const [sheetIndex, setSheetIndex] = useState(-1);
-  const snapPoints = useMemo(() => ["65%"], []);
+  const snapPoints = useMemo(() => props.snapPoints, []);
   const bottomSheetRef = useRef();
   const handleOpenPress = () => bottomSheetRef.current.snapToIndex(0);
   const handleClosePress = () => {
     bottomSheetRef.current.close();
     bottomSheetRef.current.forceClose();
-  };
-
-  const onSubmit = (courseData) => {
-    courseData.id = props.course.id;
-    dispatch(updateUserCourse(courseData));
-    props.setModalData({
-      name: courseData.name,
-      subject: courseData.subject,
-      color: courseData.color,
-    });
-    props.onCreateModalBack();
   };
 
   const renderBackdrop = useCallback(
@@ -69,16 +61,15 @@ const EditCourseSheet = (props) => {
       }}
       handleIndicatorStyle={{ backgroundColor: AppColors.primaryBackgroundColor }}
     >
-      <AddCourseForm
-        edit
-        course={props.course}
-        onSubmit={onSubmit}
-        handleOpenPress={handleOpenPress}
-        bottomSheetIndex={sheetIndex}
-        handleClosePress={handleClosePress}
-      />
+      {props.children
+        ? cloneElement(props.children, {
+            handleOpen: handleOpenPress,
+            bottomSheetIndex: sheetIndex,
+            handleClose: handleClosePress,
+          })
+        : null}
     </BottomSheet>
   );
 };
 
-export default EditCourseSheet;
+export default CustomBottomSheet;

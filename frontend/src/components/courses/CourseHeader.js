@@ -30,7 +30,7 @@ export default function CourseHeader(props) {
           type="ionicon"
           size={36}
           style={{ paddingRight: 15 }}
-          onPress={() => props.setCreateModalVisible(!props.createModalVisible)}
+          onPress={() => props.setAddCourseVisible(!props.addCourseVisible)}
         />
       </View>
     </View>

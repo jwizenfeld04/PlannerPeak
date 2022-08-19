@@ -9,7 +9,7 @@ import CustomButton from "../base/Button";
 import { BaseAppDimensions } from "../../styles/globalStyles";
 import ModernTextInput from "../base/ModernTextInput";
 
-const AddCourseForm = (props) => {
+const AddEditCourseForm = (props) => {
   const subjects = [
     { label: "Mathematics", value: "Mathematics", key: "1" },
     { label: "Language Arts", value: "Language Arts", key: "2" },
@@ -58,7 +58,7 @@ const AddCourseForm = (props) => {
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
-        props.handleOpenPress();
+        props.handleOpen();
       }}
     >
       <View style={{ height: "100%", width: "100%" }}>
@@ -73,7 +73,7 @@ const AddCourseForm = (props) => {
           }}
           onSubmit={(values) => {
             props.onSubmit(values);
-            props.handleClosePress();
+            props.handleClose();
           }}
           innerRef={formikRef}
         >
@@ -191,4 +191,4 @@ const AddCourseForm = (props) => {
   );
 };
 
-export default AddCourseForm;
+export default AddEditCourseForm;

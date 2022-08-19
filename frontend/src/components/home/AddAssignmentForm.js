@@ -42,7 +42,7 @@ const AddAssignmentForm = (props) => {
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
-        props.handleOpenPress();
+        props.handleOpen();
       }}
     >
       <View style={{ height: "100%", width: "100%" }}>
@@ -54,7 +54,7 @@ const AddAssignmentForm = (props) => {
           onSubmit={(values) => {
             console.log(values);
             Keyboard.dismiss();
-            props.handleClosePress();
+            props.handleClose();
           }}
           innerRef={formikRef}
         >

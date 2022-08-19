@@ -4,20 +4,20 @@ import { useDispatch } from "react-redux";
 
 import Analytics from "./Analytics";
 import Assignments from "./Assignment";
-import ColorModal from "./ColorModal";
+import CustomText from "../base/CustomText";
+import TouchableIcon from "../base/TouchableIcon";
+import AddEditCourseForm from "./AddEditCourseForm";
+import CustomBottomSheet from "../base/CustomBottomSheet";
 
 import { AppColors, BaseAppDimensions } from "../../styles/globalStyles";
 import {
   completeAssignment,
   deleteAssignment,
 } from "../../redux/features/assignment/assignmentSlice";
-import CustomText from "../base/CustomText";
-import TouchableIcon from "../base/TouchableIcon";
-import EditCourseSheet from "./EditCourseSheet";
+import { updateUserCourse } from "../../redux/features/course/courseSlice";
 
 const CourseModal = (props) => {
   const [tab, setTab] = useState("Assignments");
-  const [colorSwitch, setColorSwitch] = useState(false);
   const [editSheetVisible, setEditSheetVisible] = useState(false);
   const dispatch = useDispatch();
 
@@ -55,6 +55,17 @@ const CourseModal = (props) => {
 
   const handleAssignmentComplete = (id) => {
     dispatch(completeAssignment({ id: id }));
+  };
+
+  const onEditCourseSubmit = (courseData) => {
+    courseData.id = props.modalData.id;
+    dispatch(updateUserCourse(courseData));
+    props.setModalData({
+      name: courseData.name,
+      subject: courseData.subject,
+      color: courseData.color,
+    });
+    setEditSheetVisible(false);
   };
 
   return (
@@ -140,19 +151,14 @@ const CourseModal = (props) => {
         >
           {handleMainViewDiplay()}
         </View>
-        <ColorModal
-          color={props.modalData.color}
-          colorSwitch={colorSwitch}
-          windowHeight={BaseAppDimensions.screenHeight}
-          setColorSwitch={setColorSwitch}
-          onModalColorChange={props.onModalColorChange}
-        />
-        <EditCourseSheet
-          visible={editSheetVisible}
-          onCreateModalBack={() => setEditSheetVisible(false)}
-          course={props.modalData}
-          setModalData={props.setModalData}
-        />
+        <CustomBottomSheet visible={editSheetVisible} snapPoints={["65%"]}>
+          <AddEditCourseForm
+            edit
+            onSubmit={onEditCourseSubmit}
+            course={props.modalData}
+            setModalData={props.setModalData}
+          />
+        </CustomBottomSheet>
       </SafeAreaView>
     </Modal>
   );
