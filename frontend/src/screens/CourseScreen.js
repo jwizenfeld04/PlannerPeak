@@ -19,7 +19,6 @@ import {
 import { getSchoologyAssignments } from "../redux/features/schoology/schoologySlice";
 import CourseFlatList from "../components/courses/CourseFlatList";
 import CourseModal from "../components/courses/CourseModal";
-import DeleteModeFlatList from "../components/courses/DeleteModeFlatlist";
 import { getCourses } from "../components/api/getCourses";
 
 import CourseHeader from "../components/courses/CourseHeader";
@@ -41,6 +40,7 @@ export default function CourseScreen() {
   const [modalData, setModalData] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false); // Used for pulldown refresh
   const [deleteMode, setDeleteMode] = useState(false);
+  let [selected, setSelected] = useState([]); // For Delete Mode
 
   const handleOnCoursePress = (item) => {
     setModalData({
@@ -141,6 +141,7 @@ export default function CourseScreen() {
         text: "Confirm",
         style: "destructive",
         onPress: () => {
+          setSelected([]);
           handleDelete(ids);
         },
       },
@@ -152,32 +153,6 @@ export default function CourseScreen() {
       dispatch(deleteUserCourse({ id: id }));
     });
     setDeleteMode(false);
-  };
-
-  const handleFlatListDisplay = () => {
-    if (deleteMode) {
-      return (
-        <DeleteModeFlatList
-          courses={courses}
-          onCoursePress={handleOnCoursePress}
-          sort={sort}
-          modalData={modalData}
-          onDeletePress={onDeletePress}
-          onCancelPress={() => setDeleteMode(false)}
-        />
-      );
-    } else {
-      return (
-        <CourseFlatList
-          onRefresh={onRefresh}
-          isRefreshing={isRefreshing}
-          courses={courses}
-          onCoursePress={handleOnCoursePress}
-          sort={sort}
-          modalData={modalData}
-        />
-      );
-    }
   };
 
   const onAddCourseSubmit = (courseData) => {
@@ -194,7 +169,22 @@ export default function CourseScreen() {
           addCourseVisible={addCourseVisible}
         />
       ) : null}
-      {handleFlatListDisplay()}
+      <CourseFlatList
+        delete={deleteMode}
+        onDeletePress={onDeletePress}
+        onCancelPress={() => {
+          setDeleteMode(false);
+          setSelected([]);
+        }}
+        selected={selected}
+        setSelected={setSelected}
+        onRefresh={onRefresh}
+        isRefreshing={isRefreshing}
+        courses={courses}
+        onCoursePress={handleOnCoursePress}
+        sort={sort}
+        modalData={modalData}
+      />
       <CourseModal
         modalVisible={modalVisible}
         modalData={modalData}
