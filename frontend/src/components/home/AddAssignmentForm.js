@@ -33,8 +33,18 @@ const AddAssignmentForm = (props) => {
     { label: "5 Min", value: "5" },
     { label: "15 Min", value: "15" },
     { label: "30 Min", value: "30" },
+    { label: "45 Min", value: "45" },
     { label: "1 Hour", value: "60" },
-    { label: "1 Hour +", value: "90" },
+    { label: "1 1/2 Hour", value: "90" },
+    { label: "2 Hours", value: "120" },
+    { label: "3 Hours", value: "180" },
+    { label: "4 Hours", value: "240" },
+    { label: "5 Hours", value: "300" },
+    { label: "6 Hours", value: "360" },
+    { label: "7 Hours", value: "420" },
+    { label: "8 Hours", value: "480" },
+    { label: "9 Hours", value: "540" },
+    { label: "10 Hours", value: "600" },
   ];
 
   const formikRef = useRef();
