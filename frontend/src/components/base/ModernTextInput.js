@@ -84,7 +84,7 @@ const ModernTextInput = (props) => {
             textColor='black'
       
           />
-          <TextInput {...props} style={styles.textInput} />
+          <TextInput {...props} editable={false} style={styles.textInput} />
         </TouchableWithoutFeedback>
       );
     } else {
