@@ -43,9 +43,9 @@ class CustomUser(AbstractUser):
         return self.email
 
 
-
 def assign_course_color():
     return random.choice(COLOR_CHOICES)
+
 
 class Course(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
@@ -61,7 +61,7 @@ class Course(SafeDeleteModel):
     priority = models.IntegerField(default=1)
     notifications = models.BooleanField(default=True)
 
-    #Queries soft deleted objects in filter queries
+    # Queries soft deleted objects in filter queries
     objects = CustomSafeDeleteManager()
 
     def number_of_assignments(self):
@@ -75,8 +75,6 @@ class Course(SafeDeleteModel):
         for assignment in assignments:
             total_minutes = total_minutes + assignment.total_study_minutes()
         return total_minutes / len(assignments)
-
-        
 
     def __str__(self):
         return self.name
@@ -107,6 +105,7 @@ class Assignment(SafeDeleteModel):
     is_completed = models.BooleanField(default=False)
     completed_date = models.DateTimeField(blank=True, null=True)
     is_schoology = models.BooleanField(default=False)
+    estimated_time = models.IntegerField(blank=True, null=True)
 
     objects = CustomSafeDeleteManager()
 
@@ -129,6 +128,28 @@ class Assignment(SafeDeleteModel):
         return self.name
 
 
+class Task(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE_CASCADE
+
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+    description = models.TextField(blank=True)
+    start_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField()
+    is_completed = models.BooleanField(default=False)
+    completed_date = models.DateTimeField(blank=True, null=True)
+
+    objects = CustomSafeDeleteManager()
+
+    def update_completed_date(self):
+        current_datetime = datetime.now()
+        self.completed_date = current_datetime
+        self.save(update_fields=['completed_date'])
+
+    def __str__(self):
+        return self.name
+
+
 class AssignmentSchedule(SafeDeleteModel):
     _safedelete_policy = SOFT_DELETE_CASCADE
 
@@ -140,12 +161,15 @@ class AssignmentSchedule(SafeDeleteModel):
         return self.assignment.name + " Schedule Interval"
 
     def total_time(self):
-        total_time = round((self.scheduled_finish - self.scheduled_start).total_seconds() / 60.0)
+        total_time = round(
+            (self.scheduled_finish - self.scheduled_start).total_seconds() / 60.0)
         return total_time
+
 
 class AppleCalendarIds(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     calendar_id = models.CharField(max_length=100)
+
 
 class AppleCalendarEvents(models.Model):
     calendar = models.ForeignKey(AppleCalendarIds, on_delete=models.CASCADE)
@@ -158,8 +182,6 @@ class AppleCalendarEvents(models.Model):
     organizer = models.CharField(max_length=100)
     timezone = models.CharField(max_length=40)
     url = models.CharField(max_length=100)
-    
-
 
 
 # class IndividualTimeBlock(models.Model):

@@ -13,7 +13,12 @@ const CustomBottomSheet = (props) => {
   const [sheetIndex, setSheetIndex] = useState(-1);
   const snapPoints = useMemo(() => props.snapPoints, []);
   const bottomSheetRef = useRef();
-  const handleOpenPress = () => bottomSheetRef.current.snapToIndex(0);
+  const handleOpenPress = () => {
+    bottomSheetRef.current.snapToIndex(0);
+    if (props.openPress) {
+      props.handleOpenPress();
+    }
+  };
   const handleClosePress = () => {
     bottomSheetRef.current.close();
     bottomSheetRef.current.forceClose();
@@ -43,6 +48,11 @@ const CustomBottomSheet = (props) => {
       index={-1}
       backdropComponent={renderBackdrop}
       onChange={(index) => setSheetIndex(index)}
+      onClose={() => {
+        if (props.closePress) {
+          props.handleClosePress();
+        }
+      }}
       enablePanDownToClose={true}
       handleStyle={{
         backgroundColor: "#F5F5F5",

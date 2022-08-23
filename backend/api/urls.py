@@ -1,5 +1,7 @@
 from django.urls import path, register_converter
 from django.urls.conf import include
+
+from .views.taskViews import *
 from .views.schoologyViews import *
 from .views.courseViews import *
 from .views.assignmentViews import *
@@ -48,4 +50,8 @@ urlpatterns = [
          name='password_reset_done'),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('create-task/', UserCreateTaskView.as_view(), name='create_task'),
+    path('update-task/<int:task_id>',
+         UserUpdateTaskView.as_view(), name='update_task'),
+    path('user-history/', UserHistoryView.as_view(), name='history')
 ]

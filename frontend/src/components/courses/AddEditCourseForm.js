@@ -11,7 +11,7 @@ import ModernTextInput from "../base/ModernTextInput";
 
 const AddEditCourseForm = (props) => {
   const subjects = [
-    { label: "Mathematics", value: "Mathematics", key: "1" },
+    { label: "Mathematics", value: "Mathematics", key: "10" },
     { label: "Language Arts", value: "Language Arts", key: "2" },
     { label: "Science", value: "Science", key: "3" },
     { label: "Social Studies", value: "Social Studies", key: "4" },
@@ -116,7 +116,7 @@ const AddEditCourseForm = (props) => {
                 selector
                 bottomSheet
                 label="Course Subject"
-                placeholder={{ label: values.subject, value: values.subject }}
+                placeholder={{ label: values.subject, value: values.subject, key: "1" }}
                 items={subjects}
                 onPressIn={() => setTimeout(() => setFieldTouched("subject", true), 2000)}
                 onChangeText={handleChange("subject")}

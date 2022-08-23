@@ -69,7 +69,6 @@ class UserAssignmentView(APIView):
                 data.append(self.serializer_class(assignments, many=True).data)
         return Response(data, status=HTTP_200_OK)
 
-
 class UserSpecificAssignmentView(APIView):
     serializer_class = AssignmentSerializer
     authentication_classes = [authentication.TokenAuthentication]

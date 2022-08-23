@@ -103,7 +103,7 @@ export default function Assignments(props) {
       contentContainerStyle={{ alignItems: "center", flexGrow: 1 }}
       renderItem={({ item }) => {
         return (
-          <GestureHandlerRootView>
+          <GestureHandlerRootView key={item.id}>
             <Swipeable
               renderRightActions={(progress, dragx) =>
                 RenderRight(progress, dragx, item.id, item.name)

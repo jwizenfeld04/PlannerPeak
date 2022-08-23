@@ -1,3 +1,4 @@
+from numpy import source
 from .models import *
 from rest_framework import serializers
 from django.db import transaction
@@ -78,10 +79,12 @@ class CourseMeetingDaySerializer(serializers.ModelSerializer):
 
 
 class AssignmentSerializer(serializers.ModelSerializer):
+    course_name = serializers.CharField(source='course.name', allow_null=True, read_only=True)
+
     class Meta:
         model = Assignment
-        fields = ['id', 'course', 'name', 'description', 'start_date',
-                  'due_date', 'grade', 'schoology_assignment_id', 'is_schoology', 'is_completed', 'completed_date', 'max_points']
+        fields = ['id', 'course_name', 'name', 'description', 'start_date',
+                  'due_date', 'grade', 'schoology_assignment_id', 'is_schoology', 'is_completed', 'completed_date', 'max_points','estimated_time']
         extra_kwargs = {
             'course': {'required': False},
             'name': {'required': False},
@@ -97,8 +100,15 @@ class AssignmentSerializer(serializers.ModelSerializer):
             'max_points': {'required': False},
             'scheduled_start': {'required': False},
             'scheduled_finish': {'required': False},
+            'estimated_time': {'required': False},
         }
 
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+ 
 
 class AssignmentScheduleSerializer(serializers.ModelSerializer):
     class Meta:

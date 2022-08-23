@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../../api/config";
+import moment from "moment";
 
 export const getCourseSpecificAssignments = createAsyncThunk(
   "user/getCourseSpecificAssignments",
@@ -78,11 +79,22 @@ export const getSpecificDateSchedule = createAsyncThunk(
   }
 );
 
+export const getAssignmentTaskHistory = createAsyncThunk(
+  "user/getAssignmentTaskHistory",
+  async (scheduleData, thunkAPI) => {
+    const response = await API.get(`user-history/`).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
+    return response;
+  }
+);
+
 const initialState = {
   courseSpecficAssignments: [],
   currentAssignment: null,
   schedule: null,
   dateSchedule: null,
+  history: [],
 };
 
 export const assignmentsSlice = createSlice({
@@ -164,6 +176,18 @@ export const assignmentsSlice = createSlice({
     [completeAssignment.rejected]: (state, action) => {
       state.status = "failed";
     },
+    [getAssignmentTaskHistory.fulfilled]: (state, action) => {
+      state.history = action.payload.data.sort(
+        (a, b) => moment(b.completed_date) - moment(a.completed_date)
+      );
+      state.status = "success";
+    },
+    [getAssignmentTaskHistory.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [getAssignmentTaskHistory.rejected]: (state, action) => {
+      state.status = "failed";
+    },
   },
 });
 
@@ -173,5 +197,6 @@ export const selectCourseSpecficAssignments = (state) =>
 export const selectCurrentAssignment = (state) => state.assignment.currentAssignment;
 export const selectCurrentSchedule = (state) => state.assignment.schedule;
 export const selectDateSchedule = (state) => state.assignment.dateSchedule;
+export const selectHistory = (state) => state.assignment.history;
 
 export default assignmentsSlice.reducer;

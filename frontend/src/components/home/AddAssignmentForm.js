@@ -3,10 +3,12 @@ import { Formik } from "formik";
 import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import * as yup from "yup";
 import CustomText from "../base/CustomText";
+import TouchableIcon from "../base/TouchableIcon";
 import { Icon } from "react-native-elements";
 import CustomButton from "../base/Button";
 import { BaseAppDimensions } from "../../styles/globalStyles";
 import ModernTextInput from "../base/ModernTextInput";
+import moment from "moment";
 
 const AddAssignmentForm = (props) => {
   const validationSchema = yup.object().shape({
@@ -26,6 +28,54 @@ const AddAssignmentForm = (props) => {
       return "red";
     } else {
       return "grey";
+    }
+  };
+
+  const handleHeader = () => {
+    if (props.history) {
+      return (
+        <View
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 20,
+            flexDirection: "row",
+          }}
+        >
+          {
+            <TouchableIcon
+              name="arrow-back-outline"
+              type="ionicon"
+              style={{ paddingLeft: 10 }}
+              onPress={props.pressHistoryBack}
+            />
+          }
+          <CustomText font="bold" size="xl">
+            Add Assignment
+          </CustomText>
+          <Icon
+            name="arrow-back-outline"
+            type="ionicon"
+            style={{ paddingLeft: 10 }}
+            color="white"
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: 20,
+            flexDirection: "row",
+          }}
+        >
+          <CustomText font="bold" size="xl">
+            Add Assignment
+          </CustomText>
+        </View>
+      );
     }
   };
 
@@ -74,8 +124,19 @@ const AddAssignmentForm = (props) => {
           validationSchema={validationSchema}
           validateOnChange={true}
           validateOnBlur={false}
-          initialValues={{ name: "", course: "", description: "", dueDate: "", time: "" }}
+          initialValues={{
+            name: props.history ? props.selectedHistory.name : "",
+            course: props.history ? props.selectedHistory.course_name : "",
+            description: props.history ? props.selectedHistory.description : "",
+            dueDate: props.history ? moment().format("MM-DD-YYYY") : "",
+            time: props.history
+              ? props.selectedHistory.estimated_time
+                ? props.selectedHistory.estimated_time.toString()
+                : ""
+              : "",
+          }}
           onSubmit={(values) => {
+            values.time = parseInt(values.time);
             console.log(values);
             Keyboard.dismiss();
             props.handleClose();
@@ -94,17 +155,7 @@ const AddAssignmentForm = (props) => {
             setFieldTouched,
           }) => (
             <>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 20,
-                }}
-              >
-                <CustomText font="bold" size="xl">
-                  Add Assignment
-                </CustomText>
-              </View>
+              {handleHeader()}
               <ModernTextInput
                 label="Name"
                 onPressIn={() => setTimeout(() => setFieldTouched("name", true), 2000)}
@@ -121,10 +172,10 @@ const AddAssignmentForm = (props) => {
                 required
                 bottomSheet
                 label="Course"
-                placeholder={{ label: "", value: "" }}
                 items={props.courses}
                 onPressIn={() => setTimeout(() => setFieldTouched("course", true), 2000)}
                 onChangeText={handleChange("course")}
+                placeholder={{ label: values.course, value: values.course, key:'1' }}
                 onBlur={handleBlur("course")}
                 value={values.course}
                 error={touched.course && errors.course && `${errors.course}`}
@@ -160,7 +211,7 @@ const AddAssignmentForm = (props) => {
                   label="Estimated Time"
                   selector
                   required
-                  placeholder={{ label: "", value: "" }}
+                  placeholder={{ label: values.time, value: values.time }}
                   items={times}
                   bottomSheet
                   onPressIn={() => setTimeout(() => setFieldTouched("time", true), 2000)}

@@ -7,11 +7,12 @@ import csv
 from safedelete.admin import SafeDeleteAdmin, SafeDeleteAdminFilter
 from safedelete.models import HARD_DELETE
 
+
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     add_form = RegisterForm
     list_display = ('email', 'phone', 'verified',
-                    'schoology_id', 'is_schoology_authenticated','is_apple_calendar_authenticated', 'graduation_year', 'school_level')
+                    'schoology_id', 'is_schoology_authenticated', 'is_apple_calendar_authenticated', 'graduation_year', 'school_level')
     list_filter = ('school_level', 'graduation_year',
                    'is_active', 'verified', 'is_staff', 'is_superuser',)
     fieldsets = (
@@ -22,7 +23,7 @@ class CustomUserAdmin(UserAdmin):
                        'email',
                        'password',)}),
         ('School Information', {
-         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated','is_apple_calendar_authenticated')}),
+         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated', 'is_apple_calendar_authenticated')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
     )
     add_fieldsets = (
@@ -32,7 +33,7 @@ class CustomUserAdmin(UserAdmin):
                        'password1',
                        'password2',)}),
         ('School Information', {
-         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated','is_apple_calendar_authenticated')}),
+         'fields': ('graduation_year', 'school_level', 'schoology_id', 'is_schoology_authenticated', 'is_apple_calendar_authenticated')}),
         ('Permissions', {'fields': ('is_staff', 'is_active', 'is_superuser')}),
     )
     search_fields = ('email', 'phone')
@@ -64,9 +65,11 @@ class GradeFilter(SimpleListFilter):
         if self.value() == '<60':
             return queryset.filter(grade__range=(0, 59))
 
+
 def restore(modeladmin, request, queryset):
     for s in queryset:
         s.undelete()
+
 
 def hard_delete(modeladmin, request, queryset):
     for s in queryset:
@@ -76,16 +79,13 @@ def hard_delete(modeladmin, request, queryset):
 @admin.register(Course)
 class CourseAdmin(SafeDeleteAdmin):
     list_display = ('name', 'subject', 'grade', 'priority',
-                    'is_schoology', 'user','avg_assignment_minutes', 'number_of_assignments') + SafeDeleteAdmin.list_display
+                    'is_schoology', 'user', 'avg_assignment_minutes', 'number_of_assignments') + SafeDeleteAdmin.list_display
     readonly_fields = ('avg_assignment_minutes',)
     list_filter = ('user', 'subject',
                    'priority', GradeFilter, 'is_schoology', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     ordering = ('grade', 'priority')
     search_fields = ('name', 'subject')
     actions = [restore, hard_delete]
-
-
-
 
 
 def download_assignment_csv(modeladmin, request, queryset):
@@ -97,17 +97,18 @@ def download_assignment_csv(modeladmin, request, queryset):
         writer.writerow([s.name, s.assignment_type, s.course,
                         s.grade, s.total_study_minutes(), s.start_date, s.due_date])
 
+
 def incomplete(modeladmin, request, queryset):
     for s in queryset:
         s.is_completed = False
         s.completed_date = None
-        s.save(update_fields=['is_completed','completed_date'])
+        s.save(update_fields=['is_completed', 'completed_date'])
 
 
 @admin.register(Assignment)
 class AssignmentAdmin(SafeDeleteAdmin):
     list_display = ('name', 'assignment_type', 'course', 'grade', 'total_study_minutes', 'start_date',
-                    'due_date', 'is_completed', 'completed_date', 'is_schoology','deleted','deleted_by_cascade') 
+                    'due_date', 'is_completed', 'completed_date', 'is_schoology', 'deleted', 'deleted_by_cascade')
     readonly_fields = ('total_study_minutes',)
     list_filter = ('assignment_type', GradeFilter,
                    'start_date', 'due_date', 'is_schoology', 'is_completed', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
@@ -122,20 +123,32 @@ class AssignmentAdmin(SafeDeleteAdmin):
 
 @admin.register(AssignmentSchedule)
 class AssignmentScheduleAdmin(SafeDeleteAdmin):
-    list_display = ('assignment', 'scheduled_start', 'scheduled_finish','total_time', 'deleted','deleted_by_cascade')  
-    list_filter = ('assignment', 'scheduled_start', 'scheduled_finish', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
+    list_display = ('assignment', 'scheduled_start', 'scheduled_finish',
+                    'total_time', 'deleted', 'deleted_by_cascade')
+    list_filter = ('assignment', 'scheduled_start', 'scheduled_finish',
+                   SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     ordering = ('scheduled_start', 'scheduled_finish')
     actions = [restore]
 
+
 @admin.register(CourseMeetingDay)
 class CourseMeetingDayAdmin(SafeDeleteAdmin):
-    list_display = ('course','meeting_day', 'deleted','deleted_by_cascade')  
-    list_filter = ('course','meeting_day', SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
+    list_display = ('course', 'meeting_day', 'deleted', 'deleted_by_cascade')
+    list_filter = ('course', 'meeting_day',
+                   SafeDeleteAdminFilter) + SafeDeleteAdmin.list_filter
     actions = [restore]
+
+
+@admin.register(Task)
+class Task(SafeDeleteAdmin):
+    list_display = ('name', 'description', 'is_completed',
+                    'completed_date', 'deleted', 'deleted_by_cascade')
+    actions = [restore]
+
 
 @admin.register(SchoologyToken)
 class SchoologyTokenAdmin(admin.ModelAdmin):
-    list_display = ('user','access_token', 'access_secret','created_date')  
+    list_display = ('user', 'access_token', 'access_secret', 'created_date')
 
 
 admin.site.unregister(Group)
