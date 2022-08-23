@@ -136,7 +136,7 @@ const AddAssignmentForm = (props) => {
               : "",
           }}
           onSubmit={(values) => {
-            values.time = parseInt(values.time);
+            // values.time = parseInt(values.time);
             console.log(values);
             Keyboard.dismiss();
             props.handleClose();

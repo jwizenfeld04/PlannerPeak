@@ -16,7 +16,7 @@ export default function History(props) {
           History
         </CustomText>
       </View>
-      {props.history.map((obj, index) => {
+      {props.history ? props.history.map((obj, index) => {
         return (
           <TouchableOpacity
             onPress={() => {
@@ -28,7 +28,7 @@ export default function History(props) {
             <CustomText size="xs">{obj.name}</CustomText>
           </TouchableOpacity>
         );
-      })}
+      }) : null}
     </View>
   );
 }
