@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Button } from "react-native";
 import { AppColors, AppFonts, BaseAppDimensions } from "../../styles/globalStyles";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { TouchableOpacity } from "react-native";
-import CurrentAssignmentModal from "./CurrentAssignmentModal";
+import SelectedAssignmentModal from "./SelectedAssignmentModal";
 
 const CurrentAssignment = (props) => {
   const [key, setKey] = useState(0); // In order to restart timer run this function:   setKey((prevKey) => prevKey + 1)
@@ -11,7 +11,7 @@ const CurrentAssignment = (props) => {
 
   return (
     <TouchableOpacity activeOpacity={0.5} onPress={() => setVisible(!visible)}>
-      <CurrentAssignmentModal visible={visible} setVisible={setVisible} timerKey={key} />
+      <SelectedAssignmentModal visible={visible} setVisible={setVisible} timerKey={key} />
       <View style={styles.container}>
         <View
           style={{

@@ -1,9 +1,15 @@
 import React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Text } from "react-native";
 import { BaseAppDimensions } from "../../styles/globalStyles";
 import ScheduleBlock from "./ScheduleBlock";
 
 export default function ScheduleTable(props) {
+  const handleEmptySchedule = (schedule) => {
+    schedule.some((element, index) =>
+      element.dueDate === props.selectedDate ? true : false
+    );
+  };
+
   const scheduleBlocks = [
     {
       id: "1",
@@ -11,8 +17,8 @@ export default function ScheduleTable(props) {
       scheduledStart: "9:30",
       scheduledFinish: "10:20",
       color: "green",
-      day: "2022-08-18",
-      dueDate: "8/17/22",
+      day: "2023-02-09", // Date must be in the following format: YYYY-MM-DD
+      dueDate: "11/2/22", // This is the format actually displayed in the app
       description:
         "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
@@ -22,8 +28,8 @@ export default function ScheduleTable(props) {
       scheduledStart: "11:30",
       scheduledFinish: "12:20",
       color: "red",
-      day: "2022-08-18",
-      dueDate: "8/17/22",
+      day: "2023-02-09",
+      dueDate: "9/19/22",
       description:
         "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
@@ -33,8 +39,8 @@ export default function ScheduleTable(props) {
       scheduledStart: "1:30",
       scheduledFinish: "2:20",
       color: "blue",
-      dueDate: "8/17/22",
-      day: "2022-08-18",
+      dueDate: "9/18/22",
+      day: "2023-02-09",
       description:
         "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
@@ -45,7 +51,7 @@ export default function ScheduleTable(props) {
       scheduledFinish: "4:20",
       color: "green",
       dueDate: "8/17/22",
-      day: "2022-08-18",
+      day: "2023-02-09",
       description:
         "This is the descripiton of the assingment abbreviated dajndnkjadn awflnjdandkawdjknwajkdnwakjnd",
     },
@@ -68,7 +74,8 @@ export default function ScheduleTable(props) {
               </View>
             );
           }
-        })}
+        })
+        }
       </ScrollView>
     </View>
   );

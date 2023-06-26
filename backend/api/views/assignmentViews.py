@@ -92,6 +92,7 @@ class UserSpecificAssignmentView(APIView):
             this_course = self.kwargs['course_id']
             if len(user_courses) > 0:
                 # Check to make sure that course belongs to that user
+                # Previous code seems kinda redundant
                 if this_course in ids:
                     name = serializer.data.get('name')
                     description = serializer.data.get('description')
@@ -100,6 +101,7 @@ class UserSpecificAssignmentView(APIView):
                     assignment = Assignment(course_id=self.kwargs['course_id'],
                                             name=name, description=description, start_date=start_date, due_date=due_date)
                     assignment.save()
+                    # Send post save signal to algo function to begin scan
                     return Response(self.serializer_class(assignment).data, status=HTTP_201_CREATED)
                 return Response({"Error": "Invalid Permissions "}, status=HTTP_403_FORBIDDEN)
             return Response({"Error": "No Courses "}, status=HTTP_400_BAD_REQUEST)

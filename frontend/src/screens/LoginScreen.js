@@ -57,7 +57,10 @@ export default function LoginScreen({ navigation }) {
             alignItems: "center",
           }}
         >
-          <Image source={AppImages.plannerPeakIcon} />
+          <Image
+            source={AppImages.plannerPeakIcon}
+            style={{ flex: 1, width: 200, height: 200 }}
+          />
           <LoginForm
             onPress={onPress}
             loginError={loginError}
