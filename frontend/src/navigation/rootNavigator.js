@@ -2,24 +2,25 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "./authNavigator";
 import AppNavigator from "./appNavigator";
-import { selectIsLoggedIn } from "../redux/features/user/userSlice";
+import { selectIsVerified } from "../redux/features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import * as Linking from "expo-linking";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { verifySchoology } from "../redux/features/schoology/schoologySlice";
-import { selectToken } from "../redux/features/user/userSlice";
 import {
-  selectUrl,
-  selectIsAuthorized,
-} from "../redux/features/schoology/schoologySlice";
+  selectToken,
+  selectIsSchoologyAuthenticated,
+} from "../redux/features/user/userSlice";
+import { selectIsAuthorized } from "../redux/features/schoology/schoologySlice";
 
 const prefix = Linking.createURL("/");
 
 const AppRoute = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isVerified = useSelector(selectIsVerified);
   const token = useSelector(selectToken);
   const isAuthorized = useSelector(selectIsAuthorized);
+  const isSchoologyAuthenticated = useSelector(selectIsSchoologyAuthenticated);
 
   const linking = {
     prefixes: [prefix],
@@ -35,21 +36,21 @@ const AppRoute = () => {
   const handleDeepLink = (ev) => {
     if (isAuthorized === true) {
       setTimeout(() => {
-        dispatch(verifySchoology(token));
-      }, 500);
+        dispatch(verifySchoology());
+      }, 1500);
     }
   };
 
   useEffect(() => {
-    Linking.addEventListener("url", handleDeepLink);
+    const subscription = Linking.addEventListener("url", (data) => handleDeepLink(data));
     return () => {
-      Linking.removeEventListener("url");
+      subscription.remove();
     };
   }, [isAuthorized]);
 
   return (
     <NavigationContainer linking={linking}>
-      {isLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+      {token && isVerified ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

@@ -1,26 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import API from "../../../api/config";
 
 // API Request that creates a Schoology Oauth URL with callback of deep link to app
 export const authorizeSchoology = createAsyncThunk(
   "user/authorizeSchoology",
   // schoologyConfig is an object includes callbackUrl and token
   async (schoologyConfig, thunkAPI) => {
-    const response = await axios
-      .post(
-        `https://plannerpeak.herokuapp.com/api/schoology-authorize/`,
-        {
-          callbackUrl: schoologyConfig.callbackUrl, //PUT DEEP LINK CALLBACK URL HERE
-        },
-        {
-          headers: {
-            Authorization: `Token ${schoologyConfig.token}`,
-          },
-        }
-      )
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.post(`schoology-authorize/`, {
+      callbackUrl: schoologyConfig.callbackUrl, //PUT DEEP LINK CALLBACK URL HERE
+    }).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -30,15 +20,9 @@ export const authorizeSchoology = createAsyncThunk(
 export const verifySchoology = createAsyncThunk(
   "user/verifySchoology",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-authorize/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-authorize/`).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -47,15 +31,9 @@ export const verifySchoology = createAsyncThunk(
 export const getSchoologyCourses = createAsyncThunk(
   "user/getSchoologyCourses",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-courses/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-courses/`).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -64,15 +42,9 @@ export const getSchoologyCourses = createAsyncThunk(
 export const getSchoologyAssignments = createAsyncThunk(
   "user/getSchoologyAssignments",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-assignments/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-assignments/`).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -82,15 +54,9 @@ export const getSchoologyAssignments = createAsyncThunk(
 export const getSchoologyGrades = createAsyncThunk(
   "user/getSchoologyGrades",
   async (token, thunkAPI) => {
-    const response = await axios
-      .get(`https://plannerpeak.herokuapp.com/api/schoology-grades/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .catch((error) => {
-        throw thunkAPI.rejectWithValue(error.response.data);
-      });
+    const response = await API.get(`schoology-grades/`).catch((error) => {
+      throw thunkAPI.rejectWithValue(error.response.data);
+    });
     return response;
   }
 );
@@ -165,7 +131,6 @@ export const schoologySlice = createSlice({
 export const { resetLink } = schoologySlice.actions; // Dispatch method to reset link to avoid errors if Schoology Oauth failes the first time
 export const selectUrl = (state) => state.schoology.schoologyUrl;
 export const selectIsVerified = (state) => state.schoology.isSchoologyVerified;
-export const selectIsAuthorized = (state) =>
-  state.schoology.isSchoologyAuthorized;
+export const selectIsAuthorized = (state) => state.schoology.isSchoologyAuthorized;
 
 export default schoologySlice.reducer;

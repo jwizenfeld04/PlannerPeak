@@ -1,12 +1,13 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Text } from "react-native";
 
 // Import mock screens
-import Courses from "../components/courses";
-import Profiles from "../components/profile";
-import Home from "../components/home";
-import Settings from "../components/settings";
+import CourseScreen from "../screens/CourseScreen";
+import HomeScreen from "../screens/HomeScreen";
+import SettingScreen from "../screens/SettingScreen";
+import { AppColors, AppDimensions, AppFonts } from "../styles/globalStyles";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -14,40 +15,41 @@ const AppNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#fff"
-      barStyle={{ backgroundColor: "blue" }}
+      labeled={true}
+      activeColor={"white"}
+      barStyle={{
+        backgroundColor: AppColors.primaryBackgroundColor,
+        height: AppDimensions.bottomTabHeight,
+      }}
+      inactiveColor={AppColors.primaryAccentColor}
     >
       <Tab.Screen
         name="Courses"
-        component={Courses}
+        component={CourseScreen}
         options={{
-          tabBarLabel: "Courses",
+          tabBarLabel: <Text style={{ fontFamily: AppFonts.SFRegular }}>Courses</Text>,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="book" color={color} size={26} />
+            <MaterialIcons name="menu-book" color={color} size={26} />
           ),
         }}
       />
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: <Text style={{ fontFamily: AppFonts.SFRegular }}>Home</Text>,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialIcons name="home" color={color} size={26} />
           ),
         }}
       />
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        component={SettingScreen}
         options={{
-          tabBarLabel: "Settings",
+          tabBarLabel: <Text style={{ fontFamily: AppFonts.SFRegular }}>Settings</Text>,
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons
-              name="account-settings"
-              color={color}
-              size={26}
-            />
+            <MaterialIcons name="settings" color={color} size={26} />
           ),
         }}
       />

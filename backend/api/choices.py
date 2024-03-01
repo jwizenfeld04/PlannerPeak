@@ -4,6 +4,20 @@ SCHOOL_CHOICES = (
     ["C", "College"],
     ["N", "Not Available"],
 )
+
+COLOR_CHOICES = [
+    "#C0392B",
+    "#E67E22",
+    "#F1C40F",
+    "#16A085",
+    "#2980B9",
+    "#8E44AD",
+    "#FFC0CB",
+    "#FA8072",
+    "#39FF14",
+    "#808080",
+]
+
 YEAR_CHOICES = (
     ["22", "2022"],
     ["23", "2023"],

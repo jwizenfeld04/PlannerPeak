@@ -1,33 +1,35 @@
 {
   "expo": {
-    "scheme":"plannerpeak",
+    "scheme": "plannerpeak",
     "name": "frontend",
     "owner": "plannerpeak",
     "privacy": "hidden",
     "slug": "planner-peak-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
     "icon": "./src/assets/images/icon.png",
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ADD8E6"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.plannerpeak.plannerpeak",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSRemindersUsageDescription": "Planner Peak syncs with Apple Calendar to provide accurate schedules."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./src/assets/images/splash.png",
+        "backgroundColor": "#ADD8E6"
       },
       "package": "com.plannerpeak.plannerpeak",
       "versionCode": 1

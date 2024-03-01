@@ -1,5 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from safedelete.managers import SafeDeleteManager, DELETED_VISIBLE
+
+class CustomSafeDeleteManager(SafeDeleteManager):
+    _safedelete_visibility = DELETED_VISIBLE
 
 
 class CustomUserManager(BaseUserManager):
