@@ -4,13 +4,13 @@ PlannerPeak is a personal planner application designed to integrate with school-
 
 ## Technology Stack
 ### Backend
-Language: Python
-Framework: Django REST Framework
-Hosting: Heroku
-Database: SQL
+1. Language: Python
+2. Framework: Django REST Framework
+3. Hosting: Heroku
+4. Database: SQL
 ### Frontend
-Language: JavaScript
-Frameworks/Libraries: React Native, React Redux
+1. Language: JavaScript
+2. Frameworks/Libraries: React Native, React Redux
 ## Getting Started
 1. Fork the Repository: Fork the project repository to your GitHub account.
 2. Clone the Repository: Clone the forked repository to your local machine using git clone <repository-url>.
